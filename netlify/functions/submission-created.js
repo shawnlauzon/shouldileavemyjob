@@ -8,7 +8,7 @@ export default async (event, context) => {
   const birthDate = new Date(dateTimeStr)
 
   const qs = require('qs')
-  const data = qs.stringify({
+  const bg5Params = qs.stringify({
     Year: birthDate.getFullYear(),
     Month: birthDate.getMonth() + 1,
     Day: birthDate.getDate(),
@@ -21,7 +21,7 @@ export default async (event, context) => {
         : ''),
     City: payload.data['birth-city'],
   })
-  console.log('Passing data', data)
+  console.log('Passing params to BG5', bg5Params)
 
   const bg5Config = {
     method: 'post',
@@ -46,7 +46,7 @@ export default async (event, context) => {
       Cookie:
         '.AspNet.Consent=yes; .AspNetCore.Antiforgery.7BxiT8-Rm8g=CfDJ8PpmqfI5f59Gg-BT-dJ02hB1zdgn61idtBeEFFIYFd0Qu-HwriQKtVLwIC5jm8ysBy-sd2jyo87715ax0h6DXrdHzPB5Pmg4tOoMfh50P_WPopOgPOcCfQ7F0Z9Ki4keMLMZCOd5kHyqSkW8m7NtyaI; .AspNetCore.Antiforgery.Q_cgsSubgpI=CfDJ8PpmqfI5f59Gg-BT-dJ02hDfFzCVnwt6zlOdFsouY695WuZbRROSrErOs5BPU6tAk-1j38wzlX4hHrqm1WRMspmnsOXp9et61q2a2BNLGr89MOZqkKIlHZEOUB4yOderoM5Nay4Xev7rwPKnIIInTz8; .AspNetCore.Identity.Application=CfDJ8PpmqfI5f59Gg-BT-dJ02hBAt08hGg0QxRzYmMq6tMcwWRkL66PbPrcOYuakxZDRdMvlzsjjuAIeFxQYdzwL2VmZv5mCCQM4D55AEl3qGb2xpqj529ayNsGYixuYF5HMXweHVmn-7BVWByMyGCQDn9y-_hY8K5TuJg7fh7YQtkVO9u0YQN-VqVoYvr6doOyoVhR8ICz-gEt7l2GHGpvEliHqLyzpxDHRn5X0RyALMwr_ISYij9zAYfgtjegkpa6cGbcHxSQqSvCzZR6JVK6fujyngrcGynjD6OfYur42qtnNmX3n3oNO5gkvjD92jvlUCwx0lrhqeykaqJPiUToUnZlcUnocyt3OtlBvF8Ydn5NHS7vgUeyFayX3NwM_sfNr5y8PWo_bvuRTHiKU8_BYipSm_LWTbWbaXTxOeU5h-t0CUuptxH_XmY_DYoQoZl5Rwjda6WCDrLVY0k_v1mskNuk59Jc-c0Pfa79LUe543ZTS3osWLWQ4QPNdE0HQ3L3GgbvsNh6b8rBD8YpD7RB0urk7olJgvplqijoxKTEWaUzQI1mZHJAOE5ZuScMwY4Ya7ECqE6R7Jnlbr6xIwZbiWtrAafiP60LKzPvNp9hxmgQ9LHFkLiDWb9p8iPpDdu4_LJHRCqhQlsVSa6xncq49urWpn-S02FJwMUkVPY82NKrxq1AE5KKU-tQ6PkUNZ7qYLNn83ITEznb5v6OEXSMCz1DGwUY2ogiEQ6gHK6xVsTy4-uf3HRrC-jDUeKEeC-mUoUfpeU0SSmHdqZC7j5atojerY9szEE3gyJKunUfIJstYmVhWu3svwM34u3Vms7j0lFT3taavAX_zWFVepiNPWucOggzu7GL0ChHnYGKWnRL8aSfYKPoQzVEeiDOhh64emhA_Eiw9h8GZ7R7BddXzzQkST0-0nAHmQrHv0EbSPE2Q7oNrSpeXaWb6dDQ_RAudsLL_0I_Gpm535eLHnzOHPv-83DDaCqqc-BQs1b1OvTZHmyQmdv92QH3wLY9z68Y_wg; _ga=GA1.2.1574294499.1686795887; _ga_BMRG0TVB5F=GS1.1.1697406134.158.1.1697406337.59.0.0; _gid=GA1.2.1630910633.1697300043',
     },
-    data,
+    bg5Params,
   }
 
   const finalResult = {}
@@ -60,18 +60,18 @@ export default async (event, context) => {
       const imageData = bg5Response.data.image
       console.log('Length of image is', imageData.length)
 
-      const formData = new FormData()
-      formData.append('base64Image', 'data:image/png;base64,' + imageData)
-      formData.append('OCREngine', '2')
+      const ocrParams = new FormData()
+      ocrParams.append('base64Image', 'data:image/png;base64,' + imageData)
+      ocrParams.append('OCREngine', '2')
       const ocrConfig = {
         method: 'post',
         maxBodyLength: Infinity,
         url: 'https://api.ocr.space/parse/image',
         headers: {
           apikey: 'K84139848188957',
-          ...data.getHeaders(),
+          ...ocrParams.getHeaders(),
         },
-        formData,
+        ocrParams,
       }
 
       axios
