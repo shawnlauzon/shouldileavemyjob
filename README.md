@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/899810bd-b5bd-4c9a-b110-1509694c4edd/deploy-status)](https://app.netlify.com/sites/shouldileavemyjob/deploys)
+
 # Nuxt Toolbox Template
 ![Netlify + Nuxt](https://user-images.githubusercontent.com/43764894/223556133-b99e4822-1da3-4f94-941e-fa95cfb42562.png)
 
