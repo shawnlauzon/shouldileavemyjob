@@ -7,16 +7,16 @@ export default async (event, context) => {
   const dateTimeStr =
     payload.data['birth-date'] + 'T' + payload.data['birth-time']
   console.log(dateTimeStr)
-  const birthDate = Date.parse(dateTimeStr)
+  const birthDate = new Date(dateTimeStr)
   console.log('birthDate', birthDate)
 
   const qs = require('qs')
   const data = qs.stringify({
+    Year: birthDate.getFullYear(),
     Month: birthDate.getMonth() + 1,
     Day: birthDate.getDate(),
     Hour: birthDate.getHours(),
     Minute: birthDate.getMinutes(),
-    Year: birthDate.getFullYear(),
     Country:
       payload.data['birth-country'] + payload.data['birth-country'] === 'USA'
         ? ' - ' + payload.data['birth-state']
