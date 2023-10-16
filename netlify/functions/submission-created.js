@@ -1,9 +1,9 @@
 export default async (event, context) => {
   const axios = require('axios')
   const FormData = require('form-data')
-  console.log('Event body', event.body)
-  const body = JSON.parse(event.body).payload
-  console.log('Got body', body)
+  const body = await event.json()
+  const payload = body.payload
+  console.log('Got payload', payload)
   const qs = require('qs')
   const data = qs.stringify(body)
   //   const data = qs.stringify({
