@@ -1,14 +1,19 @@
 export default async (event, context) => {
   const axios = require('axios')
   const FormData = require('form-data')
-  const body = await event.json()
-  const payload = body.payload
-  console.log('Payload', payload)
-  const dateTimeStr =
-    payload.data['birth-date'] + 'T' + payload.data['birth-time']
+  const qs = require('qs')
+
+  // console.log(event)
+  const formParams = await event.text()
+  // console.log(body);
+  // const payload = body.payload
+  console.log('Form params', formParams)
+
+  const formObj = qs.parse(formParams)
+
+  const dateTimeStr = formObj['birth-date'] + 'T' + formObj['birth-time']
   const birthDate = new Date(dateTimeStr)
 
-  const qs = require('qs')
   const bg5Params = qs.stringify({
     Year: birthDate.getFullYear(),
     Month: birthDate.getMonth() + 1,
@@ -16,11 +21,11 @@ export default async (event, context) => {
     Hour: birthDate.getHours(),
     Minute: birthDate.getMinutes(),
     Country:
-      payload.data['birth-country'] +
-      (payload.data['birth-country'] === 'USA'
-        ? ' - ' + payload.data['birth-state']
+      formObj['birth-country'] +
+      (formObj['birth-country'] === 'USA'
+        ? ' - ' + formObj['birth-state']
         : ''),
-    City: payload.data['birth-city'],
+    City: formObj['birth-city'],
   })
   console.log('Passing to BG5:', bg5Params)
 
