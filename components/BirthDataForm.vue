@@ -12,7 +12,7 @@
           Don't fill this out if you're human: <input name="bot-field" />
         </label>
       </p>
-      <input type="hidden" name="form-name" value="birthdata" />
+      <input type="hidden" name="form-name" value="birth-data" />
       <label for="birth-date">Birth date</label>
       <input id="birth-date" type="date" name="birth-date" />
       <label for="birth-time">Birth time</label>
