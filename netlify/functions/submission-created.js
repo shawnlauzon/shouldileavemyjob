@@ -4,17 +4,23 @@ export default async (event, context) => {
   const body = await event.json()
   const payload = body.payload
   console.log('Got payload', payload)
+  const birthDate = Date.parse(
+    payload['birth-date'] + ' ' + payload['birth-time']
+  )
   const qs = require('qs')
-  const data = qs.stringify(body)
-  //   const data = qs.stringify({
-  //     City: 'La Crosse',
-  //     Country: 'USA - Wisconsin',
-  //     Day: '7',
-  //     Hour: '16',
-  //     Minute: '0',
-  //     Month: '4',
-  //     Year: '1974',
-  //   })
+  const data = qs.stringify({
+    Year: birthDate.getFullYear(),
+    Month: birthDate.getMonth() + 1,
+    Day: birthDate.getDate(),
+    Hour: birthDate.getHours(),
+    Minute: birthDate.getMinutes(),
+    Country:
+      payload.data['birth-country'] + payload.data['birth-country'] === 'USA'
+        ? ' - ' + payload.data['birth-state']
+        : '',
+    City: payload.data['birth-city'],
+  })
+  console.log('Passing data', data)
 
   const config = {
     method: 'post',
