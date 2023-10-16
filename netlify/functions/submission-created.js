@@ -23,7 +23,7 @@ export default async (event, context) => {
   })
   console.log('Passing data', data)
 
-  const config = {
+  const bg5Config = {
     method: 'post',
     maxBodyLength: Infinity,
     url: 'https://bg5businessinstitute.com/get-your-chart',
@@ -49,20 +49,21 @@ export default async (event, context) => {
     data,
   }
 
-  const result = {}
+  const finalResult = {}
 
   await axios
-    .request(config)
-    .then((response) => {
-      Object.assign(result, response.data)
+    .request(bg5Config)
+    .then((bg5Response) => {
+      Object.assign(finalResult, bg5Response.data)
+      delete finalResult.image
 
-      const imageData = response.data.image
+      const imageData = bg5Response.data.image
       console.log('Length of image is', imageData.length)
 
-      const data2 = new FormData()
-      data.append('base64Image', 'data:image/png;base64,' + imageData)
-      data.append('OCREngine', '2')
-      const config2 = {
+      const formData = new FormData()
+      formData.append('base64Image', 'data:image/png;base64,' + imageData)
+      formData.append('OCREngine', '2')
+      const ocrConfig = {
         method: 'post',
         maxBodyLength: Infinity,
         url: 'https://api.ocr.space/parse/image',
@@ -70,18 +71,18 @@ export default async (event, context) => {
           apikey: 'K84139848188957',
           ...data.getHeaders(),
         },
-        data2,
+        formData,
       }
 
       axios
-        .request(config2)
-        .then((response2) => {
-          const parsedText = response2.data.ParsedResults[0].ParsedText
+        .request(ocrConfig)
+        .then((ocrResponse) => {
+          const parsedText = ocrResponse.data.ParsedResults[0].ParsedText
 
           // Match each trait.quality
           const regex = /(\d+\.\d+)/gm
 
-          result.allTraits = parsedText.match(regex)
+          finalResult.allTraits = parsedText.match(regex)
         })
         .catch((error) => {
           console.log(error)
@@ -91,12 +92,9 @@ export default async (event, context) => {
       console.log(error)
     })
 
-  console.log('Returning', result)
+  console.log('Returning', finalResult)
 
   // Netlify Functions need to return an object with a statusCode
   // Other properties such as headers or body can also be included.
-  return {
-    statusCode: 200,
-    body: result,
-  }
+  return new Response(finalResult)
 }
