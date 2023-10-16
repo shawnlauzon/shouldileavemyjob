@@ -53,7 +53,7 @@ export default async (event, context) => {
 
   await axios
     .request(bg5Config)
-    .then((bg5Response) => {
+    .then(async (bg5Response) => {
       Object.assign(finalResult, bg5Response.data)
       delete finalResult.image
 
@@ -74,7 +74,7 @@ export default async (event, context) => {
         data: ocrParams,
       }
 
-      axios
+      await axios
         .request(ocrConfig)
         .then((ocrResponse) => {
           const parsedText = ocrResponse.data.ParsedResults[0].ParsedText
