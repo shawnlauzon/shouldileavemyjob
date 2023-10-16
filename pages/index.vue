@@ -33,7 +33,6 @@
       <p>You're welcome.</p>
     </div>
     <BirthDataForm />
-    <JokeBlock />
   </main>
 </template>
 
