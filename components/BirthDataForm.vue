@@ -14,15 +14,15 @@
       </p>
       <input type="hidden" name="form-name" value="birth-data" />
       <label for="birth-date">Birth date</label>
-      <input id="birth-date" type="date" name="birth-date" />
+      <input id="birth-date" type="date" name="birth-date" required />
       <label for="birth-time">Birth time</label>
-      <input id="birth-time" type="time" name="birth-time" />
+      <input id="birth-time" type="time" name="birth-time" required />
       <label for="birth-country">Birth country</label>
-      <input id="birth-country" type="text" name="birth-country" />
+      <input id="birth-country" type="text" name="birth-country" required />
       <label for="birth-state">Birth state</label>
-      <input id="birth-state" type="text" name="birth-state" />
+      <input id="birth-state" type="text" name="birth-state" required />
       <label for="birth-city">Birth city</label>
-      <input id="birth-city" type="text" name="birth-city" />
+      <input id="birth-city" type="text" name="birth-city" required />
       <button type="submit">Submit</button>
     </form>
   </div>
