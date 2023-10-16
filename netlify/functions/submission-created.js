@@ -4,9 +4,11 @@ export default async (event, context) => {
   const body = await event.json()
   const payload = body.payload
   console.log('Got payload', payload)
-  const birthDate = Date.parse(
-    payload.data['birth-date'] + ' ' + payload.data['birth-time']
-  )
+  const dateTimeStr =
+    payload.data['birth-date'] + 'T' + payload.data['birth-time']
+  console.log(dateTimeStr)
+  const birthDate = Date.parse(dateTimeStr)
+
   const qs = require('qs')
   const data = qs.stringify({
     Year: birthDate.getFullYear(),
