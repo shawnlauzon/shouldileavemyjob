@@ -1,5 +1,6 @@
 export default async (event, context) => {
   const axios = require('axios')
+  const FormData = require('form-data')
   const body = JSON.parse(event.body).payload
   console.log('Got body', body)
   const qs = require('qs')
@@ -50,7 +51,6 @@ export default async (event, context) => {
       const imageData = response.data.image
       console.log('Length of image is', imageData.length)
 
-      const FormData = require('form-data')
       const data2 = new FormData()
       data.append('base64Image', 'data:image/png;base64,' + imageData)
       data.append('OCREngine', '2')
