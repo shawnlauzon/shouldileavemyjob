@@ -3,6 +3,7 @@ export default async (event, context) => {
   const FormData = require('form-data')
   const body = await event.json()
   const payload = body.payload
+  console.log('Payload', payload)
   const dateTimeStr =
     payload.data['birth-date'] + 'T' + payload.data['birth-time']
   const birthDate = new Date(dateTimeStr)

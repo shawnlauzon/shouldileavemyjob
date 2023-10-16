@@ -5,7 +5,7 @@
       netlify-honeypot
       name="birth-data"
       method="POST"
-      action="/success"
+      action="/api/career-design"
     >
       <p class="hidden">
         <label>
