@@ -5,7 +5,7 @@ export default async (event, context) => {
   const payload = body.payload
   console.log('Got payload', payload)
   const birthDate = Date.parse(
-    payload['birth-date'] + ' ' + payload['birth-time']
+    payload.data['birth-date'] + ' ' + payload.data['birth-time']
   )
   const qs = require('qs')
   const data = qs.stringify({
