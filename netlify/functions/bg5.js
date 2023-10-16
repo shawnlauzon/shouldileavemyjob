@@ -1,4 +1,4 @@
-export const handler = async (event, context) => {
+export default async (event, context) => {
   const axios = require('axios')
   const body = JSON.parse(event.body).payload
   console.log('Got body', body)
