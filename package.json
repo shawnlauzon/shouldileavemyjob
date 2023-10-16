@@ -1,18 +1,12 @@
 {
-  "name": "nuxt-toolbox",
+  "name": "shouldileavemyjob",
   "version": "1.0.0",
-  "author": "Netlify Inc",
-  "contributors": [
-    "Tara Manicsic",
-    "Prince Wilson",
-    "Ben Hong",
-    "Charlie Gerard"
-  ],
-  "homepage": "https://github.com/netlify-templates/nuxt-toolbox",
+  "author": "Shawn Lauzon",
+  "homepage": "https://github.com/shawnlauzon/shouoldileavemyjob",
   "bugs": {
-    "url": "https://github.com/netlify-templates/nuxt-toolbox/issues"
+    "url": "https://github.com/shawnlauzon/shouoldileavemyjob/issues"
   },
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
