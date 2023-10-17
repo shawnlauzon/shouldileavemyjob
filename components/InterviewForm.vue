@@ -37,7 +37,7 @@
             starting your current job?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="largeGroup">
+        <v-stepper-content v-if="askLargeGroup" step="largeGroup">
           <YesNoQuestion v-model="answers.largeGroup">
             Do you work at a company greater than 10 people?
           </YesNoQuestion>
@@ -117,18 +117,30 @@ export default {
     hasNext() {
       return this.curQuestion < this.numQuestions - 1
     },
+    askLargeGroup() {
+      return this.answerForQuestion('selfEmployed') !== true
+    },
+  },
+  mounted: function () {
+    console.log('Career design:', this.props)
   },
   methods: {
     handleNext: function () {},
     nextStep: function () {
       if (this.hasNext) {
         this.curQuestion++
+        // if (this.answerForQuestion('selfEmployed') === true) {
+        //   this.questions = this.questions.filter
+        // }
       }
     },
     prevStep: function () {
       if (this.hasPrev) {
         this.curQuestion--
       }
+    },
+    answerForQuestion(q) {
+      return this.answers[q]
     },
   },
 }
