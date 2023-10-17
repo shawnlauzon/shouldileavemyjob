@@ -1,62 +1,68 @@
 <template>
-  <v-stepper v-model="questions[curQuestion]" class="elevation-0">
-    <v-stepper-header class="elevation-0">
-      <template v-for="q in numQuestions">
-        <v-stepper-step
-          :key="`${q}-question`"
-          :complete="curQuestion > questions.length"
-          step=""
-        ></v-stepper-step>
-      </template>
-    </v-stepper-header>
-    <v-stepper-items>
-      <v-stepper-content step="resistenceFrequency">
-        <ScaleQuestion v-model="answers.resistenceFrequency">
-          How often do you feel {{ design.keyIndicatorFeelings[0] }}?
-        </ScaleQuestion>
-      </v-stepper-content>
-      <v-stepper-content step="flowFrequency">
-        <ScaleQuestion v-model="answers.flowFrequency">
-          How often do you feel {{ design.keyIndicatorFeelings[1] }}?
-        </ScaleQuestion>
-      </v-stepper-content>
-      <v-stepper-content step="newJob">
-        <YesNoQuestion v-model="answers.newJob">
-          Do you have a new job ligned up?"
-        </YesNoQuestion>
-      </v-stepper-content>
-      <v-stepper-content step="selfEmployed">
-        <YesNoQuestion v-model="answers.selfEmployed">
-          Are you self-employed?
-        </YesNoQuestion>
-      </v-stepper-content>
-      <v-stepper-content step="enterJobCorrectly">
-        <YesNoQuestion v-model="answers.enterJobCorrectly">
-          Did you {{ design.decisionMakingStrategy.toLowerCase() }} before
-          starting your current job?
-        </YesNoQuestion>
-      </v-stepper-content>
-      <v-stepper-content step="largeGroup">
-        <YesNoQuestion v-model="answers.largeGroup">
-          Do you work at a company greater than 10 people?
-        </YesNoQuestion>
-      </v-stepper-content>
-      <v-stepper-content step="smallGroup">
-        <YesNoQuestion v-model="answers.smallGroup">
-          Do you frequently work <em>in-person</em> with 3-6 people?
-        </YesNoQuestion>
-      </v-stepper-content>
-    </v-stepper-items>
-
-    <v-btn :disabled="!hasPrev" @click="prevStep()"> Back </v-btn>
-    <v-btn
-      :disabled="!hasNext || answers[questions[curQuestion]] === undefined"
-      color="primary"
-      @click="nextStep()"
-    >
-      Next
-    </v-btn>
-  </v-stepper>
+  <v-container class="d-flex justify-center flex-column">
+    <v-stepper v-model="questions[curQuestion]" class="elevation-0">
+      <v-stepper-header class="elevation-0">
+        <template v-for="q in numQuestions">
+          <v-stepper-step
+            :key="`${q}-question`"
+            :complete="curQuestion >= q"
+            :step="q"
+          ></v-stepper-step>
+        </template>
+      </v-stepper-header>
+      <v-stepper-items>
+        <v-stepper-content step="resistenceFrequency">
+          <ScaleQuestion v-model="answers.resistenceFrequency">
+            How often do you feel {{ design.keyIndicatorFeelings[0] }}?
+          </ScaleQuestion>
+        </v-stepper-content>
+        <v-stepper-content step="flowFrequency">
+          <ScaleQuestion v-model="answers.flowFrequency">
+            How often do you feel {{ design.keyIndicatorFeelings[1] }}?
+          </ScaleQuestion>
+        </v-stepper-content>
+        <v-stepper-content step="newJob">
+          <YesNoQuestion v-model="answers.newJob">
+            Do you have a new job ligned up?"
+          </YesNoQuestion>
+        </v-stepper-content>
+        <v-stepper-content step="selfEmployed">
+          <YesNoQuestion v-model="answers.selfEmployed">
+            Are you self-employed?
+          </YesNoQuestion>
+        </v-stepper-content>
+        <v-stepper-content step="enterJobCorrectly">
+          <YesNoQuestion v-model="answers.enterJobCorrectly">
+            Did you {{ design.decisionMakingStrategy.toLowerCase() }} before
+            starting your current job?
+          </YesNoQuestion>
+        </v-stepper-content>
+        <v-stepper-content step="largeGroup">
+          <YesNoQuestion v-model="answers.largeGroup">
+            Do you work at a company greater than 10 people?
+          </YesNoQuestion>
+        </v-stepper-content>
+        <v-stepper-content step="smallGroup">
+          <YesNoQuestion v-model="answers.smallGroup">
+            Do you frequently work <em>in-person</em> with 3-6 people?
+          </YesNoQuestion>
+        </v-stepper-content>
+      </v-stepper-items>
+    </v-stepper>
+    <v-row class="d-flex justify-center">
+      <v-btn class="mx-2" :disabled="!hasPrev" @click="prevStep()">
+        Back
+      </v-btn>
+      <v-btn
+        class="mx-2"
+        :disabled="!hasNext || answers[questions[curQuestion]] === undefined"
+        color="primary"
+        @click="nextStep()"
+      >
+        Next
+      </v-btn>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

@@ -33,7 +33,7 @@
           you've ever received.
         </p>
         <p>You're welcome.</p>
-        <BirthDataForm />
+        <!-- <BirthDataForm /> -->
       </div>
 
       <InterviewForm />
