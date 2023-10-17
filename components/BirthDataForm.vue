@@ -1,11 +1,5 @@
 <template>
   <v-container fluid>
-    <!-- <p class="hidden">
-        <label>
-          Don't fill this out if you're human: <input name="bot-field" />
-        </label>
-      </p>
-      <input type="hidden" name="form-name" value="birth-data" /> -->
     <v-row justify="center">
       <v-date-picker v-model="date" label="Birth date" required />
       <v-time-picker v-model="time" format="ampm" label="Birth time" required />
@@ -22,17 +16,21 @@
         return-object
         single-line
       ></v-select>
-      <v-select
-        v-model="state"
-        :hint="`${state.name}, ${state.abbr}`"
-        :items="states"
-        item-text="name"
-        item-value="abbr"
-        label="Birth state"
-        persistent-hint
-        return-object
-        single-line
-      ></v-select>
+      <span v-if="isUsa">
+        <v-select
+          v-model="state"
+          :hint="`${state.name}, ${state.abbr}`"
+          :items="states"
+          item-text="name"
+          item-value="abbr"
+          label="Birth state"
+          persistent-hint
+          return-object
+          single-line
+        ></v-select>
+      </span>
+    </v-row>
+    <v-row>
       <v-text-field v-model="city"></v-text-field>
     </v-row>
     <v-btn :loading="isLoading" :disabled="isLoading" @click="handleNext"
@@ -541,6 +539,11 @@ export default {
       state: ref({ name: 'Wisconsin', abbr: 'WI' }),
       isLoading: false,
     }
+  },
+  computed: {
+    isUsa() {
+      return this.country.abbr === 'US'
+    },
   },
   methods: {
     handleNext: async function () {
