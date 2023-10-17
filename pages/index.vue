@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-container class="intro">
+      <div v-if="!hasDesign" class="intro">
         <h1>Should I leave my job?</h1>
         <h2>
           So you've had it up to here with your job, but don't know what to do
@@ -33,11 +33,29 @@
           you've ever received.
         </p>
         <p>You're welcome.</p>
-      </v-container>
-      <BirthDataForm />
+        <BirthDataForm />
+      </div>
+
+      <InterviewForm />
     </v-main>
   </v-app>
 </template>
+
+<script>
+export default {
+  data: function () {
+    return {
+      hasDesign: true,
+      curStep: 0,
+      steps: 3,
+    }
+  },
+  computed: {},
+  methods: {
+    handleNext: function () {},
+  },
+}
+</script>
 
 <style>
 * {
