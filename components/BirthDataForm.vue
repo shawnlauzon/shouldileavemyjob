@@ -1,74 +1,51 @@
 <template>
-  <v-form
-    netlify
-    netlify-honeypot
-    name="birth-data"
-    method="POST"
-    action="/api/career-design"
-  >
-    <v-container fluid>
-      <!-- <p class="hidden">
+  <v-container fluid>
+    <!-- <p class="hidden">
         <label>
           Don't fill this out if you're human: <input name="bot-field" />
         </label>
       </p>
       <input type="hidden" name="form-name" value="birth-data" /> -->
-      <v-row justify="center">
-        <v-date-picker v-model="date" label="Birth date" required />
-        <v-time-picker
-          v-model="time"
-          format="ampm"
-          label="Birth time"
-          required
-        />
-      </v-row>
-      <v-row justify="center">
-        <v-select
-          v-model="country"
-          :hint="`${country.name}, ${country.abbr}`"
-          :items="countries"
-          item-text="name"
-          item-value="abbr"
-          label="Birth country"
-          persistent-hint
-          return-object
-          single-line
-        ></v-select>
-        <v-select
-          v-model="state"
-          :hint="`${state.name}, ${state.abbr}`"
-          :items="states"
-          item-text="name"
-          item-value="abbr"
-          label="Birth state"
-          persistent-hint
-          return-object
-          single-line
-        ></v-select>
-        <v-text-field v-model="city"></v-text-field>
-      </v-row>
-      <!-- <label for="birth-time">Birth time</label>
-      <input id="birth-time" type="time" name="birth-time" required />
-      <label for="birth-country">Birth country</label>
-      <input id="birth-country" type="text" name="birth-country" required />
-      <label for="birth-state">Birth state</label>
-      <input id="birth-state" type="text" name="birth-state" required />
-      <label for="birth-city">Birth city</label>
-      <input id="birth-city" type="text" name="birth-city" required /> -->
-      <v-btn :loading="loading" @click="loader = 'loading'">Submit</v-btn>
-    </v-container>
-  </v-form>
+    <v-row justify="center">
+      <v-date-picker v-model="date" label="Birth date" required />
+      <v-time-picker v-model="time" format="ampm" label="Birth time" required />
+    </v-row>
+    <v-row justify="center">
+      <v-select
+        v-model="country"
+        :hint="`${country.name}, ${country.abbr}`"
+        :items="countries"
+        item-text="name"
+        item-value="abbr"
+        label="Birth country"
+        persistent-hint
+        return-object
+        single-line
+      ></v-select>
+      <v-select
+        v-model="state"
+        :hint="`${state.name}, ${state.abbr}`"
+        :items="states"
+        item-text="name"
+        item-value="abbr"
+        label="Birth state"
+        persistent-hint
+        return-object
+        single-line
+      ></v-select>
+      <v-text-field v-model="city"></v-text-field>
+    </v-row>
+    <v-btn :loading="isLoading" :disabled="isLoading" @click="handleNext"
+      >Next</v-btn
+    >
+  </v-container>
 </template>
 
-<script setup>
+<script setup></script>
+
+<script>
 import { ref } from 'vue'
-
-const date = '1974-04-07'
-const time = '16:00'
-const country = ref({ name: 'United States', abbr: 'US' })
-const city = 'La Crosse'
-const state = ref({ name: 'Wisconsin', abbr: 'WI' })
-
+import axios from 'axios'
 const countries = [
   { name: 'Afghanistan', abbr: 'AF' },
   { name: 'Åland Islands', abbr: 'AX' },
@@ -553,6 +530,37 @@ const states = [
     abbr: 'WY',
   },
 ]
+
+export default {
+  data: function () {
+    return {
+      date: '1974-04-07',
+      time: '16:00',
+      country: ref({ name: 'United States', abbr: 'US' }),
+      city: 'La Crosse',
+      state: ref({ name: 'Wisconsin', abbr: 'WI' }),
+      isLoading: false,
+    }
+  },
+  methods: {
+    handleNext: async function () {
+      const params = {
+        date: this.date,
+        time: this.time,
+        country: this.country.name,
+        city: this.city,
+        state: this.state.name,
+      }
+      console.log('clicked for ', params)
+
+      this.isLoading = true
+      await axios
+        .post('/api/career-design', { data: params })
+        .then((response) => console.log(response.data))
+      this.isLoading = false
+    },
+  },
+}
 </script>
 
 <style scoped>

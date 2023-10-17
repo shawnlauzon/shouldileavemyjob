@@ -4,14 +4,11 @@ export default async (event, context) => {
   const qs = require('qs')
 
   // console.log(event)
-  const formParams = await event.text()
-  // console.log(body);
-  // const payload = body.payload
-  console.log('Form params', formParams)
+  const body = await event.json()
+  const data = body.data
+  console.log('data', data)
 
-  const formObj = qs.parse(formParams)
-
-  const dateTimeStr = formObj['birth-date'] + 'T' + formObj['birth-time']
+  const dateTimeStr = data.date + 'T' + data.time
   const birthDate = new Date(dateTimeStr)
 
   const bg5Params = qs.stringify({
@@ -20,12 +17,8 @@ export default async (event, context) => {
     Day: birthDate.getDate(),
     Hour: birthDate.getHours(),
     Minute: birthDate.getMinutes(),
-    Country:
-      formObj['birth-country'] +
-      (formObj['birth-country'] === 'USA'
-        ? ' - ' + formObj['birth-state']
-        : ''),
-    City: formObj['birth-city'],
+    Country: data.country + (data.country === 'USA' ? ' - ' + data.state : ''),
+    City: data.city,
   })
   console.log('Passing to BG5:', bg5Params)
 
@@ -102,5 +95,5 @@ export default async (event, context) => {
 
   // Netlify Functions need to return an object with a statusCode
   // Other properties such as headers or body can also be included.
-  return new Response(finalResult)
+  return Response.json(finalResult)
 }
