@@ -34,6 +34,11 @@
             Do you work at a company greater than 10 people?
           </YesNoQuestion>
         </v-stepper-content>
+        <v-stepper-content step="workFromHome">
+          <YesNoQuestion v-model="answers.workFromHome">
+            Do you typically work from home?
+          </YesNoQuestion>
+        </v-stepper-content>
         <v-stepper-content step="smallGroup">
           <YesNoQuestion v-model="answers.smallGroup">
             Do you frequently work <em>in-person</em> with 3-6 people?
@@ -115,6 +120,7 @@ export default {
         '18.2',
       ],
     },
+    value: { type: Object, default: null }
   },
   data: function () {
     return {
@@ -418,6 +424,7 @@ export default {
         while (!this.curQuestion.isVisible()) {
           this.curQuestionIndex++
         }
+        this.$emit('input', this.conclusion)
       }
     },
     prevStep: function () {
@@ -437,6 +444,9 @@ export default {
     setEmailAgreed: function (v) {
       this.isEmailAgreed = v
     },
+    complete: function () {
+      this.$emit('complete', this.conclusion);
+    }
   },
 }
 </script>
