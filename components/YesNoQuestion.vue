@@ -5,7 +5,7 @@
   >
     <div class="pa-12"><slot /></div>
     <div class="d-inline-flex justify-center">
-      <v-radio-group value="value" row @change="$emit('input', $event)">
+      <v-radio-group :value="value" row @change="$emit('input', $event)">
         <v-radio label="Yes" :value="true" />
         <v-radio label="No" :value="false" />
       </v-radio-group>
