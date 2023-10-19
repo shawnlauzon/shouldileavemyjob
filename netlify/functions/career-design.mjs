@@ -17,7 +17,9 @@ export default async (event, context) => {
     Day: birthDate.getDate(),
     Hour: birthDate.getHours(),
     Minute: birthDate.getMinutes(),
-    Country: data.country + (data.country === 'USA' ? ' - ' + data.state : ''),
+    Country:
+      data.country +
+      (data.country === 'United States' ? ' - ' + data.state : ''),
     City: data.city,
   })
   console.log('Passing to BG5:', bg5Params)

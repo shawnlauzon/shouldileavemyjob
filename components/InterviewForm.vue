@@ -44,11 +44,11 @@
             Do you frequently work <em>in-person</em> with 3-6 people?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="enterJobCorrectly">
+        <!-- <v-stepper-content step="enterJobCorrectly">
           <YesNoQuestion v-model="answers.enterJobCorrectly">
             Did you {{ strategyText }} before accepting your current job?
           </YesNoQuestion>
-        </v-stepper-content>
+        </v-stepper-content> -->
         <v-stepper-content step="haveBoss">
           <YesNoQuestion v-model="answers.haveBoss">
             Do you have a hands-on boss?
@@ -127,88 +127,73 @@ export default {
   data: function () {
     return {
       curQuestionIndex: 0,
+      answers: {},
+      emailAddress: undefined,
+      isEmailAgreed: false,
       questions: [
         {
           step: 'resistenceFrequency',
-          isVisible: () => {
-            return true
-          },
+          isVisible: () => true,
           results: [
             {
-              check: (ans) => ans > 7,
-              update: (ans) => -ans,
-              msg: `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
+              check: (ans) => ans > 3,
+              update: (acc, ans) => acc.update(-(ans - 3),
+                `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
               your design, and the fact that you feel that so often is a sign that
-              something should change.`
+              something should change.`)
             },
             {
-              check: (ans) => ans < 3,
-              update: (ans) => ans === 0 ? 6 : ans === 1 ? 4 : 2,
-              msg: `${this.keyIndicators[0]} is your sign that you're doing things in contrast to
+              check: (ans) => ans <= 3,
+              update: (acc, ans) => acc.update(ans,
+                `${this.keyIndicators[0]} is your sign that you're doing things in contrast to
               your design, and the fact that you rarely feel that is a sign that you're
-              doing things right.`
+              doing things right.`)
             }
           ]
         },
         {
           step: 'flowFrequency',
-          isVisible: () => {
-            return true
-          },
+          isVisible: () => true,
           results: [
             {
               check: (ans) => ans > 7,
-              update: (ans) => ans,
-              msg: `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+              update: (acc, ans) => acc.update(ans, `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
               your design, and the fact that you're feeling this quite often means something is going
-              well with your job.`
+              well with your job.`)
             },
             {
-              check: (ans) => ans < 3,
-              update: (ans) => ans === 0 ? 6 : ans === 1 ? 4 : 2,
-              msg: `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
-              your design, and the fact that this doesn't happen very often means some adjustments must
-              be made either within your job or to get a new one.`
-            }
-          ]
-        },
-        {
-          step: 'selfEmployed',
-          isVisible: () => {
-            return true
-          },
-          results: [
+              check: (ans) => ans <= 7 && ans > 4,
+              update: (acc, ans) => acc.update(ans, `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+              your design, and the fact that you're feeling this feeling it at least sometimes is a
+              positive sign, with room for improvement.`)
+            },
             {
-              check: (ans) => ans === true && this.hatesBeingManaged,
-              update: () => 5,
-              msg: `There are a few people in the world who are designed to not have a boss,\
-              and you are one of them. You hate being told what to do, and so having a boss\
-              is the worst. So, well done on working for yourself!`
+              check: (ans) => ans < 4,
+              update: (acc, ans) => acc.update(-ans,
+                `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+              your design, and the fact that this doesn't happen very often means some adjustments must
+              be made either within your job or to get a new one.`)
             }
           ]
         },
         {
           step: 'workFromHome',
-          isVisible: () => {
-            return ['Collaborative', 'Assimilation'].includes(this.assimilation)
-          },
+          isVisible: () => ['Collaborative', 'Assimilation'].includes(this.assimilation),
           results: [
             {
               check: (ans) => ans === true && this.assimilation === 'Collaborative',
-              update: () => -3,
-              msg: `You are designed to work and collaborate with others, and so working
+              update: (acc) => acc.update(-3, `You are designed to work and collaborate with others, and so working
               separately from other people can make you feel uncomfortable or incomplete.
               It would be ideal if you worked in partnership with someone else, but if that's
               not possible, you should work in a place with other people around, such as
-              a coffee shop or a co-working space.`
+              a coffee shop or a co-working space.`)
             },
             {
               check: (ans) => ans === true && this.assimilation === 'Assimilation',
-              update: () => -5,
-              msg: `You are designed to move around and work with a variety of people
+              update: (acc) => acc.update(-5, `You are designed to move around and work with a variety of people
               throughout the day, and so working from home by yourself can be a challenge for
               you. If you work in a large company, going into the office would be great for
-              you.`
+              you.`)
             }
           ]
         },
@@ -237,34 +222,28 @@ export default {
         // },
         {
           step: 'smallGroup',
-          isVisible: () => {
-            return this.answerFor('selfEmployed') === false
-          },
+          isVisible: () => this.answerFor('selfEmployed') === false,
           results: [
             {
               check: (ans) => ans === true && this.hasPentaRoleStrengths,
-              update: () => 5,
-              msg: `You have genetic blueprints that work well in a small \
+              update: (acc) => acc.update(5, `You have genetic blueprints that work well in a small \
               group, as you are in. If you don't have a specific role yet, you \
-              should work towards having one.`,
+              should work towards having one.`),
             },
             {
               check: (ans) => ans === true && this.hasPentaManagedStrengths && !this.hasPentaRoleStrengths,
-              update: () => 1,
-              msg: `You work in a small group and also have a genetic blueprints that work well in a small group,\
+              update: (acc) => acc.update(1, `You work in a small group and also have a genetic blueprints that work well in a small group,\
               and so you are an asset to the group. However being managed may\
-              eventually be challenging for you.`
+              eventually be challenging for you.`)
             },
             {
               check: (ans) => ans === true && !this.hasPentaManagedStrengths && !this.hasPentaRoleStrengths,
-              update: () => -5,
-              msg: `You work in a small group but well never feel comfortable in such a configuration.`
+              update: (acc) => acc.update(-5, `You work in a small group but well never feel comfortable in such a configuration.`)
             },
             {
               check: (ans) => ans === true && this.assimilation === 'Collaborative',
-              update: () => 5,
-              msg: `You are designed to work and collaborate with others, so working with others in
-              a group is a good thing. `,
+              update: (acc) => acc.update(5, `You are designed to work and collaborate with others, so working with others in
+              a group is a good thing. `)
             },
           ]
         },
@@ -285,46 +264,44 @@ export default {
         // },
         {
           step: 'haveBoss',
-          isVisible: () => {
-            return this.answerFor('selfEmployed') === false && this.hatesBeingManaged
-          },
+          isVisible: () => this.answerFor('selfEmployed') === false && this.hatesBeingManaged,
           results: [
             {
               check: (ans) => ans === true && this.hatesBeingManaged,
-              update: () => -5,
-              msg: `You have a boss, which for many people can be a nice sense of security.\
+              update: (acc) => acc.update(-5, `You have a boss, which for many people can be a nice sense of security.\
               Unfortunately, you have a genetic design which hates to be told what to do. You \
-              would be best to look for work where you can be your own boss.`
+              would be best to look for work where you can be your own boss.`)
+            }
+          ]
+        },
+        {
+          step: 'selfEmployed',
+          isVisible: () => true,
+          results: [
+            {
+              check: (ans) => ans === true && this.hatesBeingManaged,
+              update: (acc) => acc.update(5, `There are a few people in the world who are designed to not have a boss,\
+              and you are one of them. You hate being told what to do, and so having a boss\
+              is the worst. So, well done on working for yourself!`)
             }
           ]
         },
         {
           step: 'newJob',
-          isVisible: () => {
-            return this.publicRole.includes('Influencer') === true
-          },
+          isVisible: () => this.answerFor('selfEmployed') === false && this.publicRole.includes('Influencer') === true,
           results: [
             {
-              check: (ans) => ans === false && this.publicRole.includes('Influencer'),
-              update: () => 20,
-              msg: `Even if you despise your job, you should not leave a job until you have
-              a new job lined up. Your huge network is an asset to finding that new job
-              which fits you. Talk to all of these people and find a new opportunity which
-              is correct for you ... and then come back and take the quiz again.`
+              check: (ans) => ans === false,
+              update: (acc, ans) => { acc.hasJobLinedUp = ans; return acc; }
             }
           ]
         },
         {
           step: 'emailAddress',
-          isVisible: () => {
-            return true
-          },
+          isVisible: () => true,
           results: []
-        },
-      ],
-      answers: {},
-      emailAddress: undefined,
-      isEmailAgreed: false,
+        }
+      ]
     }
   },
   computed: {
@@ -340,9 +317,10 @@ export default {
     curAnswer() {
       return this.answers[this.questions[this.curQuestionIndex].step]
     },
-    numQuestions() {
-      return this.questions.reduce((a, v) => a + (v.isVisible() ? 1 : 0), 0)
-    },
+    //   questions() {
+    // return this.questions.reduce((a, v) => a + (v.isVisible() ? 1 : 0), 0)
+    //   }
+    // },
     traitsWithoutQualities() {
       return this.traits.map((orig) => orig.split('.')[0])
     },
@@ -351,9 +329,6 @@ export default {
     },
     keyIndicatorFlowFeeling() {
       return keyIndicatorFeelings[this.keyIndicators[1]]
-    },
-    strategyText() {
-      return this.decisionMakingStrategy.slice(this.decisionMakingStrategy.indexOf('then') + 5).toLowerCase()
     },
     hasPentaRoleStrengths() {
       return pentaRoleStrengths.reduce(
@@ -378,18 +353,33 @@ export default {
         this.traitsWithoutQualities.includes("21")
     },
     conclusion: function () {
-      return this.questions.reduce((acc, q) => {
+      const acc = {
+        score: 0,
+        hasJobLinedUp: undefined,
+        findJobThroughNetwork: this.publicRole.includes('Influencer'),
+        decisionMakingStrategy: this.decisionMakingStrategy,
+        messages: [],
+        deltas: [],
+        update: function (delta, msg) {
+          this.score += delta;
+          this.deltas.push(delta);
+          this.messages.push(msg);
+          return this
+        }
+      }
+      const result = this.questions.reduce((acc, q) => {
         const answer = this.answers[q.step];
-        q.results.forEach(e => {
-          if (e.check(answer)) {
-            acc.score += e.update(answer);
-            acc.messages.push(e.msg);
+        q.results.reduce((acc, r) => {
+          if (r.check(answer)) {
+            r.update(acc, answer);
           }
-        })
+          return acc;
+        }, acc)
         return acc;
-      }, { score: 0, messages: [] })
+      }, acc)
+      result.score = Math.max(0, acc.score)
+      return result;
     }
-
   },
   methods: {
     handleNext: function () { },

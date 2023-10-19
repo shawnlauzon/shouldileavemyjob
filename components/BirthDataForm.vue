@@ -5,15 +5,15 @@
       <v-time-picker v-model="time" format="ampm" label="Birth time" required />
     </v-row>
     <v-row justify="center">
-      <v-select v-model="country" :hint="`${country?.name}, ${country?.abbr}`" :items="countries" item-text="name"
-        item-value="abbr" label="Birth country" persistent-hint return-object single-line></v-select>
+      <v-select v-model="country" :items="countries" item-text="name" item-value="abbr" label="Birth country"
+        persistent-hint return-object single-line></v-select>
       <span v-if="isUsa">
-        <v-select v-model="state" :hint="`${state?.name}, ${state?.abbr}`" :items="states" item-text="name"
-          item-value="abbr" label="Birth state" persistent-hint return-object single-line></v-select>
+        <v-select v-model="state" :items="states" item-text="name" item-value="abbr" label="Birth state" persistent-hint
+          return-object single-line></v-select>
       </span>
     </v-row>
     <v-row>
-      <v-text-field v-model="city"></v-text-field>
+      <v-text-field v-model="city" label="City"></v-text-field>
     </v-row>
     <v-btn block :loading="isLoading" color="primary" :disabled="isLoading || !isComplete"
       @click="handleNext">Next</v-btn>
@@ -541,6 +541,7 @@ export default {
       }
       console.log('clicked for ', params)
 
+      // FIXME Handle city not found
       this.isLoading = true
       await axios
         .post('/api/career-design', { data: params })
