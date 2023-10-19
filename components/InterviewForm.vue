@@ -44,6 +44,11 @@
             Do you frequently work <em>in-person</em> with 3-6 people?
           </YesNoQuestion>
         </v-stepper-content>
+        <v-stepper-content step="partner">
+          <YesNoQuestion v-model="answers.partner">
+            Do you frequently work <em>in-person</em> with someone else?
+          </YesNoQuestion>
+        </v-stepper-content>
         <!-- <v-stepper-content step="enterJobCorrectly">
           <YesNoQuestion v-model="answers.enterJobCorrectly">
             Did you {{ strategyText }} before accepting your current job?
@@ -136,15 +141,22 @@ export default {
           isVisible: () => true,
           results: [
             {
-              check: (ans) => ans > 3,
-              update: (acc, ans) => acc.update(-(ans - 3),
+              check: (ans) => ans > 7,
+              update: (acc, ans) => acc.update(-ans,
                 `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
               your design, and the fact that you feel that so often is a sign that
               something should change.`)
             },
             {
-              check: (ans) => ans <= 3,
-              update: (acc, ans) => acc.update(ans,
+              check: (ans) => ans <= 7 && ans > 4,
+              update: (acc, ans) => acc.update(-ans,
+                `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
+              your design, and the fact that you feel that so often is a sign that
+              something should change.`)
+            },
+            {
+              check: (ans) => ans <= 4,
+              update: (acc, ans) => acc.update(10 - ans * 2,
                 `${this.keyIndicators[0]} is your sign that you're doing things in contrast to
               your design, and the fact that you rarely feel that is a sign that you're
               doing things right.`)
@@ -157,7 +169,7 @@ export default {
           results: [
             {
               check: (ans) => ans > 7,
-              update: (acc, ans) => acc.update(ans, `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+              update: (acc, ans) => acc.update(ans * 2, `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
               your design, and the fact that you're feeling this quite often means something is going
               well with your job.`)
             },
@@ -169,10 +181,22 @@ export default {
             },
             {
               check: (ans) => ans < 4,
-              update: (acc, ans) => acc.update(-ans,
+              update: (acc, ans) => acc.update(-(10 - ans * 2),
                 `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
               your design, and the fact that this doesn't happen very often means some adjustments must
               be made either within your job or to get a new one.`)
+            }
+          ]
+        },
+        {
+          step: 'selfEmployed',
+          isVisible: () => true,
+          results: [
+            {
+              check: (ans) => ans === true && this.hatesBeingManaged,
+              update: (acc) => acc.update(5, `There are a few people in the world who are designed to not have a boss,\
+              and you are one of them. You hate being told what to do, and so having a boss\
+              is the worst. So, well done on working for yourself!`)
             }
           ]
         },
@@ -226,24 +250,41 @@ export default {
           results: [
             {
               check: (ans) => ans === true && this.hasPentaRoleStrengths,
-              update: (acc) => acc.update(5, `You have genetic blueprints that work well in a small \
-              group, as you are in. If you don't have a specific role yet, you \
+              update: (acc) => acc.update(10, `You have genetic blueprints that work well in a small
+              group, as you are in. If you don't have a specific role yet, you
               should work towards having one.`),
             },
             {
               check: (ans) => ans === true && this.hasPentaManagedStrengths && !this.hasPentaRoleStrengths,
-              update: (acc) => acc.update(1, `You work in a small group and also have a genetic blueprints that work well in a small group,\
-              and so you are an asset to the group. However being managed may\
+              update: (acc) => acc.update(5, `You work in a small group and also have a genetic blueprints that work well in a small group,
+              and so you are an asset to the group. However being managed may
               eventually be challenging for you.`)
             },
             {
               check: (ans) => ans === true && !this.hasPentaManagedStrengths && !this.hasPentaRoleStrengths,
-              update: (acc) => acc.update(-5, `You work in a small group but well never feel comfortable in such a configuration.`)
+              update: (acc) => acc.update(-7, `You work in a small group but well never feel comfortable in such a configuration.`)
             },
             {
               check: (ans) => ans === true && this.assimilation === 'Collaborative',
-              update: (acc) => acc.update(5, `You are designed to work and collaborate with others, so working with others in
+              update: (acc) => acc.update(4, `You are designed to work and collaborate with others, so working with others in
               a group is a good thing. `)
+            },
+          ]
+        },
+        {
+          step: 'partner',
+          isVisible: () => this.answerFor('selfEmployed') === false && ['Collaborative', 'Assimilation'].includes(this.assimilation),
+          results: [
+            {
+              check: (ans) => ans === true && this.assimilation === 'Collaborative',
+              update: (acc) => acc.update(10, `You are designed to work and collaborate with others, so working
+              with someone else is fantastic for you.`)
+            },
+            {
+              check: (ans) => ans === true && this.assimilation === 'Assimilation',
+              update: (acc) => acc.update(4, `You are designed to work and collaborate with others, so working
+              with someone else is fantastic for you. However you work best when you work with a variety of people,
+              so make sure to allow that movement in your daily work.`)
             },
           ]
         },
@@ -271,18 +312,6 @@ export default {
               update: (acc) => acc.update(-5, `You have a boss, which for many people can be a nice sense of security.\
               Unfortunately, you have a genetic design which hates to be told what to do. You \
               would be best to look for work where you can be your own boss.`)
-            }
-          ]
-        },
-        {
-          step: 'selfEmployed',
-          isVisible: () => true,
-          results: [
-            {
-              check: (ans) => ans === true && this.hatesBeingManaged,
-              update: (acc) => acc.update(5, `There are a few people in the world who are designed to not have a boss,\
-              and you are one of them. You hate being told what to do, and so having a boss\
-              is the worst. So, well done on working for yourself!`)
             }
           ]
         },

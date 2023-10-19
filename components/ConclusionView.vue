@@ -38,7 +38,7 @@
             <div v-else>
                 <div class="text-h3">It's time to go.</div>
                 <div class="text-body-1 my-6">You're feeling lots of resistence in your
-                    current job. So what are you waiting for?
+                    current job. So what's holding you back?
                 </div>
             </div>
         </div>
