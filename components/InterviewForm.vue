@@ -46,7 +46,7 @@
         </v-stepper-content>
         <v-stepper-content step="enterJobCorrectly">
           <YesNoQuestion v-model="answers.enterJobCorrectly">
-            Did you {{ strategyText }} before starting your current job?
+            Did you {{ strategyText }} before accepting your current job?
           </YesNoQuestion>
         </v-stepper-content>
         <v-stepper-content step="haveBoss">
@@ -75,6 +75,35 @@
 </template>
 
 <script>
+const keyIndicatorFeelings = {
+  Frustration: 'frustrated',
+  Satisfaction: 'satisfied',
+  Bitterness: 'bitter',
+  Success: 'successful',
+  Anger: 'angry',
+  Peace: 'peaceful',
+  Disappointment: 'disappointed',
+  Surprise: 'surprised'
+};
+const pentaRoleStrengths = [
+  ['31', '7'],
+  ['8', '1'],
+  ['33', '13'],
+];
+const pentaManagedStrengths = [
+  ['15', '5'],
+  ['2', '14'],
+  ['46', '29'],
+]
+const oc16Strengths = [
+  ['50', '27'],
+  ['59', '6'],
+  ['60', '3'],
+  ['14', '2'],
+  ['25', '51'],
+  ['21', '45'],
+];
+
 export default {
   props: {
     careerType: { type: String, default: 'Classic Builder' },
@@ -91,34 +120,7 @@ export default {
     assimilation: { type: String, default: 'Independent' },
     traits: {
       type: Array,
-      default: () => [
-        '54.5',
-        '53.5',
-        '7.2',
-        '10.1',
-        '15.1',
-        '54.6',
-        '19.3',
-        '27.5',
-        '13.4',
-        '15.2',
-        '50.2',
-        '9.4',
-        '18.4',
-        '51.3',
-        '57.3',
-        '50.5',
-        '26.5',
-        '45.5',
-        '36.2',
-        '55.2',
-        '45.6',
-        '37.2',
-        '15.1',
-        '32.6',
-        '9.4',
-        '18.2',
-      ],
+      default: () => [],
     },
     value: { type: Object, default: null }
   },
@@ -181,14 +183,14 @@ export default {
               update: () => 5,
               msg: `There are a few people in the world who are designed to not have a boss,\
               and you are one of them. You hate being told what to do, and so having a boss\
-              is the worst. You probably enjoy this freedom.`
+              is the worst. So, well done on working for yourself!`
             }
           ]
         },
         {
           step: 'workFromHome',
           isVisible: () => {
-            return true
+            return ['Collaborative', 'Assimilation'].includes(this.assimilation)
           },
           results: [
             {
@@ -210,29 +212,29 @@ export default {
             }
           ]
         },
-        {
-          step: 'enterJobCorrectly',
-          isVisible: () => {
-            return this.answerFor('selfEmployed') === false
-          },
-          results: [
-            {
-              check: (ans) => ans > 7,
-              update: (ans) => ans,
-              msg: `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
-              your design, and the fact that you're feeling this quite often means something is going
-              well with your job.`
-            },
-            {
-              check: (ans) => ans === false,
-              update: () => -2,
-              msg: `It is always best to make decisions according to your Decision-Making Strategy,
-              which for you is ${this.decisionMakingStrategy}. That you didn't do this doesn't mean
-              you should leave your job right away, but if other things aren't going well, it provides
-              support for making a job shift.`
-            }
-          ]
-        },
+        // {
+        //   step: 'enterJobCorrectly',
+        //   isVisible: () => {
+        //     return this.answerFor('selfEmployed') === false
+        //   },
+        //   results: [
+        //     {
+        //       check: (ans) => ans > 7,
+        //       update: (ans) => ans,
+        //       msg: `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+        //       your design, and the fact that you're feeling this quite often means something is going
+        //       well with your job.`
+        //     },
+        //     {
+        //       check: (ans) => ans === false,
+        //       update: () => -2,
+        //       msg: `It is always best to make decisions according to your Decision-Making Strategy,
+        //       which for you is ${this.decisionMakingStrategy}. That you didn't do this doesn't mean
+        //       you should leave your job right away, but if other things aren't going well, it provides
+        //       support for making a job shift.`
+        //     }
+        //   ]
+        // },
         {
           step: 'smallGroup',
           isVisible: () => {
@@ -284,7 +286,7 @@ export default {
         {
           step: 'haveBoss',
           isVisible: () => {
-            return this.answerFor('selfEmployed') === false
+            return this.answerFor('selfEmployed') === false && this.hatesBeingManaged
           },
           results: [
             {
@@ -303,7 +305,7 @@ export default {
           },
           results: [
             {
-              check: (ans) => ans === true && this.publicRole.includes('Influencer'),
+              check: (ans) => ans === false && this.publicRole.includes('Influencer'),
               update: () => 20,
               msg: `Even if you despise your job, you should not leave a job until you have
               a new job lined up. Your huge network is an asset to finding that new job
@@ -323,31 +325,6 @@ export default {
       answers: {},
       emailAddress: undefined,
       isEmailAgreed: false,
-      keyIndicatorFeelings: {
-        Frustration: 'frustrated',
-        Satisfaction: 'satisfied',
-      },
-      strategyTexts: {
-        'Respond then Follow Your Gut': 'follow your gut',
-      },
-      pentaRoleStrengths: [
-        ['31', '7'],
-        ['8', '1'],
-        ['33', '13'],
-      ],
-      pentaManagedStrengths: [
-        ['15', '5'],
-        ['2', '14'],
-        ['46', '29'],
-      ],
-      oc16Strengths: [
-        ['50', '27'],
-        ['59', '6'],
-        ['60', '3'],
-        ['14', '2'],
-        ['25', '51'],
-        ['21', '45'],
-      ],
     }
   },
   computed: {
@@ -355,7 +332,7 @@ export default {
       return this.curQuestionIndex > 0
     },
     hasNext() {
-      return this.curQuestionIndex < this.numQuestions - 1
+      return this.curQuestionIndex < this.questions.length
     },
     curQuestion() {
       return this.questions[this.curQuestionIndex]
@@ -367,34 +344,32 @@ export default {
       return this.questions.reduce((a, v) => a + (v.isVisible() ? 1 : 0), 0)
     },
     traitsWithoutQualities() {
-      return this.traits.map((orig) =>
-        orig.indexOf(1) === '.' ? orig.substring(0, 1) : orig.substring(0, 2)
-      )
+      return this.traits.map((orig) => orig.split('.')[0])
     },
     keyIndicatorResistenceFeeling() {
-      return this.keyIndicatorFeelings[this.keyIndicators[0]]
+      return keyIndicatorFeelings[this.keyIndicators[0]]
     },
     keyIndicatorFlowFeeling() {
-      return this.keyIndicatorFeelings[this.keyIndicators[1]]
+      return keyIndicatorFeelings[this.keyIndicators[1]]
     },
     strategyText() {
-      return this.strategyTexts[this.decisionMakingStrategy].toLowerCase()
+      return this.decisionMakingStrategy.slice(this.decisionMakingStrategy.indexOf('then') + 5).toLowerCase()
     },
     hasPentaRoleStrengths() {
-      return this.pentaRoleStrengths.reduce(
-        (a, v) => !!((this.hasTrait(v[0]) && this.hasTrait(v[1])) || a),
+      return pentaRoleStrengths.reduce(
+        (a, v) => !!((this.traitsWithoutQualities.includes(v[0]) && this.traitsWithoutQualities.includes(v[1])) || a),
         false
       )
     },
     hasPentaManagedStrengths() {
-      return this.pentaManagedStrengths.reduce(
-        (a, v) => !!((this.hasTrait(v[0]) && this.hasTrait(v[1])) || a),
+      return pentaManagedStrengths.reduce(
+        (a, v) => !!((this.traitsWithoutQualities.includes(v[0]) && this.traitsWithoutQualities.includes(v[1])) || a),
         false
       )
     },
     hasOc16Strengths() {
-      return this.oc16Strengths.reduce(
-        (a, v) => !!((this.hasTrait(v[0]) && this.hasTrait(v[1])) || a),
+      return oc16Strengths.reduce(
+        (a, v) => !!((this.traitsWithoutQualities.includes(v[0]) && this.traitsWithoutQualities.includes(v[1])) || a),
         false
       )
     },
@@ -437,9 +412,6 @@ export default {
     },
     answerFor: function (q) {
       return this.answers[q]
-    },
-    hasTrait: function (n) {
-      return this.traitsWithoutQualities.includes(n)
     },
     setEmailAgreed: function (v) {
       this.isEmailAgreed = v
