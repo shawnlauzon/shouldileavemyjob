@@ -5,10 +5,10 @@
       <v-time-picker v-model="time" format="ampm" label="Birth time" required />
     </v-row>
     <v-row justify="center">
-      <v-select v-model="country" :hint="`${country.name}, ${country.abbr}`" :items="countries" item-text="name"
+      <v-select v-model="country" :hint="`${country?.name}, ${country?.abbr}`" :items="countries" item-text="name"
         item-value="abbr" label="Birth country" persistent-hint return-object single-line></v-select>
       <span v-if="isUsa">
-        <v-select v-model="state" :hint="`${state.name}, ${state.abbr}`" :items="states" item-text="name"
+        <v-select v-model="state" :hint="`${state?.name}, ${state?.abbr}`" :items="states" item-text="name"
           item-value="abbr" label="Birth state" persistent-hint return-object single-line></v-select>
       </span>
     </v-row>
@@ -514,11 +514,11 @@ export default {
   props: { value: { type: Object, default: null } },
   data: function () {
     return {
-      date: '1974-04-07',
-      time: '16:00',
+      date: undefined,
+      time: undefined,
       country: ref({ name: 'United States', abbr: 'US' }),
       city: undefined,
-      state: ref({ name: 'Wisconsin', abbr: 'WI' }),
+      state: undefined,
       isLoading: false,
     }
   },
@@ -535,9 +535,9 @@ export default {
       const params = {
         date: this.date,
         time: this.time,
-        country: this.country.name,
+        country: this.country?.name,
         city: this.city,
-        state: this.state.name,
+        state: this.state?.name,
       }
       console.log('clicked for ', params)
 
