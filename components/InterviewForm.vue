@@ -78,14 +78,14 @@
 export default {
   props: {
     careerType: { type: String, default: 'Classic Builder' },
-    interactionStyle: { type: String, default: 'Respond Before Engaging' },
+    interactionStyle: { type: String, default: 'Respond before Engaging' },
     keyIndicators: {
       type: Array,
       default: () => ['Frustration', 'Satisfaction'],
     },
     decisionMakingStrategy: {
       type: String,
-      default: 'Respond Then Follow Your Gut',
+      default: 'Respond then Follow Your Gut',
     },
     publicRole: { type: Array, default: () => ['Pioneer', 'Messenger'] },
     assimilation: { type: String, default: 'Independent' },
@@ -328,7 +328,7 @@ export default {
         Satisfaction: 'satisfied',
       },
       strategyTexts: {
-        'Respond Then Follow Your Gut': 'follow your gut',
+        'Respond then Follow Your Gut': 'follow your gut',
       },
       pentaRoleStrengths: [
         ['31', '7'],

@@ -81,7 +81,7 @@ export default async (event, context) => {
           // Match each trait.quality
           const regex = /(\d+\.\d+)/gm
 
-          finalResult.allTraits = parsedText.match(regex)
+          finalResult.traits = parsedText.match(regex)
         })
         .catch((error) => {
           console.log(error)
@@ -95,5 +95,5 @@ export default async (event, context) => {
 
   // Netlify Functions need to return an object with a statusCode
   // Other properties such as headers or body can also be included.
-  return Response.json(finalResult)
+  return Response.json(finalResult, { status: 200 })
 }

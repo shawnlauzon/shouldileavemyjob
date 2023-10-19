@@ -5,37 +5,18 @@
       <v-time-picker v-model="time" format="ampm" label="Birth time" required />
     </v-row>
     <v-row justify="center">
-      <v-select
-        v-model="country"
-        :hint="`${country.name}, ${country.abbr}`"
-        :items="countries"
-        item-text="name"
-        item-value="abbr"
-        label="Birth country"
-        persistent-hint
-        return-object
-        single-line
-      ></v-select>
+      <v-select v-model="country" :hint="`${country.name}, ${country.abbr}`" :items="countries" item-text="name"
+        item-value="abbr" label="Birth country" persistent-hint return-object single-line></v-select>
       <span v-if="isUsa">
-        <v-select
-          v-model="state"
-          :hint="`${state.name}, ${state.abbr}`"
-          :items="states"
-          item-text="name"
-          item-value="abbr"
-          label="Birth state"
-          persistent-hint
-          return-object
-          single-line
-        ></v-select>
+        <v-select v-model="state" :hint="`${state.name}, ${state.abbr}`" :items="states" item-text="name"
+          item-value="abbr" label="Birth state" persistent-hint return-object single-line></v-select>
       </span>
     </v-row>
     <v-row>
       <v-text-field v-model="city"></v-text-field>
     </v-row>
-    <v-btn block :loading="isLoading" :disabled="isLoading" @click="handleNext"
-      >Next</v-btn
-    >
+    <v-btn block :loading="isLoading" color="primary" :disabled="isLoading || !isComplete"
+      @click="handleNext">Next</v-btn>
   </v-container>
 </template>
 
@@ -530,12 +511,13 @@ const states = [
 ]
 
 export default {
+  props: { value: { type: Object, default: null } },
   data: function () {
     return {
       date: '1974-04-07',
       time: '16:00',
       country: ref({ name: 'United States', abbr: 'US' }),
-      city: 'La Crosse',
+      city: undefined,
       state: ref({ name: 'Wisconsin', abbr: 'WI' }),
       isLoading: false,
     }
@@ -544,6 +526,9 @@ export default {
     isUsa() {
       return this.country.abbr === 'US'
     },
+    isComplete() {
+      return this.date && this.time && this.country && this.city
+    }
   },
   methods: {
     handleNext: async function () {
@@ -559,8 +544,20 @@ export default {
       this.isLoading = true
       await axios
         .post('/api/career-design', { data: params })
-        .then((response) => console.log(response.data))
-      this.isLoading = false
+        .then((resp) => {
+          this.isLoading = false
+          const chart = {
+            careerType: resp.data.type,
+            interactionStyle: resp.data.strategy,
+            keyIndicators: resp.data.theme.split(" or "),
+            decisionMakingStrategy: resp.data.innerAuthority,
+            publicRole: resp.data.profile.split(" / "),
+            assimilation: resp.data.definition,
+            traits: resp.data.traits
+          }
+          console.log('Got chart', chart)
+          this.$emit('input', chart)
+        })
     },
   },
 }
