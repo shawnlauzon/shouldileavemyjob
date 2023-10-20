@@ -1,70 +1,71 @@
 <!-- eslint-disable no-multi-str -->
 <template>
   <v-container class="d-flex justify-center flex-column">
-    <v-stepper v-model="questions[curQuestionIndex].step" class="elevation-0">
-      <v-stepper-header class="elevation-0">
+    <v-stepper v-model="questions[curQuestionIndex].step" class="elevation-0 flex-grow-1">
+      <v-stepper-header class="elevation-0 flex-nowrap">
         <template v-for="q in questions">
-          <v-stepper-step v-if="q.isVisible()" :key="q.step" :complete="answers[q.step] !== undefined" step="">
+          <v-stepper-step v-if="q.isVisible()" class="pa-0" :key="q.step" :complete="answers[q.step] !== undefined"
+            step="">
           </v-stepper-step>
         </template>
       </v-stepper-header>
-      <v-stepper-items>
-        <v-stepper-content step="resistenceFrequency">
+      <v-stepper-items class="py-10">
+        <v-stepper-content step="resistenceFrequency" class="pa-2">
           <ScaleQuestion v-model="answers.resistenceFrequency">
             How often do you feel {{ keyIndicatorResistenceFeeling }}?
           </ScaleQuestion>
         </v-stepper-content>
-        <v-stepper-content step="flowFrequency">
+        <v-stepper-content step="flowFrequency" class="pa-2">
           <ScaleQuestion v-model="answers.flowFrequency">
             How often do you feel {{ keyIndicatorFlowFeeling }}?
           </ScaleQuestion>
         </v-stepper-content>
-        <v-stepper-content step="selfEmployed">
+        <v-stepper-content step="selfEmployed" class="pa-2">
           <YesNoQuestion v-model="answers.selfEmployed">
             Are you self-employed?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="newJob">
+        <v-stepper-content step="newJob" class="pa-2">
           <YesNoQuestion v-model="answers.newJob">
             Do you have a new job ligned up?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="largeGroup">
+        <v-stepper-content step="largeGroup" class="pa-2">
           <YesNoQuestion v-model="answers.largeGroup">
             Do you work at a company greater than 10 people?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="workFromHome">
+        <v-stepper-content step="workFromHome" class="pa-2">
           <YesNoQuestion v-model="answers.workFromHome">
             Do you typically work from home?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="smallGroup">
+        <v-stepper-content step="smallGroup" class="pa-2">
           <YesNoQuestion v-model="answers.smallGroup">
             Do you frequently work <em>in-person</em> with 3-6 people?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="partner">
+        <v-stepper-content step="partner" class="pa-2">
           <YesNoQuestion v-model="answers.partner">
             Do you frequently work <em>in-person</em> with someone else?
           </YesNoQuestion>
         </v-stepper-content>
-        <!-- <v-stepper-content step="enterJobCorrectly">
+        <!-- <v-stepper-content step="enterJobCorrectly" class="pa-2">
           <YesNoQuestion v-model="answers.enterJobCorrectly">
             Did you {{ strategyText }} before accepting your current job?
           </YesNoQuestion>
         </v-stepper-content> -->
-        <v-stepper-content step="haveBoss">
+        <v-stepper-content step="haveBoss" class="pa-2">
           <YesNoQuestion v-model="answers.haveBoss">
             Do you have a hands-on boss?
           </YesNoQuestion>
         </v-stepper-content>
-        <v-stepper-content step="emailAddress">
+        <v-stepper-content step="emailAddress" class="pa-2">
           <EmailRequest v-model="emailAddress" @agreed="setEmailAgreed" />
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-    <v-row class="d-flex justify-center">
+    <v-row class="d-flex justify-center flex-grow-1">
       <v-btn class="mx-2" :disabled="!hasPrev" @click="prevStep()">
         Back
       </v-btn>

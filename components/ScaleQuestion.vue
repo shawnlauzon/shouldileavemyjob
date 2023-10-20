@@ -1,9 +1,9 @@
 <template>
-  <v-card height="6em" class="text-h2 py-6 elevation-0">
-    <div class="pa-12">
+  <v-card class="text-h4 text-md-h2 elevation-0">
+    <div>
       <slot />
     </div>
-    <v-slider :value="value" min="0" max="10" :tick-labels="labels" @change="$emit('input', $event)" />
+    <v-slider class="py-8" :value="value" min="0" max="10" :tick-labels="labels" @change="$emit('input', $event)" />
   </v-card>
 </template>
 

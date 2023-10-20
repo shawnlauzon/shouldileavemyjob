@@ -66,10 +66,16 @@ export default async (request, context) => {
     redirect: 'follow',
   }
 
-  const bg5Response = await fetch(
-    'https://bg5businessinstitute.com/get-your-chart',
-    bg5Request
-  )
+  let bg5Response
+
+  try {
+    bg5Response = await fetch(
+      'https://bg5businessinstitute.com/get-your-chart',
+      bg5Request
+    )
+  } catch (e) {
+    console.error('Failure fetching career design', e)
+  }
 
   const bg5Data = await bg5Response.json()
   console.log('BG5 data', bg5Data)
@@ -95,10 +101,13 @@ export default async (request, context) => {
     redirect: 'follow',
   }
 
-  const ocrResponse = await fetch(
-    'https://api.ocr.space/parse/image',
-    ocrRequest
-  )
+  let ocrResponse
+
+  try {
+    ocrResponse = await fetch('https://api.ocr.space/parse/image', ocrRequest)
+  } catch (e) {
+    console.error('Failure performing OCR', e)
+  }
 
   const ocrData = await ocrResponse.json()
   console.log('ocrData', ocrData)

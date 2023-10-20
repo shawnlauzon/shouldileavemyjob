@@ -1,9 +1,9 @@
 <template>
-  <v-card height="8em" class="text-h2 py-6 elevation-0 d-inline-flex flex-column">
-    <div class="pa-12">
+  <v-card class="text-h4 text-md-h2 elevation-0 d-inline-flex flex-column">
+    <div>
       <slot />
     </div>
-    <div class="d-inline-flex justify-center">
+    <div class="d-inline-flex justify-center py-8">
       <v-radio-group :value="value" row @change="$emit('input', $event)">
         <v-radio label="Yes" :value="true" />
         <v-radio label="No" :value="false" />
