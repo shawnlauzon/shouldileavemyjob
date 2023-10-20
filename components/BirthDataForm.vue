@@ -539,22 +539,31 @@ export default {
         state: this.state?.name,
       }
       console.log('clicked for ', params)
+      console.log('sending', JSON.stringify(params))
 
       // FIXME Handle city not found
       this.isLoading = true
+
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json",);
+      headers.append("Accept", "application/json; q=0.01");
+
       const resp = await fetch('/api/career-design', {
         method: 'POST',
-        data: params
+        headers,
+        body: JSON.stringify(params)
       })
       this.isLoading = false
+      const respData = await resp.json();
+      console.log('Response', respData)
       const chart = {
-        careerType: resp.data.type,
-        interactionStyle: resp.data.strategy,
-        keyIndicators: resp.data.theme.split(" or "),
-        decisionMakingStrategy: resp.data.innerAuthority,
-        publicRole: resp.data.profile.split(" / "),
-        assimilation: resp.data.definition,
-        traits: resp.data.traits
+        careerType: respData.type,
+        interactionStyle: respData.strategy,
+        keyIndicators: respData.theme.split(" or "),
+        decisionMakingStrategy: respData.innerAuthority,
+        publicRole: respData.profile.split(" / "),
+        assimilation: respData.definition,
+        traits: respData.traits
       }
       console.log('Got chart', chart)
       this.$emit('input', chart)

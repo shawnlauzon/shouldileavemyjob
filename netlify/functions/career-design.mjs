@@ -1,88 +1,113 @@
-export default async (event, context) => {
-  const FormData = require('form-data')
-  const qs = require('qs')
+export default async (request, context) => {
+  const requestParams = await request.json()
+  console.log('requestParams', requestParams)
 
-  // console.log(event)
-  const body = await event.json()
-  const data = body.data
-  console.log('data', data)
-
-  const dateTimeStr = data.date + 'T' + data.time
+  const dateTimeStr = requestParams.date + 'T' + requestParams.time
   const birthDate = new Date(dateTimeStr)
 
-  const bg5Body = qs.stringify({
-    Year: birthDate.getFullYear(),
-    Month: birthDate.getMonth() + 1,
-    Day: birthDate.getDate(),
-    Hour: birthDate.getHours(),
-    Minute: birthDate.getMinutes(),
-    Country:
-      data.country +
-      (data.country === 'United States' ? ' - ' + data.state : ''),
-    City: data.city,
-  })
+  const bg5Body = new URLSearchParams()
+  bg5Body.append('City', requestParams.city)
+  bg5Body.append(
+    'Country',
+    requestParams.country +
+      (requestParams.country === 'United States'
+        ? ' - ' + requestParams.state
+        : '')
+  )
+
+  bg5Body.append('Month', birthDate.getMonth() + 1)
+  bg5Body.append('Day', birthDate.getDate())
+  bg5Body.append('Year', birthDate.getFullYear())
+  bg5Body.append('Hour', birthDate.getHours())
+  bg5Body.append('Minute', birthDate.getMinutes())
+  bg5Body.append(
+    '__RequestVerificationToken',
+    'CfDJ8EEVtCbDjqBGkUQlp1CtPRp3JMeGfwhjoEjD_8FRQP0cSizEAqgYt6FqOnLVzGpkD9N4g3d_RNO56xlUitLSvuVP3RHdovyj1Qno7NpAbTRv1JXwFYc6rKcLJy378sqtoeHbwpoZUR-kbB4zAnSsSHaapAHixBjJFyCLvKk-PYIsDGZj9ePMrdcFJf4E-c-yOQ'
+  )
+
   console.log('Passing to BG5:', bg5Body)
 
   const finalResult = {}
 
-  await fetch('https://bg5businessinstitute.com/get-your-chart', {
+  const bg5Headers = new Headers()
+  bg5Headers.append(
+    'sec-ch-ua',
+    '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"'
+  )
+  bg5Headers.append(
+    'RequestVerificationToken',
+    'CfDJ8EEVtCbDjqBGkUQlp1CtPRp3JMeGfwhjoEjD_8FRQP0cSizEAqgYt6FqOnLVzGpkD9N4g3d_RNO56xlUitLSvuVP3RHdovyj1Qno7NpAbTRv1JXwFYc6rKcLJy378sqtoeHbwpoZUR-kbB4zAnSsSHaapAHixBjJFyCLvKk-PYIsDGZj9ePMrdcFJf4E-c-yOQ'
+  )
+  bg5Headers.append('sec-ch-ua-mobile', '?0')
+  bg5Headers.append(
+    'User-Agent',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
+  )
+  bg5Headers.append(
+    'Content-Type',
+    'application/x-www-form-urlencoded; charset=UTF-8'
+  )
+  bg5Headers.append('Accept', 'application/json; q=0.01')
+  bg5Headers.append('X-Requested-With', 'XMLHttpRequest')
+  bg5Headers.append('sec-ch-ua-platform', '"macOS"')
+  bg5Headers.append('Sec-Fetch-Site', 'same-origin')
+  bg5Headers.append('Sec-Fetch-Mode', 'cors')
+  bg5Headers.append('Sec-Fetch-Dest', 'empty')
+  bg5Headers.append('host', 'bg5businessinstitute.com')
+  bg5Headers.append(
+    'Cookie',
+    '.AspNet.Consent=yes; .AspNetCore.Antiforgery.7BxiT8-Rm8g=CfDJ8PpmqfI5f59Gg-BT-dJ02hB1zdgn61idtBeEFFIYFd0Qu-HwriQKtVLwIC5jm8ysBy-sd2jyo87715ax0h6DXrdHzPB5Pmg4tOoMfh50P_WPopOgPOcCfQ7F0Z9Ki4keMLMZCOd5kHyqSkW8m7NtyaI; .AspNetCore.Antiforgery.Q_cgsSubgpI=CfDJ8EEVtCbDjqBGkUQlp1CtPRpxN9vaN4r10y8uOH6eg2UbcjZ-wB7ZNDg9-SNdgDN3Az_cXsa1c2K5iwHVpYAkW8zqxL4_3aJsCu1-36tUZok8BeCpQGRBGtDYnixKbQOZar-G7J2iDmyRo4QSZIeMdoo; .AspNetCore.Identity.Application=CfDJ8EEVtCbDjqBGkUQlp1CtPRpp2mbTKiNV3OHEv18to6Qc0ITXCPTL8vLUe2Iih28pNM9vb27bm_zb1SVxt0uDdhv4hkRP1yg-cGD7SXjm3Y81L7QbNdBYlUGzqvh_x3k1ta_RBAoIhcpb5mSJDmwn90r84O3E57XtYqzznFx5tc-0kxDppvxKDYuLx3kMuU1_Ap_davZq1Y5lAkPu93fFejhLbTn6xqlcaPDyYS2svNZz-2CTFs867xaEBGi5GxeeL2J87BYVzXXev2R6mK0kOn6KWcrVgmGeGLnZ3Qd4bRouZMg_IvqGg8ePQpOmItbyNtuOi-j0v9ZL2J-B2LIc6hzFs3X0DqMR0CPKPfDMd0hQfHYMOJ2fqxHl2bl8l4trEJ2T58wBhcPTc2hzQPb3KAezKpRHCSliYB00BKmA12FpdRpoxpL-mz1mjCsgfQGI6zJ3U5B8bql-KOvO-M_TNAlogex1TEG0QnGpDuRuhTIoeOLaAkcX4Ds3xV_-GK2aaodJIfKp3P_oLUdm4YDxV49lcNFs4dZWl8CrUQiWYHNrXsiEFg9v1HKWkOhbgapM-Undn8eKLFF48pGHhw_6lsjz2q_6FSakbMuchryiIsMZ_xdtsafPPnbgvC0mBJ_G579lrUcVu1S-Apqo2mEjr4hkhWlSHTfwgMaQGGBsDCbvvFE8Uu7kiHI2YjTtjqRZ4ryszXBmHmx-QiceLbs4otIGx1HPLN1KxRTaxIxm25IUFmpDFSkv3xNSlmZlqU9RWF5EB75YfL1UI2DGSuZGNBq4sAx6OhkHFOUMr71fteRxqV8_C57lI1DNVwxmonIOwsEXAqWd_ABPPGJ_w1p6fsIR3U7VQemQrm2yluSeP-KRxHMp5oMLi_ZWKKCebUnoVgBQU4jxo4cn79jA8vsZqHXn3PrSf9Ok0TyCQWL4VSqyYzElWTRNQWzqYXb_mRFXr-HwIJEYCMdOwmuGm8Z7TtY0V0oWNOz6jBwqQYaQWuCIkcRe8cyw_gAffDBocIvr0Q; _ga=GA1.1.1574294499.1686795887; _ga_BMRG0TVB5F=GS1.1.1697825822.172.0.1697825822.60.0.0; _gat_gtag_UA_159236502_1=1; _gid=GA1.2.702925575.1697584465'
+  )
+
+  const bg5Request = {
     method: 'POST',
-    headers: {
-      'sec-ch-ua':
-        '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
-      RequestVerificationToken:
-        'CfDJ8PpmqfI5f59Gg-BT-dJ02hA8IXPG4aRRPndgcAQG6SaHZCxXKyXU-uSHeQY6tVH54XATIMTXgfZD6FnFKITAr7RSUITXIz3BI1M2cY4z0Sprf2q4LGMJqZu_sAJFzbyby4OqTsHiknDNNTtppBl57DL93VlFvBhXvYLowDjlmBFJkI5GgbpQYn4GoXvmurE71A',
-      'sec-ch-ua-mobile': '?0',
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      Accept: 'application/json, text/javascript, */*; q=0.01',
-      'X-Requested-With': 'XMLHttpRequest',
-      'sec-ch-ua-platform': '"macOS"',
-      'Sec-Fetch-Site': 'same-origin',
-      'Sec-Fetch-Mode': 'cors',
-      'Sec-Fetch-Dest': 'empty',
-      host: 'bg5businessinstitute.com',
-      Cookie:
-        '.AspNet.Consent=yes; .AspNetCore.Antiforgery.7BxiT8-Rm8g=CfDJ8PpmqfI5f59Gg-BT-dJ02hB1zdgn61idtBeEFFIYFd0Qu-HwriQKtVLwIC5jm8ysBy-sd2jyo87715ax0h6DXrdHzPB5Pmg4tOoMfh50P_WPopOgPOcCfQ7F0Z9Ki4keMLMZCOd5kHyqSkW8m7NtyaI; .AspNetCore.Antiforgery.Q_cgsSubgpI=CfDJ8PpmqfI5f59Gg-BT-dJ02hDfFzCVnwt6zlOdFsouY695WuZbRROSrErOs5BPU6tAk-1j38wzlX4hHrqm1WRMspmnsOXp9et61q2a2BNLGr89MOZqkKIlHZEOUB4yOderoM5Nay4Xev7rwPKnIIInTz8; .AspNetCore.Identity.Application=CfDJ8PpmqfI5f59Gg-BT-dJ02hBAt08hGg0QxRzYmMq6tMcwWRkL66PbPrcOYuakxZDRdMvlzsjjuAIeFxQYdzwL2VmZv5mCCQM4D55AEl3qGb2xpqj529ayNsGYixuYF5HMXweHVmn-7BVWByMyGCQDn9y-_hY8K5TuJg7fh7YQtkVO9u0YQN-VqVoYvr6doOyoVhR8ICz-gEt7l2GHGpvEliHqLyzpxDHRn5X0RyALMwr_ISYij9zAYfgtjegkpa6cGbcHxSQqSvCzZR6JVK6fujyngrcGynjD6OfYur42qtnNmX3n3oNO5gkvjD92jvlUCwx0lrhqeykaqJPiUToUnZlcUnocyt3OtlBvF8Ydn5NHS7vgUeyFayX3NwM_sfNr5y8PWo_bvuRTHiKU8_BYipSm_LWTbWbaXTxOeU5h-t0CUuptxH_XmY_DYoQoZl5Rwjda6WCDrLVY0k_v1mskNuk59Jc-c0Pfa79LUe543ZTS3osWLWQ4QPNdE0HQ3L3GgbvsNh6b8rBD8YpD7RB0urk7olJgvplqijoxKTEWaUzQI1mZHJAOE5ZuScMwY4Ya7ECqE6R7Jnlbr6xIwZbiWtrAafiP60LKzPvNp9hxmgQ9LHFkLiDWb9p8iPpDdu4_LJHRCqhQlsVSa6xncq49urWpn-S02FJwMUkVPY82NKrxq1AE5KKU-tQ6PkUNZ7qYLNn83ITEznb5v6OEXSMCz1DGwUY2ogiEQ6gHK6xVsTy4-uf3HRrC-jDUeKEeC-mUoUfpeU0SSmHdqZC7j5atojerY9szEE3gyJKunUfIJstYmVhWu3svwM34u3Vms7j0lFT3taavAX_zWFVepiNPWucOggzu7GL0ChHnYGKWnRL8aSfYKPoQzVEeiDOhh64emhA_Eiw9h8GZ7R7BddXzzQkST0-0nAHmQrHv0EbSPE2Q7oNrSpeXaWb6dDQ_RAudsLL_0I_Gpm535eLHnzOHPv-83DDaCqqc-BQs1b1OvTZHmyQmdv92QH3wLY9z68Y_wg; _ga=GA1.2.1574294499.1686795887; _ga_BMRG0TVB5F=GS1.1.1697406134.158.1.1697406337.59.0.0; _gid=GA1.2.1630910633.1697300043',
-    },
+    headers: bg5Headers,
     body: bg5Body,
-  })
-    .then(async (bg5Response) => {
-      console.log('Response from BG5', bg5Response)
-      Object.assign(finalResult, bg5Response.data)
-      delete finalResult.image
+    redirect: 'follow',
+  }
 
-      const imageData = bg5Response.data.image
-      console.log('Length of image is', imageData.length)
+  const bg5Response = await fetch(
+    'https://bg5businessinstitute.com/get-your-chart',
+    bg5Request
+  )
 
-      const ocrBody = new FormData()
-      ocrBody.append('base64Image', 'data:image/png;base64,' + imageData)
-      ocrBody.append('OCREngine', '2')
+  const bg5Data = await bg5Response.json()
+  console.log('BG5 data', bg5Data)
 
-      await fetch('https://api.ocr.space/parse/image', {
-        method: 'POST',
-        headers: {
-          apikey: 'K84139848188957',
-          ...ocrBody.getHeaders(),
-        },
-        body: ocrBody,
-      })
-        .then((ocrResponse) => {
-          const parsedText = ocrResponse.data.ParsedResults[0].ParsedText
+  Object.assign(finalResult, bg5Data)
+  delete finalResult.image
 
-          // Match each trait.quality
-          const regex = /(\d+\.\d+)/gm
+  const imageData = bg5Data.image
+  console.log('Length of image is', imageData.length)
 
-          finalResult.traits = parsedText.match(regex)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  const ocrHeaders = new Headers()
+  ocrHeaders.append('apikey', 'K84139848188957')
+  ocrHeaders.append('Accept', 'application/json; q=0.01')
+
+  const ocrBody = new FormData()
+  ocrBody.append('base64Image', 'data:image/png;base64,' + imageData)
+  ocrBody.append('OCREngine', '2')
+
+  const ocrRequest = {
+    method: 'POST',
+    headers: ocrHeaders,
+    body: ocrBody,
+    redirect: 'follow',
+  }
+
+  const ocrResponse = await fetch(
+    'https://api.ocr.space/parse/image',
+    ocrRequest
+  )
+
+  const ocrData = await ocrResponse.json()
+  console.log('ocrData', ocrData)
+  const parsedText = ocrData.ParsedResults[0].ParsedText
+
+  // Match each trait.quality
+  const regex = /(\d+\.\d+)/gm
+
+  finalResult.traits = parsedText.match(regex)
 
   console.log('Returning', finalResult)
 
