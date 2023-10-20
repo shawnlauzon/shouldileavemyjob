@@ -24,7 +24,6 @@
 
 <script>
 import { ref } from 'vue'
-import axios from 'axios'
 const countries = [
   { name: 'Afghanistan', abbr: 'AF' },
   { name: 'Åland Islands', abbr: 'AX' },
@@ -543,22 +542,23 @@ export default {
 
       // FIXME Handle city not found
       this.isLoading = true
-      await axios
-        .post('/api/career-design', { data: params })
-        .then((resp) => {
-          this.isLoading = false
-          const chart = {
-            careerType: resp.data.type,
-            interactionStyle: resp.data.strategy,
-            keyIndicators: resp.data.theme.split(" or "),
-            decisionMakingStrategy: resp.data.innerAuthority,
-            publicRole: resp.data.profile.split(" / "),
-            assimilation: resp.data.definition,
-            traits: resp.data.traits
-          }
-          console.log('Got chart', chart)
-          this.$emit('input', chart)
-        })
+      const resp = await fetch('/api/career-design', {
+        method: 'POST',
+        data: params
+      })
+      this.isLoading = false
+      const chart = {
+        careerType: resp.data.type,
+        interactionStyle: resp.data.strategy,
+        keyIndicators: resp.data.theme.split(" or "),
+        decisionMakingStrategy: resp.data.innerAuthority,
+        publicRole: resp.data.profile.split(" / "),
+        assimilation: resp.data.definition,
+        traits: resp.data.traits
+      }
+      console.log('Got chart', chart)
+      this.$emit('input', chart)
+
     },
   },
 }

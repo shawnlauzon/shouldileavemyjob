@@ -49,6 +49,7 @@ export default async (event, context) => {
     body: bg5Body,
   })
     .then(async (bg5Response) => {
+      console.log('Response from BG5', bg5Response)
       Object.assign(finalResult, bg5Response.data)
       delete finalResult.image
 
