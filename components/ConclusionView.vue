@@ -16,7 +16,7 @@
                 more support than this, I'm happy to help. Simply book a call with me. </p>
             <p>That being said, here's a guide that can support you on your decision.</p>
         </div>
-        <div v-if="`score <  3`">
+        <div v-if="score < 3">
             <div v-if="findJobThroughNetwork">
                 <div v-if="hasJobLinedUp">
                     <div class="text-h3">It's time to go.</div>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div v-else-if="`score > 8`">
+        <div v-else-if="score > 8">
             <div class="text-h3">Actually things are pretty good.</div>
             <div class="text-body-1 my-6">It seems like you've got pretty good alignment with your
                 current job. But since you're taking this test, it seems likely that you think
