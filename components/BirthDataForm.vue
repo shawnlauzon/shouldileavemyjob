@@ -21,7 +21,12 @@
           <v-text-field v-model="time" label="Time of birth" prepend-icon="mdi-clock" readonly v-bind="attrs"
             v-on="on"></v-text-field>
         </template>
-        <v-time-picker v-model="time" format="ampm" @change="saveTime"></v-time-picker>
+        <v-time-picker v-model="time" format="ampm">
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="saveTime">
+            OK
+          </v-btn>
+        </v-time-picker>
       </v-menu>
     </v-row>
     <v-row>
