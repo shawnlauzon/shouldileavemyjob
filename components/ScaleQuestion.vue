@@ -1,5 +1,5 @@
 <template>
-  <v-card class="text-h4 text-md-h2 elevation-0">
+  <v-card class="text-h4 text-md-h2 elevation-0 d-inline-flex flex-column">
     <div>
       <slot />
     </div>
@@ -20,12 +20,12 @@ export default {
         '',
         '',
         '',
-        'Half the time',
         '',
         '',
         '',
         '',
-        'All the time',
+        '',
+        'Always',
       ],
     }
   },

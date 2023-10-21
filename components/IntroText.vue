@@ -1,10 +1,10 @@
 <template>
-    <div class="ma-10">
-        <div class="text-h2 my-6">Should I leave my job?</div>
+    <div class="ma-4 md-ma-10">
+        <div class="text-h4 text-md-h2 my-6">Should I leave my job?</div>
         <div class="my-4">
-            <div class="text-h5 my-2">
+            <div class="text-md-h6 my-2">
                 So you've had it up to here with your job, but don't know what to do
-                about it. I've totally been there.
+                about it. <span class="font-weight-bold">I've totally been there.</span>
             </div>
             <div class="my-2">
                 There must be more to life. Going to work, coming home exhausted. A
@@ -31,7 +31,7 @@
                 <i>for your unique nature</i>. This may be the most personal guide
                 you've ever received.
             </div>
-            <div class="my-2">You're welcome.</div>
+            <div class="my-2"><span class="font-weight-bold">You're welcome.</span></div>
         </div>
         <v-btn color="primary" block class="px-15" @click="$emit('click', $event)">
             Get started

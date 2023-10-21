@@ -9,7 +9,7 @@
           </v-stepper-step>
         </template>
       </v-stepper-header>
-      <v-stepper-items class="py-10">
+      <v-stepper-items class="py-md-10">
         <v-stepper-content step="resistenceFrequency" class="pa-2">
           <ScaleQuestion v-model="answers.resistenceFrequency">
             How often do you feel {{ keyIndicatorResistenceFeeling }}?

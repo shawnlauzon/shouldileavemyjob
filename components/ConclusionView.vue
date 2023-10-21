@@ -1,6 +1,6 @@
 <template>
-    <div class="ma-10">
-        <div class="text-h2 my-6">So, should you leave your job?</div>
+    <div class="ma-2">
+        <div class="text-h4 text-md-h2 my-6">So, should you leave your job?</div>
         <div class="text-body-1">
             A quiz can never replace your own inner wisdom!
             So most importantly, follow your decision making strategy. Which is:
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div class="text-h3">Put your job search into overdrive.</div>
+                    <div class="text-h4 text-md-h3">Put your job search into overdrive.</div>
                     <div class="text-body-1 my-6">You're feeling lots of resistence with your new
                         job, but it's important not to leave until you have a new one lined
                         up. Your huge network is an asset to finding that new job
@@ -36,21 +36,21 @@
                 </div>
             </div>
             <div v-else>
-                <div class="text-h3">It's time to go.</div>
+                <div class="text-h4 text-md-h3">It's time to go.</div>
                 <div class="text-body-1 my-6">You're feeling lots of resistence in your
                     current job. So what's holding you back?
                 </div>
             </div>
         </div>
         <div v-else-if="score > 8">
-            <div class="text-h3">Actually things are pretty good.</div>
+            <div class="text-h4 text-md-h3">Actually things are pretty good.</div>
             <div class="text-body-1 my-6">It seems like you've got pretty good alignment with your
                 current job. But since you're taking this test, it seems likely that you think
                 there's something that could be better.
             </div>
         </div>
         <div v-else>
-            <div class="text-h3">See if you can make it better.</div>
+            <div class="text-h4 text-md-h3">See if you can make it better.</div>
             <div class="text-body-1 my-6">
                 <p>You have a lot of positives for the current job. So my
                     question to you is: what's going wrong? And what changes can you make to feel
@@ -72,9 +72,9 @@
             </div>
         </template>
 
-        <div class="text-body-2 pa-4">
+        <!-- <div class="text-body-2 pa-4">
             Your score is {{ score }} out of 20.
-        </div>
+        </div> -->
     </div>
 </template>
   

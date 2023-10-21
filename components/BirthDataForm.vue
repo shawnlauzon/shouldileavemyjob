@@ -1,15 +1,35 @@
 <template>
   <v-container fluid>
-    <v-row justify="center">
-      <v-date-picker v-model="date" label="Birth date" required />
-      <v-time-picker v-model="time" format="ampm" label="Birth time" required />
+    <div class="mb-6">
+      <div class="text-h4 text-md-h2 mb-6">Birth information</div>
+      <div>To start, we need to know when and where you were born.</div>
+    </div>
+    <v-row class="">
+      <v-menu ref="isDatePickerVisible" v-model="isDatePickerVisible" :close-on-content-click="false"
+        transition="scale-transition" offset-y min-width="auto">
+        <template #activator="{ on, attrs }">
+          <v-text-field v-model="date" label="Date of birth" prepend-icon="mdi-calendar" readonly v-bind="attrs"
+            v-on="on"></v-text-field>
+        </template>
+        <v-date-picker v-model="date" :active-picker="activeDatePicker"
+          :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+          min="1900-01-01" @change="saveDate"></v-date-picker>
+      </v-menu>
+      <v-menu ref="isTimePickerVisible" v-model="isTimePickerVisible" :close-on-content-click="false"
+        transition="scale-transition" offset-y min-width="auto">
+        <template #activator="{ on, attrs }">
+          <v-text-field v-model="time" label="Time of birth" prepend-icon="mdi-clock" readonly v-bind="attrs"
+            v-on="on"></v-text-field>
+        </template>
+        <v-time-picker v-model="time" format="ampm" @change="saveTime"></v-time-picker>
+      </v-menu>
     </v-row>
-    <v-row justify="center">
-      <v-select v-model="country" :items="countries" item-text="name" item-value="abbr" label="Birth country"
-        persistent-hint return-object single-line></v-select>
+    <v-row>
+      <v-select v-model="country" :items="countries" item-text="name" item-value="abbr" label="Country" persistent-hint
+        return-object></v-select>
       <span v-if="isUsa">
-        <v-select v-model="state" :items="states" item-text="name" item-value="abbr" label="Birth state" persistent-hint
-          return-object single-line></v-select>
+        <v-select v-model="state" :items="states" item-text="name" item-value="abbr" label="State" persistent-hint
+          return-object></v-select>
       </span>
     </v-row>
     <v-row>
@@ -511,16 +531,17 @@ const states = [
 
 export default {
   props: { value: { type: Object, default: null } },
-  data: function () {
-    return {
-      date: undefined,
-      time: undefined,
-      country: ref({ name: 'United States', abbr: 'US' }),
-      city: undefined,
-      state: undefined,
-      isLoading: false,
-    }
-  },
+  data: () => ({
+    date: undefined,
+    time: undefined,
+    country: ref({ name: 'United States', abbr: 'US' }),
+    city: undefined,
+    state: undefined,
+    isLoading: false,
+    activeDatePicker: null,
+    isTimePickerVisible: false,
+    isDatePickerVisible: false,
+  }),
   computed: {
     isUsa() {
       return this.country.abbr === 'US'
@@ -528,6 +549,11 @@ export default {
     isComplete() {
       return this.date && this.time && this.country && this.city
     }
+  },
+  watch: {
+    isDatePickerVisible(val) {
+      val && setTimeout(() => (this.activeDatePicker = 'YEAR'))
+    },
   },
   methods: {
     handleNext: async function () {
@@ -568,6 +594,14 @@ export default {
       console.log('Got chart', chart)
       this.$emit('input', chart)
 
+    },
+    saveDate(date) {
+      this.$refs.isDatePickerVisible.save(date)
+      this.isDatePickerVisible = false
+    },
+    saveTime(time) {
+      this.$refs.isTimePickerVisible.save(time)
+      this.isTimePickerVisible = false
     },
   },
 }
