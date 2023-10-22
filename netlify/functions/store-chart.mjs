@@ -31,7 +31,9 @@ export default withPlanetscale(async (request, context) => {
   )
   console.log('INSERT result', result)
 
-  return {
+  const chart = Object.assign({ userId: result.insertId }, params)
+
+  return Response.json(chart, {
     statusCode: 201,
-  }
+  })
 })

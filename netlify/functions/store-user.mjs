@@ -26,7 +26,7 @@ export default withPlanetscale(async (request, context) => {
 
   const user = Object.assign({ userId: result.insertId }, params)
 
-  return new Response(user, {
+  return Response.json(user, {
     // 200 = UPDATE, 201 = INSERT
     statusCode: userId ? 200 : 201,
   })
