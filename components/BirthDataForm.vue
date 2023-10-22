@@ -652,6 +652,7 @@ export default {
       const storeUserResp = await fetch('/api/store-user', {
         method: 'POST',
         headers,
+        body: '{}',
       })
       console.log('storeUser response', storeChartResp)
 
