@@ -3,7 +3,7 @@
     <v-main>
       <v-container>
         <IntroText v-if="!isStarted" @click="isStarted = true" />
-        <BirthDataForm v-if="isStarted && !hasDesign" v-model="design" />
+        <BirthDataForm v-if="isStarted && !hasDesign" @chart="handleChart" />
         <InterviewForm
           v-if="hasDesign && !isComplete"
           v-bind="design"
@@ -32,6 +32,9 @@ export default {
     },
   },
   methods: {
+    handleChart: function (chart) {
+      this.design = chart
+    },
     handleComplete: function () {
       this.isComplete = true
     },

@@ -647,7 +647,15 @@ export default {
         traits: respData.traits,
       }
       console.log('Got chart', chart)
-      this.$emit('input', chart)
+
+      const storeChartResp = await fetch('/api/store-chart', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(chart),
+      })
+      console.log('storeChart response', storeChartResp)
+
+      this.$emit('chart', chart)
     },
     saveDate(date) {
       this.$refs.isDatePickerVisible.save(date)
