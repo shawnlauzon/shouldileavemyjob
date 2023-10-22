@@ -1,18 +1,15 @@
 import { withPlanetscale } from '@netlify/planetscale'
 
 export default withPlanetscale(async (request, context) => {
-  //export default async (request, context) => {
   const {
     planetscale: { connection },
   } = context
 
-  const { email, firstName } = await request.json()
-  console.log('email: ', email)
-  console.log('firstName: ', firstName)
+  const { email, firstName, lastName, phoneNumber } = await request.json()
 
   const result = await connection.execute(
-    'INSERT INTO users (email, first_name) VALUES (?, ?)',
-    [email, firstName]
+    'INSERT INTO users (email, first_name, last_name, phone_number) VALUES (?, ?, ?, ?)',
+    [email, firstName, lastName, phoneNumber]
   )
   console.log('INSERT result', result)
 

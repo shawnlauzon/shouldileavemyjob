@@ -9,6 +9,7 @@ export default withPlanetscale(async (request, context) => {
   console.log('Params', params)
 
   const {
+    userId,
     careerType,
     publicRole,
     assimilation,
@@ -17,9 +18,10 @@ export default withPlanetscale(async (request, context) => {
   } = params
 
   const result = await connection.execute(
-    `INSERT INTO charts (career_type, public_role, assimilation, decision_making_strategy,\
-       traits) VALUES (?, ?, ?, ?, ?)`,
+    `INSERT INTO charts (user_id, career_type, public_role, assimilation, decision_making_strategy,\
+       traits) VALUES (?, ?, ?, ?, ?, ?)`,
     [
+      userId,
       careerType,
       publicRole.toString(),
       assimilation,
