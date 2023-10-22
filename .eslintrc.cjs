@@ -1,3 +1,6 @@
+// Workaround; see https://www.npmjs.com/package/@vue/eslint-config-typescript
+require('@rushstack/eslint-patch/modern-module-resolution')
+
 module.exports = {
   root: true,
   env: {
@@ -9,8 +12,8 @@ module.exports = {
     requireConfigFile: false,
   },
   extends: [
-    '@vue/prettier',
-    '@vue/typescript',
+    '@vue/eslint-config-typescript/recommended',
+    '@vue/eslint-config-prettier',
     '@nuxtjs',
     'plugin:nuxt/recommended',
   ],
