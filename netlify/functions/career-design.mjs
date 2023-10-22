@@ -122,5 +122,5 @@ export default async (request, context) => {
 
   // Netlify Functions need to return an object with a statusCode
   // Other properties such as headers or body can also be included.
-  return Response.json(finalResult, { status: 200 })
+  return Response.json(finalResult)
 }
