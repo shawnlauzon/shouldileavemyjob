@@ -3,7 +3,14 @@
     <div>
       <slot />
     </div>
-    <v-slider class="py-8" :value="value" min="0" max="10" :tick-labels="labels" @change="$emit('input', $event)" />
+    <v-slider
+      class="py-8"
+      :value="value"
+      min="0"
+      max="10"
+      :tick-labels="labels"
+      @change="$emit('input', $event)"
+    />
   </v-card>
 </template>
 
@@ -14,19 +21,7 @@ export default {
   },
   data: function () {
     return {
-      labels: [
-        'Never',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        'Always',
-      ],
+      labels: ['Never', '', '', '', '', '', '', '', '', '', 'Always'],
     }
   },
 }

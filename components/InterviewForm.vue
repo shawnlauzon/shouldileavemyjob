@@ -1,11 +1,19 @@
 <!-- eslint-disable no-multi-str -->
 <template>
   <v-container class="d-flex justify-center flex-column">
-    <v-stepper v-model="questions[curQuestionIndex].step" class="elevation-0 flex-grow-1">
+    <v-stepper
+      v-model="questions[curQuestionIndex].step"
+      class="elevation-0 flex-grow-1"
+    >
       <v-stepper-header class="elevation-0 flex-nowrap">
         <template v-for="q in questions">
-          <v-stepper-step v-if="q.isVisible()" class="pa-0" :key="q.step" :complete="answers[q.step] !== undefined"
-            step="">
+          <v-stepper-step
+            v-if="q.isVisible()"
+            class="pa-0"
+            :key="q.step"
+            :complete="answers[q.step] !== undefined"
+            step=""
+          >
           </v-stepper-step>
         </template>
       </v-stepper-header>
@@ -69,11 +77,22 @@
       <v-btn class="mx-2" :disabled="!hasPrev" @click="prevStep()">
         Back
       </v-btn>
-      <v-btn v-if="curQuestionIndex < questions.length - 1" class="mx-2" :disabled="!hasNext || curAnswer === undefined"
-        color="primary" @click="nextStep()">
+      <v-btn
+        v-if="curQuestionIndex < questions.length - 1"
+        class="mx-2"
+        :disabled="!hasNext || curAnswer === undefined"
+        color="primary"
+        @click="nextStep()"
+      >
         Next
       </v-btn>
-      <v-btn v-else class="mx-2" :disabled="!emailAddress || !isEmailAgreed" color="primary" @click="complete()">
+      <v-btn
+        v-else
+        class="mx-2"
+        :disabled="!emailAddress || !isEmailAgreed"
+        color="primary"
+        @click="complete()"
+      >
         Finish
       </v-btn>
     </v-row>
@@ -89,13 +108,13 @@ const keyIndicatorFeelings = {
   Anger: 'angry',
   Peace: 'peaceful',
   Disappointment: 'disappointed',
-  Surprise: 'surprised'
-};
+  Surprise: 'surprised',
+}
 const pentaRoleStrengths = [
   ['31', '7'],
   ['8', '1'],
   ['33', '13'],
-];
+]
 const pentaManagedStrengths = [
   ['15', '5'],
   ['2', '14'],
@@ -108,7 +127,7 @@ const oc16Strengths = [
   ['14', '2'],
   ['25', '51'],
   ['21', '45'],
-];
+]
 
 export default {
   props: {
@@ -128,7 +147,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    value: { type: Object, default: null }
+    value: { type: Object, default: null },
   },
   data: function () {
     return {
@@ -143,26 +162,35 @@ export default {
           results: [
             {
               check: (ans) => ans > 7,
-              update: (acc, ans) => acc.update(-ans,
-                `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
+              update: (acc, ans) =>
+                acc.update(
+                  -ans,
+                  `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
               your design, and the fact that you feel that so often is a sign that
-              something should change.`)
+              something should change.`
+                ),
             },
             {
               check: (ans) => ans <= 7 && ans > 4,
-              update: (acc, ans) => acc.update(-ans,
-                `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
+              update: (acc, ans) =>
+                acc.update(
+                  -ans,
+                  `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
               your design, and the fact that you feel that so often is a sign that
-              something should change.`)
+              something should change.`
+                ),
             },
             {
               check: (ans) => ans <= 4,
-              update: (acc, ans) => acc.update(10 - ans * 2,
-                `${this.keyIndicators[0]} is your sign that you're doing things in contrast to
+              update: (acc, ans) =>
+                acc.update(
+                  10 - ans * 2,
+                  `${this.keyIndicators[0]} is your sign that you're doing things in contrast to
               your design, and the fact that you rarely feel that is a sign that you're
-              doing things right.`)
-            }
-          ]
+              doing things right.`
+                ),
+            },
+          ],
         },
         {
           step: 'flowFrequency',
@@ -170,24 +198,35 @@ export default {
           results: [
             {
               check: (ans) => ans > 7,
-              update: (acc, ans) => acc.update(ans * 2, `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+              update: (acc, ans) =>
+                acc.update(
+                  ans * 2,
+                  `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
               your design, and the fact that you're feeling this quite often means something is going
-              well with your job.`)
+              well with your job.`
+                ),
             },
             {
               check: (ans) => ans <= 7 && ans > 4,
-              update: (acc, ans) => acc.update(ans, `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+              update: (acc, ans) =>
+                acc.update(
+                  ans,
+                  `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
               your design, and the fact that you're feeling this feeling it at least sometimes is a
-              positive sign, with room for improvement.`)
+              positive sign, with room for improvement.`
+                ),
             },
             {
               check: (ans) => ans < 4,
-              update: (acc, ans) => acc.update(-(10 - ans * 2),
-                `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
+              update: (acc, ans) =>
+                acc.update(
+                  -(10 - ans * 2),
+                  `${this.keyIndicators[1]} is your sign that you're doing things in alignment with
               your design, and the fact that this doesn't happen very often means some adjustments must
-              be made either within your job or to get a new one.`)
-            }
-          ]
+              be made either within your job or to get a new one.`
+                ),
+            },
+          ],
         },
         {
           step: 'selfEmployed',
@@ -195,32 +234,47 @@ export default {
           results: [
             {
               check: (ans) => ans === true && this.hatesBeingManaged,
-              update: (acc) => acc.update(5, `There are a few people in the world who are designed to not have a boss,\
+              update: (acc) =>
+                acc.update(
+                  5,
+                  `There are a few people in the world who are designed to not have a boss,\
               and you are one of them. You hate being told what to do, and so having a boss\
-              is the worst. So, well done on working for yourself!`)
-            }
-          ]
+              is the worst. So, well done on working for yourself!`
+                ),
+            },
+          ],
         },
         {
           step: 'workFromHome',
-          isVisible: () => ['Collaborative', 'Assimilation'].includes(this.assimilation),
+          isVisible: () =>
+            ['Collaborative', 'Assimilation'].includes(this.assimilation),
           results: [
             {
-              check: (ans) => ans === true && this.assimilation === 'Collaborative',
-              update: (acc) => acc.update(-3, `You are designed to work and collaborate with others, and so working
+              check: (ans) =>
+                ans === true && this.assimilation === 'Collaborative',
+              update: (acc) =>
+                acc.update(
+                  -3,
+                  `You are designed to work and collaborate with others, and so working
               separately from other people can make you feel uncomfortable or incomplete.
               It would be ideal if you worked in partnership with someone else, but if that's
               not possible, you should work in a place with other people around, such as
-              a coffee shop or a co-working space.`)
+              a coffee shop or a co-working space.`
+                ),
             },
             {
-              check: (ans) => ans === true && this.assimilation === 'Assimilation',
-              update: (acc) => acc.update(-5, `You are designed to move around and work with a variety of people
+              check: (ans) =>
+                ans === true && this.assimilation === 'Assimilation',
+              update: (acc) =>
+                acc.update(
+                  -5,
+                  `You are designed to move around and work with a variety of people
               throughout the day, and so working from home by yourself can be a challenge for
               you. If you work in a large company, going into the office would be great for
-              you.`)
-            }
-          ]
+              you.`
+                ),
+            },
+          ],
         },
         // {
         //   step: 'enterJobCorrectly',
@@ -251,43 +305,78 @@ export default {
           results: [
             {
               check: (ans) => ans === true && this.hasPentaRoleStrengths,
-              update: (acc) => acc.update(10, `You have genetic blueprints that work well in a small
+              update: (acc) =>
+                acc.update(
+                  10,
+                  `You have genetic blueprints that work well in a small
               group, as you are in. If you don't have a specific role yet, you
-              should work towards having one.`),
+              should work towards having one.`
+                ),
             },
             {
-              check: (ans) => ans === true && this.hasPentaManagedStrengths && !this.hasPentaRoleStrengths,
-              update: (acc) => acc.update(5, `You work in a small group and also have a genetic blueprints that work well in a small group,
+              check: (ans) =>
+                ans === true &&
+                this.hasPentaManagedStrengths &&
+                !this.hasPentaRoleStrengths,
+              update: (acc) =>
+                acc.update(
+                  5,
+                  `You work in a small group and also have a genetic blueprints that work well in a small group,
               and so you are an asset to the group. However being managed may
-              eventually be challenging for you.`)
+              eventually be challenging for you.`
+                ),
             },
             {
-              check: (ans) => ans === true && !this.hasPentaManagedStrengths && !this.hasPentaRoleStrengths,
-              update: (acc) => acc.update(-7, `You work in a small group but well never feel comfortable in such a configuration.`)
+              check: (ans) =>
+                ans === true &&
+                !this.hasPentaManagedStrengths &&
+                !this.hasPentaRoleStrengths,
+              update: (acc) =>
+                acc.update(
+                  -7,
+                  `You work in a small group but well never feel comfortable in such a configuration.`
+                ),
             },
             {
-              check: (ans) => ans === true && this.assimilation === 'Collaborative',
-              update: (acc) => acc.update(4, `You are designed to work and collaborate with others, so working with others in
-              a group is a good thing. `)
+              check: (ans) =>
+                ans === true && this.assimilation === 'Collaborative',
+              update: (acc) =>
+                acc.update(
+                  4,
+                  `You are designed to work and collaborate with others, so working with others in
+              a group is a good thing. `
+                ),
             },
-          ]
+          ],
         },
         {
           step: 'partner',
-          isVisible: () => this.answerFor('selfEmployed') === false && ['Collaborative', 'Assimilation'].includes(this.assimilation),
+          isVisible: () =>
+            this.answerFor('selfEmployed') === false &&
+            ['Collaborative', 'Assimilation'].includes(this.assimilation),
           results: [
             {
-              check: (ans) => ans === true && this.assimilation === 'Collaborative',
-              update: (acc) => acc.update(10, `You are designed to work and collaborate with others, so working
-              with someone else is fantastic for you.`)
+              check: (ans) =>
+                ans === true && this.assimilation === 'Collaborative',
+              update: (acc) =>
+                acc.update(
+                  10,
+                  `You are designed to work and collaborate with others, so working
+              with someone else is fantastic for you.`
+                ),
             },
             {
-              check: (ans) => ans === true && this.assimilation === 'Assimilation',
-              update: (acc) => acc.update(4, `You are designed to work and collaborate with others, so working
+              check: (ans) =>
+                ans === true && this.assimilation === 'Assimilation',
+              update: (acc) =>
+                acc.update(
+                  4,
+                  `You are designed to work and collaborate with others, so working
               with someone else is fantastic for you. However you work best when you work with a variety of people,
-              so make sure to allow that movement in your daily work.`)
+              so make sure to allow that movement in your daily work.`
+                ),
             },
-          ]
+          ],
         },
         // {
         //   step: 'largeGroup',
@@ -306,32 +395,42 @@ export default {
         // },
         {
           step: 'haveBoss',
-          isVisible: () => this.answerFor('selfEmployed') === false && this.hatesBeingManaged,
+          isVisible: () =>
+            this.answerFor('selfEmployed') === false && this.hatesBeingManaged,
           results: [
             {
               check: (ans) => ans === true && this.hatesBeingManaged,
-              update: (acc) => acc.update(-5, `You have a boss, which for many people can be a nice sense of security.\
+              update: (acc) =>
+                acc.update(
+                  -5,
+                  `You have a boss, which for many people can be a nice sense of security.\
               Unfortunately, you have a genetic design which hates to be told what to do. You \
-              would be best to look for work where you can be your own boss.`)
-            }
-          ]
+              would be best to look for work where you can be your own boss.`
+                ),
+            },
+          ],
         },
         {
           step: 'newJob',
-          isVisible: () => this.answerFor('selfEmployed') === false && this.publicRole.includes('Influencer') === true,
+          isVisible: () =>
+            this.answerFor('selfEmployed') === false &&
+            this.publicRole.includes('Influencer') === true,
           results: [
             {
               check: (ans) => ans === false,
-              update: (acc, ans) => { acc.hasJobLinedUp = ans; return acc; }
-            }
-          ]
+              update: (acc, ans) => {
+                acc.hasJobLinedUp = ans
+                return acc
+              },
+            },
+          ],
         },
         {
           step: 'emailAddress',
           isVisible: () => true,
-          results: []
-        }
-      ]
+          results: [],
+        },
+      ],
     }
   },
   computed: {
@@ -362,25 +461,42 @@ export default {
     },
     hasPentaRoleStrengths() {
       return pentaRoleStrengths.reduce(
-        (a, v) => !!((this.traitsWithoutQualities.includes(v[0]) && this.traitsWithoutQualities.includes(v[1])) || a),
+        (a, v) =>
+          !!(
+            (this.traitsWithoutQualities.includes(v[0]) &&
+              this.traitsWithoutQualities.includes(v[1])) ||
+            a
+          ),
         false
       )
     },
     hasPentaManagedStrengths() {
       return pentaManagedStrengths.reduce(
-        (a, v) => !!((this.traitsWithoutQualities.includes(v[0]) && this.traitsWithoutQualities.includes(v[1])) || a),
+        (a, v) =>
+          !!(
+            (this.traitsWithoutQualities.includes(v[0]) &&
+              this.traitsWithoutQualities.includes(v[1])) ||
+            a
+          ),
         false
       )
     },
     hasOc16Strengths() {
       return oc16Strengths.reduce(
-        (a, v) => !!((this.traitsWithoutQualities.includes(v[0]) && this.traitsWithoutQualities.includes(v[1])) || a),
+        (a, v) =>
+          !!(
+            (this.traitsWithoutQualities.includes(v[0]) &&
+              this.traitsWithoutQualities.includes(v[1])) ||
+            a
+          ),
         false
       )
     },
     hatesBeingManaged() {
-      return this.traitsWithoutQualities.includes("45") ||
-        this.traitsWithoutQualities.includes("21")
+      return (
+        this.traitsWithoutQualities.includes('45') ||
+        this.traitsWithoutQualities.includes('21')
+      )
     },
     conclusion: function () {
       const acc = {
@@ -391,28 +507,28 @@ export default {
         messages: [],
         deltas: [],
         update: function (delta, msg) {
-          this.score += delta;
-          this.deltas.push(delta);
-          this.messages.push(msg);
+          this.score += delta
+          this.deltas.push(delta)
+          this.messages.push(msg)
           return this
-        }
+        },
       }
       const result = this.questions.reduce((acc, q) => {
-        const answer = this.answers[q.step];
+        const answer = this.answers[q.step]
         q.results.reduce((acc, r) => {
           if (r.check(answer)) {
-            r.update(acc, answer);
+            r.update(acc, answer)
           }
-          return acc;
+          return acc
         }, acc)
-        return acc;
+        return acc
       }, acc)
       result.score = Math.max(0, acc.score)
-      return result;
-    }
+      return result
+    },
   },
   methods: {
-    handleNext: function () { },
+    handleNext: function () {},
     nextStep: function () {
       if (this.hasNext) {
         this.curQuestionIndex++
@@ -437,8 +553,8 @@ export default {
       this.isEmailAgreed = v
     },
     complete: function () {
-      this.$emit('complete', this.conclusion);
-    }
+      this.$emit('complete', this.conclusion)
+    },
   },
 }
 </script>

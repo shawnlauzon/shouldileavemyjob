@@ -4,7 +4,12 @@
       <v-container>
         <IntroText v-if="!isStarted" @click="isStarted = true" />
         <BirthDataForm v-if="isStarted && !hasDesign" v-model="design" />
-        <InterviewForm v-if="hasDesign && !isComplete" v-bind="design" v-model="conclusion" @complete="handleComplete" />
+        <InterviewForm
+          v-if="hasDesign && !isComplete"
+          v-bind="design"
+          v-model="conclusion"
+          @complete="handleComplete"
+        />
         <ConclusionView v-if="isComplete" v-bind="conclusion" />
       </v-container>
     </v-main>
@@ -18,16 +23,18 @@ export default {
       isStarted: false,
       design: undefined,
       conclusion: undefined,
-      isComplete: false
+      isComplete: false,
     }
   },
   computed: {
-    hasDesign() { return this.design !== undefined }
+    hasDesign() {
+      return this.design !== undefined
+    },
   },
   methods: {
-    handleComplete: function () { this.isComplete = true; },
-
+    handleComplete: function () {
+      this.isComplete = true
+    },
   },
 }
 </script>
-

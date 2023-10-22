@@ -5,43 +5,93 @@
       <div>To start, we need to know when and where you were born.</div>
     </div>
     <v-row class="">
-      <v-menu ref="isDatePickerVisible" v-model="isDatePickerVisible" :close-on-content-click="false"
-        transition="scale-transition" offset-y min-width="auto">
+      <v-menu
+        ref="isDatePickerVisible"
+        v-model="isDatePickerVisible"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
         <template #activator="{ on, attrs }">
-          <v-text-field v-model="date" label="Date of birth" prepend-icon="mdi-calendar" readonly v-bind="attrs"
-            v-on="on"></v-text-field>
+          <v-text-field
+            v-model="date"
+            label="Date of birth"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
         </template>
-        <v-date-picker v-model="date" :active-picker="activeDatePicker"
-          :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
-          min="1900-01-01" @change="saveDate"></v-date-picker>
+        <v-date-picker
+          v-model="date"
+          :active-picker="activeDatePicker"
+          :max="
+            new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+              .toISOString()
+              .substr(0, 10)
+          "
+          min="1900-01-01"
+          @change="saveDate"
+        ></v-date-picker>
       </v-menu>
-      <v-menu ref="isTimePickerVisible" v-model="isTimePickerVisible" :close-on-content-click="false"
-        transition="scale-transition" offset-y min-width="auto">
+      <v-menu
+        ref="isTimePickerVisible"
+        v-model="isTimePickerVisible"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
         <template #activator="{ on, attrs }">
-          <v-text-field v-model="time" label="Time of birth" prepend-icon="mdi-clock" readonly v-bind="attrs"
-            v-on="on"></v-text-field>
+          <v-text-field
+            v-model="time"
+            label="Time of birth"
+            prepend-icon="mdi-clock"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
         </template>
         <v-time-picker v-model="time" format="ampm">
           <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="saveTime">
-            OK
-          </v-btn>
+          <v-btn text color="primary" @click="saveTime"> OK </v-btn>
         </v-time-picker>
       </v-menu>
     </v-row>
     <v-row>
-      <v-select v-model="country" :items="countries" item-text="name" item-value="abbr" label="Country" persistent-hint
-        return-object></v-select>
+      <v-select
+        v-model="country"
+        :items="countries"
+        item-text="name"
+        item-value="abbr"
+        label="Country"
+        persistent-hint
+        return-object
+      ></v-select>
       <span v-if="isUsa">
-        <v-select v-model="state" :items="states" item-text="name" item-value="abbr" label="State" persistent-hint
-          return-object></v-select>
+        <v-select
+          v-model="state"
+          :items="states"
+          item-text="name"
+          item-value="abbr"
+          label="State"
+          persistent-hint
+          return-object
+        ></v-select>
       </span>
     </v-row>
     <v-row>
       <v-text-field v-model="city" label="City"></v-text-field>
     </v-row>
-    <v-btn block :loading="isLoading" color="primary" :disabled="isLoading || !isComplete"
-      @click="handleNext">Next</v-btn>
+    <v-btn
+      block
+      :loading="isLoading"
+      color="primary"
+      :disabled="isLoading || !isComplete"
+      @click="handleNext"
+      >Next</v-btn
+    >
   </v-container>
 </template>
 
@@ -553,7 +603,7 @@ export default {
     },
     isComplete() {
       return this.date && this.time && this.country && this.city
-    }
+    },
   },
   watch: {
     isDatePickerVisible(val) {
@@ -575,30 +625,29 @@ export default {
       // FIXME Handle city not found
       this.isLoading = true
 
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json",);
-      headers.append("Accept", "application/json; q=0.01");
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+      headers.append('Accept', 'application/json; q=0.01')
 
       const resp = await fetch('/api/career-design', {
         method: 'POST',
         headers,
-        body: JSON.stringify(params)
+        body: JSON.stringify(params),
       })
       this.isLoading = false
-      const respData = await resp.json();
+      const respData = await resp.json()
       console.log('Response', respData)
       const chart = {
         careerType: respData.type,
         interactionStyle: respData.strategy,
-        keyIndicators: respData.theme.split(" or "),
+        keyIndicators: respData.theme.split(' or '),
         decisionMakingStrategy: respData.innerAuthority,
-        publicRole: respData.profile.split(" / "),
+        publicRole: respData.profile.split(' / '),
         assimilation: respData.definition,
-        traits: respData.traits
+        traits: respData.traits,
       }
       console.log('Got chart', chart)
       this.$emit('input', chart)
-
     },
     saveDate(date) {
       this.$refs.isDatePickerVisible.save(date)

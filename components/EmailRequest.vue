@@ -11,10 +11,19 @@
       info which I think you'll like. Most of it specifically for you and your
       unique design. Cancel anytime.
     </div>
-    <v-text-field label="Email address" :value="value" @change="$emit('input', $event)"></v-text-field>
-    <v-checkbox value="value" :false-value="false" :true-value="true" row
+    <v-text-field
+      label="Email address"
+      :value="value"
+      @change="$emit('input', $event)"
+    ></v-text-field>
+    <v-checkbox
+      value="value"
+      :false-value="false"
+      :true-value="true"
+      row
       label="I agree to receive email. Your email address will not be shared or sold. Pinkie swear!"
-      @change="$emit('agreed', $event)" />
+      @change="$emit('agreed', $event)"
+    />
   </v-card>
 </template>
 
