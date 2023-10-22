@@ -9,15 +9,10 @@ module.exports = {
     requireConfigFile: false,
   },
   extends: [
-    'prettier',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'plugin:vue/recommended',
     '@vue/prettier',
     '@vue/typescript',
     '@nuxtjs',
     'plugin:nuxt/recommended',
-    'prettier',
   ],
   plugins: [],
   // add your custom rules here
