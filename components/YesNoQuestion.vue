@@ -1,5 +1,5 @@
 <template>
-  <v-card class="text-h4 text-md-h2 elevation-0 d-inline-flex flex-column">
+  <v-card class="text-h4 text-md-h2 elevation-0 d-flex flex-column">
     <div>
       <slot />
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="text-h4 text-md-h2 elevation-0 d-inline-flex flex-column">
+  <v-card class="text-h4 text-md-h2 elevation-0 d-flex flex-column">
     <div class="pb-4">One last thing.</div>
     <div class="text-body-1 pb-6">
       This quiz is only a start. We'd like to continue working with you to
