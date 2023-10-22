@@ -5,6 +5,9 @@ export default withPlanetscale(async (request, context) => {
     planetscale: { connection },
   } = context
 
+  const params = await request.json()
+  console.log('Params', params)
+
   const {
     type,
     profile,
@@ -14,7 +17,7 @@ export default withPlanetscale(async (request, context) => {
     birthDateLocal,
     birthPlace,
     traits,
-  } = await request.json()
+  } = params
 
   const result = await connection.execute(
     `INSERT INTO charts (career_type, public_role, life_work, assimilation, decision_making_strategy,\
