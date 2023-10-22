@@ -9,28 +9,22 @@ export default withPlanetscale(async (request, context) => {
   console.log('Params', params)
 
   const {
-    type,
-    profile,
-    cross,
-    definition,
-    innerAuthority,
-    birthDateLocal,
-    birthPlace,
+    careerType,
+    publicRole,
+    assimilation,
+    decisionMakingStrategy,
     traits,
   } = params
 
   const result = await connection.execute(
-    `INSERT INTO charts (career_type, public_role, life_work, assimilation, decision_making_strategy,\
-       birth_date_local, birth_place, traits) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO charts (career_type, public_role, assimilation, decision_making_strategy,\
+       traits) VALUES (?, ?, ?, ?, ?)`,
     [
-      type,
-      profile,
-      cross,
-      definition,
-      innerAuthority,
-      birthDateLocal,
-      birthPlace,
-      traits,
+      careerType,
+      publicRole.toString(),
+      assimilation,
+      decisionMakingStrategy,
+      JSON.stringify(traits),
     ]
   )
   console.log('INSERT result', result)
