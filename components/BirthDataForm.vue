@@ -649,29 +649,32 @@ export default {
       }
       console.log('Got chart', chart)
 
-      // Store an empty user to reserve the user_id
-      const storeUserResp = await fetch('/api/store-user', {
-        method: 'POST',
-        headers,
-        body: '{}',
-      })
-      const newUser = await storeUserResp.json()
-      this.$emit('user', newUser)
+      try {
+        // Store an empty user to reserve the user_id
+        const storeUserResp = await fetch('/api/store-user', {
+          method: 'POST',
+          headers,
+          body: '{}',
+        })
+        const newUser = await storeUserResp.json()
+        this.$emit('user', newUser)
+        console.log('newUser', newUser)
 
-      console.log('newUser', newUser)
+        chart.userId = newUser.userId
 
-      chart.userId = newUser.userId
-
-      const storeChartResp = await fetch('/api/store-chart', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(chart),
-      })
-      console.log('storeChart response', storeChartResp)
-      const newChart = await storeChartResp.json()
-      console.log('newChart', newChart)
-
-      this.$emit('chart', newChart)
+        const storeChartResp = await fetch('/api/store-chart', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(chart),
+        })
+        console.log('storeChart response', storeChartResp)
+        const newChart = await storeChartResp.json()
+        console.log('newChart', newChart)
+        this.$emit('chart', newChart)
+      } catch (e) {
+        console.warn('Could not save', e)
+        this.$emit('chart', chart)
+      }
     },
     saveDate(date) {
       this.$refs.isDatePickerVisible.save(date)
