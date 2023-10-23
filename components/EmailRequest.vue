@@ -14,12 +14,14 @@
     <v-text-field
       label="Email address"
       :value="value"
+      :rules="[rules.required, rules.email]"
       @change="$emit('input', $event)"
     ></v-text-field>
     <v-checkbox
       value="value"
       :false-value="false"
       :true-value="true"
+      :rules="[rules.required]"
       row
       label="I agree to receive email. Your email address will not be shared or sold. Pinkie swear!"
       @change="$emit('agreed', $event)"

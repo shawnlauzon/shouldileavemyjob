@@ -605,6 +605,7 @@ export default {
       return this.date && this.time && this.country && this.city
     },
   },
+  emit: ['chart', 'user'],
   watch: {
     isDatePickerVisible(val) {
       val && setTimeout(() => (this.activeDatePicker = 'YEAR'))
@@ -655,6 +656,7 @@ export default {
         body: '{}',
       })
       const newUser = await storeUserResp.json()
+      this.$emit('user', newUser)
 
       console.log('newUser', newUser)
 

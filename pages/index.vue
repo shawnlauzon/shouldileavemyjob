@@ -3,12 +3,17 @@
     <v-main>
       <v-container>
         <IntroText v-if="!isStarted" @click="isStarted = true" />
-        <BirthDataForm v-if="isStarted && !hasDesign" @chart="handleChart" />
+        <BirthDataForm
+          v-if="isStarted && !hasDesign"
+          @user="handleUser"
+          @chart="handleChart"
+        />
         <InterviewForm
           v-if="hasDesign && !isComplete"
-          v-bind="design"
+          v-bind="chart"
           v-model="conclusion"
-          @complete="handleComplete"
+          @email="handleEmail"
+          @complete="handleInterviewComplete"
         />
         <ConclusionView v-if="isComplete" v-bind="conclusion" />
       </v-container>
@@ -21,21 +26,39 @@ export default {
   data: function () {
     return {
       isStarted: false,
-      design: undefined,
+      user: undefined,
+      chart: undefined,
       conclusion: undefined,
       isComplete: false,
     }
   },
   computed: {
-    hasDesign() {
-      return this.design !== undefined
+    hasChart() {
+      return this.chart !== undefined
     },
   },
   methods: {
-    handleChart: function (chart) {
-      this.design = chart
+    handleUser: function (user) {
+      this.user = user
     },
-    handleComplete: function () {
+    handleChart: function (chart) {
+      this.chart = chart
+    },
+    handleEmail: async function (email) {
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+      headers.append('Accept', 'application/json; q=0.01')
+
+      this.user.email = email
+      const storeUserResp = await fetch('/api/store-user', {
+        method: 'POST',
+        headers,
+        body: this.user,
+      })
+      await storeUserResp.json()
+      console.log('User email updated')
+    },
+    handleInterviewComplete: function () {
       this.isComplete = true
     },
   },

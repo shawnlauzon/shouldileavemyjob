@@ -552,8 +552,8 @@ export default {
     setEmailAgreed: function (v) {
       this.isEmailAgreed = v
     },
-    complete: function () {
-      // TODO Store email
+    complete: async function () {
+      this.$emit('email', this.emailAddress)
       this.$emit('complete', this.conclusion)
     },
   },
