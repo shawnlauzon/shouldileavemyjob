@@ -596,6 +596,7 @@ export default {
     activeDatePicker: null,
     isTimePickerVisible: false,
     isDatePickerVisible: false,
+    chart: undefined,
   }),
   computed: {
     isUsa() {
@@ -630,51 +631,58 @@ export default {
       headers.append('Content-Type', 'application/json')
       headers.append('Accept', 'application/json; q=0.01')
 
-      const resp = await fetch('/api/career-design', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(params),
-      })
-      const respData = await resp.json()
-      console.log('Response', respData)
-      const chart = {
-        careerType: respData.type,
-        interactionStyle: respData.strategy,
-        keyIndicators: respData.theme.split(' or '),
-        decisionMakingStrategy: respData.innerAuthority,
-        publicRole: respData.profile.split(' / '),
-        assimilation: respData.definition,
-        traits: respData.traits,
-      }
-      console.log('Got chart', chart)
-
       try {
-        // Store an empty user to reserve the user_id
-        const storeUserResp = await fetch('/api/store-user', {
+        const resp = await fetch('/api/career-design', {
           method: 'POST',
           headers,
-          body: '{}',
+          body: JSON.stringify(params),
         })
-        const newUser = await storeUserResp.json()
-        this.$emit('user', newUser)
-        console.log('newUser', newUser)
-
-        chart.userId = newUser.userId
-
-        const storeChartResp = await fetch('/api/store-chart', {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(chart),
-        })
-        console.log('storeChart response', storeChartResp)
-        const newChart = await storeChartResp.json()
-        console.log('newChart', newChart)
-        this.$emit('chart', newChart)
+        const respData = await resp.json()
+        console.log('Response', respData)
+        this.chart = {
+          careerType: respData.type,
+          interactionStyle: respData.strategy,
+          keyIndicators: respData.theme.split(' or '),
+          decisionMakingStrategy: respData.innerAuthority,
+          publicRole: respData.profile.split(' / '),
+          assimilation: respData.definition,
+          traits: respData.traits,
+        }
+        console.log('Got chart', this.chart)
       } catch (e) {
-        console.warn('Could not save', e)
-        this.$emit('chart', chart)
+        console.log('Failed to get chart; please retry')
+        this.isLoading = false
       }
-      this.isLoading = false
+
+      if (this.chart) {
+        try {
+          // Store an empty user to reserve the user_id
+          const storeUserResp = await fetch('/api/store-user', {
+            method: 'POST',
+            headers,
+            body: '{}',
+          })
+          const newUser = await storeUserResp.json()
+          this.$emit('user', newUser)
+          console.log('newUser', newUser)
+
+          this.chart.userId = newUser.userId
+
+          const storeChartResp = await fetch('/api/store-chart', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(this.chart),
+          })
+          console.log('storeChart response', storeChartResp)
+          const newChart = await storeChartResp.json()
+          console.log('newChart', newChart)
+          this.$emit('chart', newChart)
+        } catch (e) {
+          console.warn('Could not save', e)
+          this.$emit('chart', this.chart)
+        }
+        this.isLoading = false
+      }
     },
     saveDate(date) {
       this.$refs.isDatePickerVisible.save(date)

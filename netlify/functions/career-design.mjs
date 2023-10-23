@@ -1,4 +1,4 @@
-export default async (request, context) => {
+export default async (request) => {
   const requestParams = await request.json()
   console.log('requestParams', requestParams)
 
@@ -103,6 +103,10 @@ export default async (request, context) => {
 
   let ocrResponse
 
+  // WARN I have seen this take up to 26 seconds to complete, which then causes
+  // the function to timeout. Nothing to do about this; even the PRO Netlify
+  // version has a max 28 second timeout. However the PRO space time is much
+  // faster, so can upgrade to that when needed.
   try {
     ocrResponse = await fetch('https://api.ocr.space/parse/image', ocrRequest)
   } catch (e) {
