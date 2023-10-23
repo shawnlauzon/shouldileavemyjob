@@ -28,6 +28,6 @@ export default withPlanetscale(async (request, context) => {
 
   return Response.json(user, {
     // 200 = UPDATE, 201 = INSERT
-    statusCode: userId ? 200 : 201,
+    status: userId ? 200 : 201,
   })
 })
