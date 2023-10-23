@@ -1,6 +1,8 @@
 import { withPlanetscale } from '@netlify/planetscale'
 
 export default withPlanetscale(async (request, context) => {
+  console.log('context', context)
+  console.log('config', context.planetscale.connection.config)
   const {
     planetscale: { connection },
   } = context
@@ -8,22 +10,22 @@ export default withPlanetscale(async (request, context) => {
   const params = await request.json()
   console.log('params', params)
 
-  let result
   let user
   if (params.id) {
-    result = await connection.execute(
-      'UPDATE users SET email = ? WHERE id = ?) VALUES (?, ?)',
-      [params.email, params.id]
+    const result = await connection.execute(
+      'UPDATE users SET first_name = ?, email = ? WHERE id = ?) VALUES (?, ?, ?)',
+      [params.firstName, params.email, params.id]
     )
     user = Object.assign({}, params)
+    console.log('UPDATE result', result)
   } else {
-    result = await connection.execute(
-      'INSERT INTO users (first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?)',
-      [params.firstName, params.lastName, params.email, params.phoneNumber]
+    const result = await connection.execute(
+      'INSERT INTO users (first_name, last_name, email) VALUES (?, ?, ?)',
+      [params.firstName, params.lastName, params.email]
     )
     user = Object.assign({ id: result.insertId }, params)
+    console.log('INSERT result', result)
   }
-  console.log('INSERT result', result)
 
   return Response.json(user, {
     // 200 = UPDATE, 201 = INSERT

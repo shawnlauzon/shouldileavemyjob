@@ -12,6 +12,17 @@
       unique design. Cancel anytime.
     </div>
     <v-text-field
+      label="First name"
+      :value="value"
+      :rules="[rules.required]"
+      @change="$emit('input', $event)"
+    ></v-text-field>
+    <v-text-field
+      label="Last name"
+      :value="value"
+      @change="$emit('input', $event)"
+    ></v-text-field>
+    <v-text-field
       label="Email address"
       :value="value"
       :rules="[rules.required, rules.email]"

@@ -114,7 +114,6 @@ export default async (request) => {
   }
 
   const ocrData = await ocrResponse.json()
-  console.log('ocrData', ocrData)
   const parsedText = ocrData.ParsedResults[0].ParsedText
 
   // Match each trait.quality
