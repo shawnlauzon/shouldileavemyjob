@@ -13,8 +13,8 @@ export default withPlanetscale(async (request, context) => {
   let result
   if (userId) {
     result = await connection.execute(
-      'UPDATE users SET email = ?, first_name = ?, last_name = ?, phone_number = ? WHERE user_id = ?) VALUES (?, ?, ?, ?, ?)',
-      [email, firstName, lastName, phoneNumber, userId]
+      'UPDATE users SET email = ? WHERE user_id = ?) VALUES (?, ?)',
+      [email, userId]
     )
   } else {
     result = await connection.execute(
