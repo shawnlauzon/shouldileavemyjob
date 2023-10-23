@@ -663,7 +663,6 @@ export default {
             body: '{}',
           })
           const newUser = await storeUserResp.json()
-          this.$emit('user', newUser)
           console.log('newUser', newUser)
 
           this.chart.userId = newUser.id

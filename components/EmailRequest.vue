@@ -12,21 +12,21 @@
       unique design. Cancel anytime.
     </div>
     <v-text-field
+      v-model="user.firstName"
       label="First name"
-      :value="value"
       :rules="[rules.required]"
-      @change="$emit('input', $event)"
+      @input="$emit('user', user)"
     ></v-text-field>
     <v-text-field
+      v-model="user.lastName"
       label="Last name"
-      :value="value"
-      @change="$emit('input', $event)"
+      @input="$emit('user', user)"
     ></v-text-field>
     <v-text-field
+      v-model="user.email"
       label="Email address"
-      :value="value"
       :rules="[rules.required, rules.email]"
-      @change="$emit('input', $event)"
+      @input="$emit('user', user)"
     ></v-text-field>
     <v-checkbox
       value="value"
@@ -42,11 +42,13 @@
 
 <script>
 export default {
-  props: {
-    value: { type: String, default: null },
-  },
   data() {
     return {
+      user: {
+        firstName: undefined,
+        lastName: undefined,
+        email: undefined,
+      },
       rules: {
         required: (value) => !!value || 'Required.',
         email: (value) => {
@@ -57,6 +59,6 @@ export default {
       },
     }
   },
-  emit: ['agreed'],
+  emit: ['agreed', 'user'],
 }
 </script>

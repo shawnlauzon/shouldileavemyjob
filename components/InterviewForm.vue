@@ -69,7 +69,7 @@
           </YesNoQuestion>
         </v-stepper-content>
         <v-stepper-content step="emailAddress" class="pa-2">
-          <EmailRequest v-model="emailAddress" @agreed="setEmailAgreed" />
+          <EmailRequest @agreed="setEmailAgreed" @user="setUser" />
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -89,7 +89,8 @@
       <v-btn
         v-else
         class="mx-2"
-        :disabled="!emailAddress || !isEmailAgreed"
+        :disabled="!user?.email || !isEmailAgreed"
+        :loading="isStoring"
         color="primary"
         @click="complete()"
       >
@@ -147,14 +148,15 @@ export default {
       type: Array,
       default: () => [],
     },
-    value: { type: Object, default: null },
+    userId: { type: Number, required: true },
   },
   data: function () {
     return {
       curQuestionIndex: 0,
       answers: {},
-      emailAddress: undefined,
+      user: undefined,
       isEmailAgreed: false,
+      isStoring: false,
       questions: [
         {
           step: 'resistenceFrequency',
@@ -165,7 +167,7 @@ export default {
               update: (acc, ans) =>
                 acc.update(
                   -ans,
-                  `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
+                  `${this.keyIndicators[0]} is your sign that you're doing things in contrast to
               your design, and the fact that you feel that so often is a sign that
               something should change.`
                 ),
@@ -175,7 +177,7 @@ export default {
               update: (acc, ans) =>
                 acc.update(
                   -ans,
-                  `${this.keyIndicators[0]} is your sign that you're doing things in contrast to 
+                  `${this.keyIndicators[0]} is your sign that you're doing things in contrast to
               your design, and the fact that you feel that so often is a sign that
               something should change.`
                 ),
@@ -549,11 +551,33 @@ export default {
     answerFor: function (q) {
       return this.answers[q]
     },
+    setUser(user) {
+      this.user = user
+    },
     setEmailAgreed: function (v) {
       this.isEmailAgreed = v
     },
     complete: async function () {
-      this.$emit('email', this.emailAddress)
+      try {
+        this.isStoring = true
+        const headers = new Headers()
+        headers.append('Content-Type', 'application/json')
+        headers.append('Accept', 'application/json; q=0.01')
+
+        this.user.id = this.userId
+
+        const storeUserResp = await fetch('/api/store-user', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(this.user),
+        })
+        await storeUserResp.json()
+        console.log('User updated')
+      } catch (e) {
+        console.warn('Failed to update user', e)
+      }
+      this.isStoring = false
+
       this.$emit('complete', this.conclusion)
     },
   },
