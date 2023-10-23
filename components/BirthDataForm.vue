@@ -635,7 +635,6 @@ export default {
         headers,
         body: JSON.stringify(params),
       })
-      this.isLoading = false
       const respData = await resp.json()
       console.log('Response', respData)
       const chart = {
@@ -675,6 +674,7 @@ export default {
         console.warn('Could not save', e)
         this.$emit('chart', chart)
       }
+      this.isLoading = false
     },
     saveDate(date) {
       this.$refs.isDatePickerVisible.save(date)
