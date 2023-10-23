@@ -4,12 +4,12 @@
       <v-container>
         <IntroText v-if="!isStarted" @click="isStarted = true" />
         <BirthDataForm
-          v-if="isStarted && !hasDesign"
+          v-if="isStarted && !hasChart"
           @user="handleUser"
           @chart="handleChart"
         />
         <InterviewForm
-          v-if="hasDesign && !isComplete"
+          v-if="hasChart && !isComplete"
           v-bind="chart"
           v-model="conclusion"
           @email="handleEmail"
