@@ -1,8 +1,6 @@
 import { withPlanetscale } from '@netlify/planetscale'
 
 export default withPlanetscale(async (request, context) => {
-  console.log('context', context)
-  console.log('config', context.planetscale.connection.config)
   const {
     planetscale: { connection },
   } = context
