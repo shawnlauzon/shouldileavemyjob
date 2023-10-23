@@ -9,8 +9,8 @@
         <template v-for="q in questions">
           <v-stepper-step
             v-if="q.isVisible()"
-            class="pa-0"
             :key="q.step"
+            class="pa-0"
             :complete="answers[q.step] !== undefined"
             step=""
           >
@@ -553,6 +553,7 @@ export default {
       this.isEmailAgreed = v
     },
     complete: function () {
+      // TODO Store email
       this.$emit('complete', this.conclusion)
     },
   },

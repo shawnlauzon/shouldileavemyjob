@@ -12,10 +12,10 @@ module.exports = {
     requireConfigFile: false,
   },
   extends: [
-    '@vue/eslint-config-typescript/recommended',
-    '@vue/eslint-config-prettier',
-    '@nuxtjs',
+    'eslint:recommended',
+    'plugin:vue/recommended',
     'plugin:nuxt/recommended',
+    'prettier',
   ],
   plugins: [],
   // add your custom rules here
