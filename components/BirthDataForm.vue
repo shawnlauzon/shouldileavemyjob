@@ -654,9 +654,11 @@ export default {
         headers,
         body: '{}',
       })
-      console.log('storeUser response', storeChartResp)
+      const newUser = await storeUserResp.json()
 
-      chart.userId = storeChartResp.user_id
+      console.log('newUser', newUser)
+
+      chart.userId = newUser.userId
 
       const storeChartResp = await fetch('/api/store-chart', {
         method: 'POST',
@@ -664,8 +666,10 @@ export default {
         body: JSON.stringify(chart),
       })
       console.log('storeChart response', storeChartResp)
+      const newChart = await storeChartResp.json()
+      console.log('newChart', newChart)
 
-      this.$emit('chart', chart)
+      this.$emit('chart', newChart)
     },
     saveDate(date) {
       this.$refs.isDatePickerVisible.save(date)
