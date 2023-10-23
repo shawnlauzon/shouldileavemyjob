@@ -8,13 +8,13 @@ export default withPlanetscale(async (request, context) => {
   const params = await request.json()
   console.log('params', params)
 
-  const { userId, email, firstName, lastName, phoneNumber } = params
+  const { id, email, firstName, lastName, phoneNumber } = params
 
   let result
-  if (userId) {
+  if (id) {
     result = await connection.execute(
-      'UPDATE users SET email = ? WHERE user_id = ?) VALUES (?, ?)',
-      [email, userId]
+      'UPDATE users SET email = ? WHERE id = ?) VALUES (?, ?)',
+      [email, id]
     )
   } else {
     result = await connection.execute(
@@ -24,10 +24,10 @@ export default withPlanetscale(async (request, context) => {
   }
   console.log('INSERT result', result)
 
-  const user = Object.assign({ userId: result.insertId }, params)
+  const user = Object.assign({ id: result.insertId }, params)
 
   return Response.json(user, {
     // 200 = UPDATE, 201 = INSERT
-    status: userId ? 200 : 201,
+    status: id ? 200 : 201,
   })
 })
