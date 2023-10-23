@@ -648,7 +648,7 @@ export default {
       }
       console.log('Got chart', chart)
 
-      // Store an empty user simply to get the user_id
+      // Store an empty user to reserve the user_id
       const storeUserResp = await fetch('/api/store-user', {
         method: 'POST',
         headers,
