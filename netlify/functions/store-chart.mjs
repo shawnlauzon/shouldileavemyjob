@@ -23,7 +23,7 @@ export default withPlanetscale(async (request, context) => {
     [
       userId,
       careerType,
-      publicRole.toString(),
+      publicRole.join('/'),
       assimilation,
       decisionMakingStrategy,
       JSON.stringify(traits),
