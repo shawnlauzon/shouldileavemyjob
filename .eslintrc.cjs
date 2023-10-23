@@ -1,6 +1,3 @@
-// Workaround; see https://www.npmjs.com/package/@vue/eslint-config-typescript
-require('@rushstack/eslint-patch/modern-module-resolution')
-
 module.exports = {
   root: true,
   env: {
