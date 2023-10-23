@@ -46,18 +46,22 @@ export default {
     },
     handleEmail: async function (email) {
       if (this.user) {
-        const headers = new Headers()
-        headers.append('Content-Type', 'application/json')
-        headers.append('Accept', 'application/json; q=0.01')
+        try {
+          const headers = new Headers()
+          headers.append('Content-Type', 'application/json')
+          headers.append('Accept', 'application/json; q=0.01')
 
-        this.user.email = email
-        const storeUserResp = await fetch('/api/store-user', {
-          method: 'POST',
-          headers,
-          body: this.user,
-        })
-        await storeUserResp.json()
-        console.log('User email updated')
+          this.user.email = email
+          const storeUserResp = await fetch('/api/store-user', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(this.user),
+          })
+          await storeUserResp.json()
+          console.log('User email updated')
+        } catch (e) {
+          console.warn('Failed to update email', e)
+        }
       } else {
         console.warn('Not saving email; no user defined')
       }
