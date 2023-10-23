@@ -666,7 +666,7 @@ export default {
           this.$emit('user', newUser)
           console.log('newUser', newUser)
 
-          this.chart.userId = newUser.userId
+          this.chart.userId = newUser.id
 
           const storeChartResp = await fetch('/api/store-chart', {
             method: 'POST',

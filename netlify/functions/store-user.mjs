@@ -8,26 +8,25 @@ export default withPlanetscale(async (request, context) => {
   const params = await request.json()
   console.log('params', params)
 
-  const { id, email, firstName, lastName, phoneNumber } = params
-
   let result
-  if (id) {
+  let user
+  if (params.id) {
     result = await connection.execute(
       'UPDATE users SET email = ? WHERE id = ?) VALUES (?, ?)',
-      [email, id]
+      [params.email, params.id]
     )
+    user = Object.assign({}, params)
   } else {
     result = await connection.execute(
-      'INSERT INTO users (email, first_name, last_name, phone_number) VALUES (?, ?, ?, ?)',
-      [email, firstName, lastName, phoneNumber]
+      'INSERT INTO users (first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?)',
+      [params.firstName, params.lastName, params.email, params.phoneNumber]
     )
+    user = Object.assign({ id: result.insertId }, params)
   }
   console.log('INSERT result', result)
 
-  const user = Object.assign({ id: result.insertId }, params)
-
   return Response.json(user, {
     // 200 = UPDATE, 201 = INSERT
-    status: id ? 200 : 201,
+    status: params.id ? 200 : 201,
   })
 })
