@@ -11,12 +11,12 @@ export default withPlanetscale(async (request, context) => {
   let user
   if (params.id) {
     const result = await connection.execute(
-      'UPDATE users SET first_name = ?, last_name = ?, email = ?, phone_number = ?, updated_at = ? WHERE id = ?',
+      'UPDATE birth_data SET datetime = ?, country = ?, city = ?, state = ?, updated_at = ? WHERE id = ?',
       [
-        params.firstName,
-        params.lastName,
-        params.email,
-        params.phoneNumber,
+        params.datetime,
+        params.country,
+        params.city,
+        params.state,
         new Date().toISOString().slice(0, 19).replace('T', ' '),
         params.id,
       ]
@@ -25,8 +25,14 @@ export default withPlanetscale(async (request, context) => {
     console.log('UPDATE result', result)
   } else {
     const result = await connection.execute(
-      'INSERT INTO users (first_name, last_name, email) VALUES (?, ?, ?)',
-      [params.firstName, params.lastName, params.email]
+      'INSERT INTO birth_data (user_id, datetime, country, city, state) VALUES (?, ?, ?, ?, ?)',
+      [
+        params.userId,
+        params.datetime,
+        params.country,
+        params.city,
+        params.state,
+      ]
     )
     user = Object.assign({ id: parseInt(result.insertId) }, params)
     console.log('INSERT result', result)

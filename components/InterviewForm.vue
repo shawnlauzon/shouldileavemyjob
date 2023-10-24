@@ -573,12 +573,12 @@ export default {
         })
         await storeUserResp.json()
         console.log('User updated')
+
+        this.$emit('complete', this.conclusion)
       } catch (e) {
         console.warn('Failed to update user', e)
       }
       this.isStoring = false
-
-      this.$emit('complete', this.conclusion)
     },
   },
 }

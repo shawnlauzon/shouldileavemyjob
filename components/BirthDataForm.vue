@@ -667,15 +667,33 @@ export default {
 
           this.chart.userId = newUser.id
 
-          const storeChartResp = await fetch('/api/store-chart', {
+          const storeBirthData = fetch('/api/store-birth-data', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              userId: newUser.id,
+              datetime: this.date + ' ' + this.time,
+              country: this.country.abbr,
+              city: this.city,
+              state: this.state.abbr,
+            }),
+          })
+
+          // const birthData = await storeBirthDataResp.json()
+          // console.log('birthData', birthData)
+
+          const storeChart = fetch('/api/store-chart', {
             method: 'POST',
             headers,
             body: JSON.stringify(this.chart),
-          })
-          console.log('storeChart response', storeChartResp)
-          const newChart = await storeChartResp.json()
-          console.log('newChart', newChart)
-          this.$emit('chart', newChart)
+          }).then(async (resp) => await resp.json())
+
+          const responses = await Promise.all([storeBirthData, storeChart])
+
+          // console.log('storeChart response', storeChartResp)
+          // const newChart = await storeChartResp.json()
+          console.log('newChart', responses[1])
+          this.$emit('chart', responses[1])
         } catch (e) {
           console.warn('Could not save', e)
           this.$emit('chart', this.chart)
