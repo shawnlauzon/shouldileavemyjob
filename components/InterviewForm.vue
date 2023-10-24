@@ -505,7 +505,6 @@ export default {
         score: 0,
         hasJobLinedUp: undefined,
         findJobThroughNetwork: this.publicRole.includes('Influencer'),
-        decisionMakingStrategy: this.decisionMakingStrategy,
         messages: [],
         deltas: [],
         update: function (delta, msg) {
@@ -566,15 +565,28 @@ export default {
 
         this.user.id = this.userId
 
-        const storeUserResp = await fetch('/api/store-user', {
+        const storeUser = await fetch('/api/store-user', {
           method: 'POST',
           headers,
           body: JSON.stringify(this.user),
         })
-        await storeUserResp.json()
-        console.log('User updated')
+        // await storeUserResp.json()
+        // console.log('User updated')
 
-        this.$emit('complete', this.conclusion)
+        const storeInterview = await fetch('/api/store-interview', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            userId: this.userId,
+            answers: JSON.stringify(this.answers),
+            conclusion: JSON.stringify(this.conclusion),
+          }),
+        }).then(async (resp) => await resp.json())
+
+        const responses = await Promise.all([storeUser, storeInterview])
+        console.log('conclusion', responses[1])
+
+        this.$emit('complete', responses[1])
       } catch (e) {
         console.warn('Failed to update user', e)
       }
