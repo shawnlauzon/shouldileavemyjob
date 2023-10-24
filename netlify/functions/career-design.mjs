@@ -99,7 +99,7 @@ export default async (request) => {
     headers: ocrHeaders,
     body: ocrBody,
     redirect: 'follow',
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(5000),
   }
 
   // WARN I have seen this take up to 26 seconds to complete, which then causes

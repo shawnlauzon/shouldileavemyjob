@@ -26,10 +26,11 @@
       v-model="user.email"
       label="Email address"
       :rules="[rules.required, rules.email]"
+      :error-messages="errors"
       @input="$emit('user', user)"
     ></v-text-field>
     <v-checkbox
-      value="value"
+      v-model="isAgreed"
       :false-value="false"
       :true-value="true"
       :rules="[rules.required]"
@@ -49,6 +50,9 @@ export default {
         lastName: undefined,
         email: undefined,
       },
+      isAgreed: false,
+      errors: [],
+      isEmailUnique: true,
       rules: {
         required: (value) => !!value || 'Required.',
         email: (value) => {
@@ -59,6 +63,26 @@ export default {
       },
     }
   },
+  watch: {
+    // Limit how often we validate the email
+    'user.email'() {
+      if (this.rules.email(this.user.email) === true && this.isAgreed) {
+        this.validateUniqueEmail()
+      }
+    },
+    isAgreed() {
+      if (this.rules.email(this.user.email) === true && this.isAgreed) {
+        this.validateUniqueEmail()
+      }
+    },
+  },
   emit: ['agreed', 'user'],
+  methods: {
+    validateUniqueEmail() {
+      fetch(encodeURI('/api/find-user?email=' + this.user.email))
+        .then((resp) => resp.json())
+        .then((json) => (this.errors = json === null ? [] : ['Email in use.']))
+    },
+  },
 }
 </script>
