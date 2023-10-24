@@ -87,7 +87,7 @@ export default async (request) => {
   console.log('Length of image is', imageData.length)
 
   const ocrHeaders = new Headers()
-  ocrHeaders.append('apikey', 'K84139848188957')
+  ocrHeaders.append('apikey', process.env.OCR_SPACE_API_KEY)
   ocrHeaders.append('Accept', 'application/json; q=0.01')
 
   const ocrBody = new FormData()
@@ -99,27 +99,29 @@ export default async (request) => {
     headers: ocrHeaders,
     body: ocrBody,
     redirect: 'follow',
+    signal: AbortSignal.timeout(8000),
   }
-
-  let ocrResponse
 
   // WARN I have seen this take up to 26 seconds to complete, which then causes
   // the function to timeout. Nothing to do about this; even the PRO Netlify
   // version has a max 28 second timeout. However the PRO space time is much
   // faster, so can upgrade to that when needed.
   try {
-    ocrResponse = await fetch('https://api.ocr.space/parse/image', ocrRequest)
+    const ocrResponse = await fetch(
+      'https://api.ocr.space/parse/image',
+      ocrRequest
+    )
+    const ocrData = await ocrResponse.json()
+    console.log('ocrData', ocrData)
+    const parsedText = ocrData.ParsedResults[0].ParsedText
+
+    // Match each trait.quality
+    const regex = /(\d+\.\d+)/gm
+
+    finalResult.traits = parsedText.match(regex)
   } catch (e) {
     console.error('Failure performing OCR', e)
   }
-
-  const ocrData = await ocrResponse.json()
-  const parsedText = ocrData.ParsedResults[0].ParsedText
-
-  // Match each trait.quality
-  const regex = /(\d+\.\d+)/gm
-
-  finalResult.traits = parsedText.match(regex)
 
   console.log('Returning', finalResult)
 
