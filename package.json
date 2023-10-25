@@ -20,6 +20,7 @@
   "dependencies": {
     "@netlify/functions": "^2.3.0",
     "@netlify/planetscale": "^1.1.0",
+    "@nuxtjs/i18n": "^7.3.1",
     "@planetscale/database": "^1.11.0",
     "core-js": "^3.19.3",
     "cypress": "^10.0.3",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
+    "@intlify/vue-i18n-loader": "^1.1.0",
     "@nuxtjs/eslint-config": "^11.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "^1.12.3",

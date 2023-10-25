@@ -34,7 +34,20 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/i18n'],
+
+  i18n: {
+    defaultLocale: 'en',
+    vueI18nLoader: true,
+    // vueI18n: {
+    //   en: {
+    //     hatesManagedSelfEmployed:
+    //       'There are a few people in the world who are designed to not have a boss,\
+    //     and you are one of them. You hate being told what to do, and so having a boss\
+    //     is the worst. So, well done on working for yourself!',
+    //   },
+    // },
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

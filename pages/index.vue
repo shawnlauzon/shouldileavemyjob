@@ -10,7 +10,7 @@
           v-model="conclusion"
           @complete="handleInterviewComplete"
         />
-        <ConclusionView v-if="isComplete" v-bind="conclusion" />
+        <ConclusionView v-if="isComplete" v-bind="conclusion" :chart="chart" />
       </v-container>
     </v-main>
   </v-app>

@@ -4,8 +4,8 @@
     <div class="text-body-1">
       A quiz can never replace your own inner wisdom! So most importantly,
       follow your decision making strategy. Which is:
-      <div class="my-6 text-center font-weight-bold">
-        {{ decisionMakingStrategy }}
+      <div class="my-4 text-h4 text-center">
+        {{ chart.decisionMakingStrategy }}
       </div>
     </div>
     <div class="text-body-1">
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div v-else>
-          <div class="text-h4 text-md-h3">
+          <div class="text-h3 text-md-h3">
             Put your job search into overdrive.
           </div>
           <div class="text-body-1 my-6">
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div v-else>
-        <div class="text-h4 text-md-h3">It's time to go.</div>
+        <div class="text-h3 text-md-h3">It's time to go.</div>
         <div class="text-body-1 my-6">
           You're feeling lots of resistence in your current job. So what's
           holding you back?
@@ -52,7 +52,7 @@
       </div>
     </div>
     <div v-else-if="score > 8">
-      <div class="text-h4 text-md-h3">Actually things are pretty good.</div>
+      <div class="text-h3 text-md-h3">Actually things are pretty good.</div>
       <div class="text-body-1 my-6">
         It seems like you've got pretty good alignment with your current job.
         But since you're taking this test, it seems likely that you think
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div v-else>
-      <div class="text-h4 text-md-h3">See if you can make it better.</div>
+      <div class="text-h3 text-md-h3">See if you can make it better.</div>
       <div class="text-body-1 my-6">
         <p>
           You have a lot of positives for the current job. So my question to you
@@ -77,13 +77,21 @@
       </div>
     </div>
 
-    <div class="text-h5">Here's how we came up with your answer:</div>
-    <template v-for="(msg, index) in messages">
-      <div :key="`msg-${index}`" class="pa-4">
-        <div class="text-body-2">({{ deltaStr(index) }})</div>
-        <div class="text-body-1">{{ msg }}</div>
-      </div>
-    </template>
+    <div v-if="messages" class="text-h5">
+      Here's how we came up with your answer:
+      <template
+        v-for="(e, idx) in Array.from(messages).sort(
+          (a, b) => Math.abs(b.delta) - Math.abs(a.delta)
+        )"
+      >
+        <div :key="`msg-${idx}`" class="pa-4">
+          <div class="text-body-2">
+            ({{ e.delta > 0 ? '+' + e.delta : e.delta }})
+          </div>
+          <div class="text-body-1">{{ e.message }}</div>
+        </div>
+      </template>
+    </div>
 
     <!-- <div class="text-body-2 pa-4">
             Your score is {{ score }} out of 20.
@@ -97,16 +105,8 @@ export default {
     score: { type: Number, required: true },
     hasJobLinedUp: { type: Boolean, default: false },
     findJobThroughNetwork: { type: Boolean, default: false },
-    decisionMakingStrategy: { type: String, required: true },
-    deltas: { type: Array, default: () => [] },
+    chart: { type: Object, required: true },
     messages: { type: Array, default: () => [] },
-  },
-  methods: {
-    deltaStr: function (index) {
-      return this.deltas[index] > 0
-        ? '+' + this.deltas[index]
-        : this.deltas[index]
-    },
   },
 }
 </script>
