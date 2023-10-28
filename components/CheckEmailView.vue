@@ -1,5 +1,5 @@
 <template>
-  <v-container class="container">
+  <v-container class="no-margins">
     <v-img class="hero" src="/winner.jpg" />
     <div class="text-h2 ma-4">Nice work!</div>
     <div class="text-body-1 mx-8">
@@ -9,7 +9,7 @@
 </template>
 
 <style>
-.container {
+.no-margins {
   padding: 0;
   margin: 0;
   max-width: none;
