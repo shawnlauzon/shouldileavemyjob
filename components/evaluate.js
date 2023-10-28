@@ -55,7 +55,7 @@ export default function (chart, answers, i18n) {
           check: (ans) => ans < 4,
           update: function (acc, ans) {
             acc.update(10 - ans * 3, 'resistenceLow', {
-              indicator: chart.keyIndicators[0],
+              indicator: keyResistenceIndicator(),
             })
           },
         },
@@ -98,7 +98,7 @@ export default function (chart, answers, i18n) {
         {
           check: (ans) => ans === COLLABORATION_SOLO,
           update: function (acc) {
-            switch (this.assimilation) {
+            switch (chart.assimilation) {
               case 'Independent':
                 acc.update(10, 'independentSolo')
                 break
@@ -251,7 +251,7 @@ export default function (chart, answers, i18n) {
         chart.answerFor('selfEmployed') === false && chart.hatesBeingManaged,
       results: [
         {
-          check: (ans) => ans === true && this.hatesBeingManaged,
+          check: (ans) => ans === true && chart.hatesBeingManaged,
           update: (acc) => acc.update(-10, 'hatesManagedHasBoss'),
         },
       ],

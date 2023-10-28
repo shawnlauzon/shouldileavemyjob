@@ -10,8 +10,8 @@ export default withPlanetscale(async (request, context) => {
   console.log('params', params)
 
   const result = await connection.execute(
-    'INSERT INTO interviews (user_id, answers, conclusion) VALUES (?, ?, ?)',
-    [params.userId, params.answers, params.conclusion]
+    'INSERT INTO interviews (user_id, answers) VALUES (?, ?)',
+    [params.userId, params.answers]
   )
   const interview = Object.assign({ id: parseInt(result.insertId) }, params)
   console.log('INSERT result', interview)

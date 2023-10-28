@@ -50,11 +50,11 @@
             v-model="answers.interaction"
             :choices="[
               'Usually I\'m by myself.',
-              'Usually me with one other person.',
-              'Usually me with a group of people.',
+              'Usually I\'m with one other person.',
+              'Usually I\'m with a group of people.',
             ]"
           >
-            And at any one time, how are you connecting?
+            And how do you interact with others?
           </MultipleChoiceQuestion>
         </v-stepper-content>
         <!-- <v-stepper-content step="largeGroup" class="pa-2">
