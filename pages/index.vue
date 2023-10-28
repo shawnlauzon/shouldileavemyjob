@@ -1,16 +1,15 @@
 <template>
-  <v-app>
+  <v-app :style="{ background: $vuetify.theme.themes[theme].background }">
     <v-main>
-      <v-container>
-        <IntroText v-if="!isStarted" @click="isStarted = true" />
-        <BirthDataForm v-if="isStarted && !hasChart" @chart="saveChart" />
-        <InterviewForm
-          v-if="hasChart && !isComplete"
-          v-bind="chart"
-          v-model="conclusion"
-          @complete="handleInterviewComplete"
-        />
-      </v-container>
+      <IntroView v-if="!isStarted" @click="isStarted = true" />
+      <BirthDataForm v-if="isStarted && !hasChart" @chart="saveChart" />
+      <InterviewForm
+        v-if="hasChart && !isComplete"
+        v-bind="chart"
+        v-model="conclusion"
+        @complete="handleInterviewComplete"
+      />
+      <CheckEmailView v-if="isComplete" />
     </v-main>
   </v-app>
 </template>
@@ -29,13 +28,16 @@ export default {
     hasChart() {
       return this.chart !== undefined
     },
+    theme() {
+      return this.$vuetify.theme.dark ? 'dark' : 'light'
+    },
   },
   methods: {
     saveChart: function (chart) {
       this.chart = chart
     },
     handleInterviewComplete: function () {
-      this.$router.push('/check-your-email')
+      this.isComplete = true
     },
   },
 }

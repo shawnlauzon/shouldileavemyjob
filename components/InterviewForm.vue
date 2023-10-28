@@ -3,7 +3,9 @@
   <v-container class="d-flex justify-center flex-column">
     <v-stepper
       v-model="questions[curQuestionIndex].step"
-      class="elevation-0 flex-grow-1"
+      class="flex-grow-1"
+      elevation="0"
+      :style="{ background: 'transparent' }"
     >
       <v-stepper-header class="elevation-0 flex-nowrap">
         <template v-for="q in questions">

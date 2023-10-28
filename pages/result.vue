@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-app>
+  <v-app :style="{ background: $vuetify.theme.themes[theme].background }">
     <v-main>
       <v-container>
         <ConclusionView :interview-id="parseInt($route.query.id)" />
@@ -10,5 +10,11 @@
 </template>
 
 <script>
-export default {}
+export default {
+  computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? 'dark' : 'light'
+    },
+  },
+}
 </script>

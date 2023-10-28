@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid>
-    <div class="mb-6">
+  <v-container>
+    <div class="mb-6 mt-16">
       <div class="text-h4 text-md-h2 mb-6">Birth information</div>
       <div>To start, we need to know when and where you were born.</div>
     </div>
-    <v-row class="">
+    <v-row class="mx-2">
       <v-menu
         ref="isDatePickerVisible"
         v-model="isDatePickerVisible"
@@ -59,7 +59,7 @@
         </v-time-picker>
       </v-menu>
     </v-row>
-    <v-row>
+    <v-row class="mx-2">
       <v-select
         v-model="country"
         :items="countries"
@@ -81,7 +81,7 @@
         ></v-select>
       </span>
     </v-row>
-    <v-row>
+    <v-row class="mx-2">
       <v-text-field
         v-model="city"
         label="City"

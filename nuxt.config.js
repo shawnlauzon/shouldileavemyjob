@@ -33,6 +33,10 @@ export default {
     '@nuxtjs/vuetify',
   ],
 
+  vuetify: {
+    optionsPath: './vuetify.options.js',
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxt/http', '@nuxtjs/i18n'],
 
