@@ -22,7 +22,7 @@ export default async (request) => {
   bg5Body.append('Minute', birthDate.getMinutes())
   bg5Body.append(
     '__RequestVerificationToken',
-    'CfDJ8EEVtCbDjqBGkUQlp1CtPRp3JMeGfwhjoEjD_8FRQP0cSizEAqgYt6FqOnLVzGpkD9N4g3d_RNO56xlUitLSvuVP3RHdovyj1Qno7NpAbTRv1JXwFYc6rKcLJy378sqtoeHbwpoZUR-kbB4zAnSsSHaapAHixBjJFyCLvKk-PYIsDGZj9ePMrdcFJf4E-c-yOQ'
+    process.env.BG5_VERIFICATION_TOKEN
   )
 
   console.log('Passing to BG5:', bg5Body)
@@ -36,7 +36,7 @@ export default async (request) => {
   )
   bg5Headers.append(
     'RequestVerificationToken',
-    'CfDJ8EEVtCbDjqBGkUQlp1CtPRp3JMeGfwhjoEjD_8FRQP0cSizEAqgYt6FqOnLVzGpkD9N4g3d_RNO56xlUitLSvuVP3RHdovyj1Qno7NpAbTRv1JXwFYc6rKcLJy378sqtoeHbwpoZUR-kbB4zAnSsSHaapAHixBjJFyCLvKk-PYIsDGZj9ePMrdcFJf4E-c-yOQ'
+    process.env.BG5_VERIFICATION_TOKEN
   )
   bg5Headers.append('sec-ch-ua-mobile', '?0')
   bg5Headers.append(
@@ -54,10 +54,7 @@ export default async (request) => {
   bg5Headers.append('Sec-Fetch-Mode', 'cors')
   bg5Headers.append('Sec-Fetch-Dest', 'empty')
   bg5Headers.append('host', 'bg5businessinstitute.com')
-  bg5Headers.append(
-    'Cookie',
-    '.AspNet.Consent=yes; .AspNetCore.Antiforgery.7BxiT8-Rm8g=CfDJ8PpmqfI5f59Gg-BT-dJ02hB1zdgn61idtBeEFFIYFd0Qu-HwriQKtVLwIC5jm8ysBy-sd2jyo87715ax0h6DXrdHzPB5Pmg4tOoMfh50P_WPopOgPOcCfQ7F0Z9Ki4keMLMZCOd5kHyqSkW8m7NtyaI; .AspNetCore.Antiforgery.Q_cgsSubgpI=CfDJ8EEVtCbDjqBGkUQlp1CtPRpxN9vaN4r10y8uOH6eg2UbcjZ-wB7ZNDg9-SNdgDN3Az_cXsa1c2K5iwHVpYAkW8zqxL4_3aJsCu1-36tUZok8BeCpQGRBGtDYnixKbQOZar-G7J2iDmyRo4QSZIeMdoo; .AspNetCore.Identity.Application=CfDJ8EEVtCbDjqBGkUQlp1CtPRpp2mbTKiNV3OHEv18to6Qc0ITXCPTL8vLUe2Iih28pNM9vb27bm_zb1SVxt0uDdhv4hkRP1yg-cGD7SXjm3Y81L7QbNdBYlUGzqvh_x3k1ta_RBAoIhcpb5mSJDmwn90r84O3E57XtYqzznFx5tc-0kxDppvxKDYuLx3kMuU1_Ap_davZq1Y5lAkPu93fFejhLbTn6xqlcaPDyYS2svNZz-2CTFs867xaEBGi5GxeeL2J87BYVzXXev2R6mK0kOn6KWcrVgmGeGLnZ3Qd4bRouZMg_IvqGg8ePQpOmItbyNtuOi-j0v9ZL2J-B2LIc6hzFs3X0DqMR0CPKPfDMd0hQfHYMOJ2fqxHl2bl8l4trEJ2T58wBhcPTc2hzQPb3KAezKpRHCSliYB00BKmA12FpdRpoxpL-mz1mjCsgfQGI6zJ3U5B8bql-KOvO-M_TNAlogex1TEG0QnGpDuRuhTIoeOLaAkcX4Ds3xV_-GK2aaodJIfKp3P_oLUdm4YDxV49lcNFs4dZWl8CrUQiWYHNrXsiEFg9v1HKWkOhbgapM-Undn8eKLFF48pGHhw_6lsjz2q_6FSakbMuchryiIsMZ_xdtsafPPnbgvC0mBJ_G579lrUcVu1S-Apqo2mEjr4hkhWlSHTfwgMaQGGBsDCbvvFE8Uu7kiHI2YjTtjqRZ4ryszXBmHmx-QiceLbs4otIGx1HPLN1KxRTaxIxm25IUFmpDFSkv3xNSlmZlqU9RWF5EB75YfL1UI2DGSuZGNBq4sAx6OhkHFOUMr71fteRxqV8_C57lI1DNVwxmonIOwsEXAqWd_ABPPGJ_w1p6fsIR3U7VQemQrm2yluSeP-KRxHMp5oMLi_ZWKKCebUnoVgBQU4jxo4cn79jA8vsZqHXn3PrSf9Ok0TyCQWL4VSqyYzElWTRNQWzqYXb_mRFXr-HwIJEYCMdOwmuGm8Z7TtY0V0oWNOz6jBwqQYaQWuCIkcRe8cyw_gAffDBocIvr0Q; _ga=GA1.1.1574294499.1686795887; _ga_BMRG0TVB5F=GS1.1.1697825822.172.0.1697825822.60.0.0; _gat_gtag_UA_159236502_1=1; _gid=GA1.2.702925575.1697584465'
-  )
+  bg5Headers.append('Cookie', process.env.BG5_COOKIE)
 
   const bg5Request = {
     method: 'POST',
@@ -77,8 +74,19 @@ export default async (request) => {
     console.error('Failure fetching career design', e)
   }
 
+  console.log('BG5 status: ', bg5Response.status)
+
+  if (bg5Response.status !== 200) {
+    console.log('BG5 statusText: ', bg5Response.statusText)
+    console.log('BG5 text', await bg5Response.text())
+    return new Response(null, {
+      status: 500,
+      statusText: 'BG5 returned ' + bg5Response.status,
+    })
+  }
+
   const bg5Data = await bg5Response.json()
-  console.log('BG5 data', bg5Data)
+  // console.log('BG5 data', bg5Data)
 
   Object.assign(finalResult, bg5Data)
   delete finalResult.image
