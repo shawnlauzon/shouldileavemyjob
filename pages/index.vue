@@ -2,15 +2,14 @@
   <v-app>
     <v-main>
       <v-container>
-        <IntroText v-if="!isStarted" @click="isStarted = true" />
-        <BirthDataForm v-if="isStarted && !hasChart" @chart="saveChart" />
+        <!-- <IntroText v-if="!isStarted" @click="isStarted = true" />
+        <BirthDataForm v-if="isStarted && !hasChart" @chart="saveChart" /> -->
         <InterviewForm
           v-if="hasChart && !isComplete"
           v-bind="chart"
           v-model="conclusion"
           @complete="handleInterviewComplete"
         />
-        <ConclusionView v-if="isComplete" v-bind="conclusion" :chart="chart" />
       </v-container>
     </v-main>
   </v-app>
@@ -28,7 +27,8 @@ export default {
   },
   computed: {
     hasChart() {
-      return this.chart !== undefined
+      // return this.chart !== undefined
+      return true
     },
   },
   methods: {
@@ -36,7 +36,7 @@ export default {
       this.chart = chart
     },
     handleInterviewComplete: function () {
-      this.isComplete = true
+      this.$router.push('/check-your-email')
     },
   },
 }
