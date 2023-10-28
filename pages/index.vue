@@ -2,8 +2,8 @@
   <v-app>
     <v-main>
       <v-container>
-        <!-- <IntroText v-if="!isStarted" @click="isStarted = true" />
-        <BirthDataForm v-if="isStarted && !hasChart" @chart="saveChart" /> -->
+        <IntroText v-if="!isStarted" @click="isStarted = true" />
+        <BirthDataForm v-if="isStarted && !hasChart" @chart="saveChart" />
         <InterviewForm
           v-if="hasChart && !isComplete"
           v-bind="chart"
@@ -27,8 +27,7 @@ export default {
   },
   computed: {
     hasChart() {
-      // return this.chart !== undefined
-      return true
+      return this.chart !== undefined
     },
   },
   methods: {
