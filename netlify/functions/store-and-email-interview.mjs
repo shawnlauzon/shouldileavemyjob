@@ -21,7 +21,7 @@ export default withPlanetscale(async (request, context) => {
 
   const link = context.site.url + '/result?interview=' + interview.id
   const emailResponse = await client.sendEmail({
-    From: 'shawn@quantumconnecting.com',
+    From: 'shawn@practicalhumandesign.co',
     To: params.email,
     Subject: 'Your result for Should I Leave My Job',
     HtmlBody: `<p><strong>Hi ${params.firstName}!</strong></p><p>Your result is ready. <a href=${link}>Click here</a>\
