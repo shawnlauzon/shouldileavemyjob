@@ -78,10 +78,11 @@ export default async (request) => {
 
   if (bg5Response.status !== 200) {
     console.log('BG5 statusText: ', bg5Response.statusText)
-    console.log('BG5 text', await bg5Response.text())
-    return new Response(null, {
-      status: 500,
-      statusText: 'BG5 returned ' + bg5Response.status,
+    const text = await bg5Response.text()
+    console.log('BG5 text', text)
+    return new Response(text, {
+      status: bg5Response.status,
+      statusText: bg5Response.statusText,
     })
   }
 

@@ -82,9 +82,15 @@
       </span>
     </v-row>
     <v-row>
-      <v-text-field v-model="city" label="City"></v-text-field>
+      <v-text-field
+        v-model="city"
+        label="City"
+        :error-messages="cityErrors"
+        @input="cityErrors = []"
+      ></v-text-field>
     </v-row>
     <v-btn
+      class="mt-6"
       block
       :loading="isLoading"
       color="primary"
@@ -597,6 +603,7 @@ export default {
     isTimePickerVisible: false,
     isDatePickerVisible: false,
     chart: undefined,
+    cityErrors: [],
   }),
   computed: {
     isUsa() {
@@ -637,6 +644,16 @@ export default {
           headers,
           body: JSON.stringify(params),
         })
+        if (resp.status !== 200) {
+          if (resp.status === 400) {
+            const respError = await resp.json()
+            if (respError.error === 'PlaceNotFound') {
+              this.cityErrors.push(
+                'City not found; please choose another city in the same time zone.'
+              )
+            }
+          }
+        }
         const respData = await resp.json()
         console.log('Response', respData)
         this.chart = {
