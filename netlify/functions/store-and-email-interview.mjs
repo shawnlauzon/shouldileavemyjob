@@ -27,6 +27,7 @@ export default withPlanetscale(async (request, context) => {
     TemplateAlias: 'welcome',
     TemplateModel: {
       product_url: 'https://practicalhumandesign.co',
+      host_url: context.site.url,
       product_name: 'Practical Human Design',
       name: params.firstName,
       action_url: actionUrl,
