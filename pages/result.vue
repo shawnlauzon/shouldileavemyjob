@@ -3,18 +3,12 @@
   <v-app>
     <v-main>
       <v-container>
-        <ConclusionView :interview-id="parseInt($route.query.interview)" />
+        <ConclusionView :interview-id="parseInt($route.query.id)" />
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-export default {
-  data: function () {
-    return {}
-  },
-  computed: {},
-  methods: {},
-}
+export default {}
 </script>

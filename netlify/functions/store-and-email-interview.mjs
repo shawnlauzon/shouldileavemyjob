@@ -19,14 +19,22 @@ export default withPlanetscale(async (request, context) => {
   // Send an email:
   const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY)
 
-  const link = context.site.url + '/result?interview=' + interview.id
-  const emailResponse = await client.sendEmail({
+  const actionUrl = context.site.url + '/result?id=' + interview.id
+
+  const emailResponse = await client.sendEmailWithTemplate({
     From: 'shawn@practicalhumandesign.co',
     To: params.email,
-    Subject: 'Your result for Should I Leave My Job',
-    HtmlBody: `<p><strong>Hi ${params.firstName}!</strong></p><p>Your result is ready. <a href=${link}>Click here</a>\
-    to find out the answer to "should I leave my job?"</p>`,
-    MessageStream: 'outbound',
+    TemplateAlias: 'welcome',
+    TemplateModel: {
+      product_url: 'https://practicalhumandesign.co',
+      product_name: 'Practical Human Design',
+      name: params.firstName,
+      action_url: actionUrl,
+      support_email: 'help@practicalhumandesign.co',
+      sender_name: 'Shawn',
+      company_name: 'Quantum Connecting Technologies Inc',
+      company_address: '1800 W 68th St. Suite 118, Hialeah, FL  33014',
+    },
   })
   console.log('emailResponse', emailResponse)
 
