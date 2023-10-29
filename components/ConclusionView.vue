@@ -1,7 +1,8 @@
 <template>
-  <div class="ma-2">
+  <v-container class="ma-2">
+    <div class="text-h2 text-md-h1">Drumroll please ...</div>
     <div v-if="chart">
-      <div v-if="user" class="text-h2 text-md-h2 my-6">
+      <div v-if="user" class="text-h4 text-md-h2 my-6">
         So {{ user.firstName }}, should you leave your job?
       </div>
       <div class="text-body-1">
@@ -100,7 +101,7 @@
             Your score is {{ score }} out of 20.
         </div> -->
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>

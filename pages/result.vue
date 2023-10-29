@@ -2,9 +2,7 @@
 <template>
   <v-app :style="{ background: $vuetify.theme.themes[theme].background }">
     <v-main>
-      <v-container>
-        <ConclusionView :interview-id="parseInt($route.query.id)" />
-      </v-container>
+      <ConclusionView :interview-id="parseInt($route.query.id)" />
     </v-main>
   </v-app>
 </template>
