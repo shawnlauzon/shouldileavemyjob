@@ -8,6 +8,17 @@
   </v-container>
 </template>
 
+<script>
+export default {
+  mounted() {
+    this.$plausible.trackPageview({
+      trackLocalhost: true,
+      url: '/views/check-email',
+    })
+  },
+}
+</script>
+
 <style>
 .no-margins {
   padding: 0;

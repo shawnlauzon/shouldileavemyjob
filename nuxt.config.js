@@ -38,7 +38,7 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxt/http', '@nuxtjs/i18n'],
+  modules: ['@nuxt/http', '@nuxtjs/i18n', 'vue-plausible'],
 
   i18n: {
     defaultLocale: 'en',
@@ -51,6 +51,11 @@ export default {
     //     is the worst. So, well done on working for yourself!',
     //   },
     // },
+  },
+
+  plausible: {
+    domain: 'shouldileavemyjob.com',
+    trackLocalhost: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

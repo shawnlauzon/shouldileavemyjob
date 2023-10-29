@@ -619,6 +619,12 @@ export default {
       val && setTimeout(() => (this.activeDatePicker = 'YEAR'))
     },
   },
+  mounted() {
+    this.$plausible.trackPageview({
+      trackLocalhost: true,
+      url: '/views/birth-data',
+    })
+  },
   methods: {
     handleNext: async function () {
       const params = {
