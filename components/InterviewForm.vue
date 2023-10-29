@@ -328,7 +328,6 @@ export default {
   },
   mounted() {
     this.$plausible.trackPageview({
-      trackLocalhost: true,
       url: '/views/interview',
     })
   },

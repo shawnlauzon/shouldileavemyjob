@@ -55,7 +55,6 @@ export default {
 
   plausible: {
     domain: 'shouldileavemyjob.com',
-    trackLocalhost: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
