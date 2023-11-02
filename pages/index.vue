@@ -27,16 +27,17 @@ export default {
   head() {
     return {
       meta: [
+        { hid: 'og-type', property: 'og:type', content: 'website' },
         {
-          hid: 'og-type',
-          property: 'og:type',
-          content: 'Should I leave my job?',
+          hid: 'og-title',
+          property: 'og:title',
+          content: 'Confused if you should you leave your job?',
         },
         {
           hid: 'og-desc',
           property: 'og:description',
-          content: `Not sure if your current job is for you? Take this fun quiz 
-            which uses Human Design for Business to bring clarity to your dilemma.`,
+          content: `Take this 2 minute quiz to let Human Design for Business
+          help.`,
         },
         {
           hid: 'og-image',
