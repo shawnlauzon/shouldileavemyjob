@@ -24,6 +24,33 @@ export default {
       isComplete: false,
     }
   },
+  head() {
+    return {
+      meta: [
+        {
+          hid: 'og-type',
+          property: 'og:type',
+          content: 'Should I leave my job?',
+        },
+        {
+          hid: 'og-desc',
+          property: 'og:description',
+          content: `Not sure if your current job is for you? Take this fun quiz 
+            which uses Human Design for Business to bring clarity to your dilemma.`,
+        },
+        {
+          hid: 'og-image',
+          property: 'og:image',
+          content: 'https://shouldileavemyjob.com/woman-confused.jpg',
+        },
+        {
+          hid: 'og-url',
+          property: 'og:url',
+          content: 'https://shouldileavemyjob.com',
+        },
+      ],
+    }
+  },
   computed: {
     hasChart() {
       return this.chart !== undefined
