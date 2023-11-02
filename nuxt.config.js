@@ -38,7 +38,7 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxt/http', '@nuxtjs/i18n', 'vue-plausible'],
+  modules: ['@nuxt/http', '@nuxtjs/i18n', 'vue-plausible', '@nuxtjs/sentry'],
 
   i18n: {
     defaultLocale: 'en',
@@ -55,6 +55,10 @@ export default {
 
   plausible: {
     domain: 'shouldileavemyjob.com',
+  },
+
+  sentry: {
+    dsn: process.env.SENTRY_DSN,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
