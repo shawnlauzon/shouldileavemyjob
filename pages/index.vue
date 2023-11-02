@@ -31,7 +31,7 @@ export default {
         {
           hid: 'og-title',
           property: 'og:title',
-          content: 'Confused if you should you leave your job?',
+          content: "Wondering if you're a good fit for your job?",
         },
         {
           hid: 'og-desc',
