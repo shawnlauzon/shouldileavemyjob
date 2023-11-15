@@ -669,6 +669,7 @@ export default {
           publicRole: respData.profile.split(' / '),
           assimilation: respData.definition,
           traits: respData.traits,
+          image: respData.image,
         }
         console.log('Got chart', this.chart)
       } catch (e) {
