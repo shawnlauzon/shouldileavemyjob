@@ -10,11 +10,13 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:vue/recommended',
     'plugin:nuxt/recommended',
     'prettier',
   ],
-  plugins: [],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   // add your custom rules here
   rules: {
     'vue/multi-word-component-names': [

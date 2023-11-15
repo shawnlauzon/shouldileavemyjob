@@ -1,10 +1,11 @@
 import { wrap } from '@netlify/integrations'
+import type { HandlerEvent } from '@netlify/functions'
 import { withSentry } from '@netlify/sentry'
 
 const withIntegrations = wrap(withSentry)
 
-const handler = withIntegrations(async (request) => {
-  const requestParams = await request.json()
+const handler = withIntegrations(async (event: HandlerEvent) => {
+  const requestParams = JSON.parse(event.body)
   console.log('requestParams', requestParams)
 
   const dateTimeStr = requestParams.date + 'T' + requestParams.time
@@ -20,11 +21,11 @@ const handler = withIntegrations(async (request) => {
         : '')
   )
 
-  bg5Body.append('Month', birthDate.getMonth() + 1)
-  bg5Body.append('Day', birthDate.getDate())
-  bg5Body.append('Year', birthDate.getFullYear())
-  bg5Body.append('Hour', birthDate.getHours())
-  bg5Body.append('Minute', birthDate.getMinutes())
+  bg5Body.append('Month', (birthDate.getMonth() + 1).toString())
+  bg5Body.append('Day', birthDate.getDate().toString())
+  bg5Body.append('Year', birthDate.getFullYear().toString())
+  bg5Body.append('Hour', birthDate.getHours().toString())
+  bg5Body.append('Minute', birthDate.getMinutes().toString())
   bg5Body.append(
     '__RequestVerificationToken',
     process.env.BG5_VERIFICATION_TOKEN
@@ -32,7 +33,10 @@ const handler = withIntegrations(async (request) => {
 
   console.log('Passing to BG5:', bg5Body)
 
-  const finalResult = {}
+  const finalResult = {
+    traits: undefined,
+    statusCode: 200,
+  }
 
   const bg5Headers = new Headers()
   bg5Headers.append(
@@ -61,16 +65,14 @@ const handler = withIntegrations(async (request) => {
   bg5Headers.append('host', 'bg5businessinstitute.com')
   bg5Headers.append('Cookie', process.env.BG5_COOKIE)
 
-  const bg5Request = {
+  const bg5Request: RequestInit = {
     method: 'POST',
     headers: bg5Headers,
     body: bg5Body,
     redirect: 'follow',
   }
 
-  let bg5Response
-
-  bg5Response = await fetch(
+  const bg5Response = await fetch(
     'https://bg5businessinstitute.com/get-your-chart',
     bg5Request
   )
@@ -87,7 +89,6 @@ const handler = withIntegrations(async (request) => {
   const bg5Data = await bg5Response.json()
 
   Object.assign(finalResult, bg5Data)
-  delete finalResult.image
 
   const imageData = bg5Data.image
   console.log('Length of image is', imageData.length)
@@ -100,7 +101,7 @@ const handler = withIntegrations(async (request) => {
   ocrBody.append('base64Image', 'data:image/png;base64,' + imageData)
   ocrBody.append('OCREngine', '2')
 
-  const ocrRequest = {
+  const ocrRequest: RequestInit = {
     method: 'POST',
     headers: ocrHeaders,
     body: ocrBody,
@@ -129,7 +130,10 @@ const handler = withIntegrations(async (request) => {
 
   // Netlify Functions need to return an object with a statusCode
   // Other properties such as headers or body can also be included.
-  return Response.json(finalResult)
+  return {
+    body: JSON.stringify(finalResult),
+    statusCode: 200,
+  }
 })
 
 export { handler }
