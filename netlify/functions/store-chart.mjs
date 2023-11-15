@@ -28,7 +28,7 @@ export default withPlanetscale(async (request, context) => {
       assimilation,
       decisionMakingStrategy,
       JSON.stringify(traits),
-      Buffer.from(image, 'base64'),
+      image,
     ]
   )
   console.log('INSERT result', result)

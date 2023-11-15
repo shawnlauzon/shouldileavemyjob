@@ -25,7 +25,7 @@ export default withPlanetscale(async (request, context) => {
   }
 
   const row = result.rows[0]
-  const body = row.image.toString('base64')
+  const body = row.image
 
   return Response.json(body, { status: 200 })
 })
