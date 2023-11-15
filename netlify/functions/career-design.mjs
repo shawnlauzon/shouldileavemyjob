@@ -71,7 +71,7 @@ export default async (request) => {
       bg5Request
     )
   } catch (e) {
-    console.error('Failure fetching career design', e)
+    console.log('Failure fetching career design', e)
   }
 
   console.log('BG5 status: ', bg5Response.status)
@@ -87,7 +87,6 @@ export default async (request) => {
   }
 
   const bg5Data = await bg5Response.json()
-  // console.log('BG5 data', bg5Data)
 
   Object.assign(finalResult, bg5Data)
   delete finalResult.image
@@ -129,7 +128,7 @@ export default async (request) => {
 
     finalResult.traits = parsedText.match(regex)
   } catch (e) {
-    console.error('Failure performing OCR', e)
+    console.log('Failure performing OCR', e)
   }
 
   console.log('Returning', finalResult)
