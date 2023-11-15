@@ -1,4 +1,9 @@
-export default async (request) => {
+import { wrap } from '@netlify/integrations'
+import { withSentry } from '@netlify/sentry'
+
+const withIntegrations = wrap(withSentry)
+
+const handler = withIntegrations(async (request) => {
   const requestParams = await request.json()
   console.log('requestParams', requestParams)
 
@@ -65,26 +70,19 @@ export default async (request) => {
 
   let bg5Response
 
-  // try {
   bg5Response = await fetch(
     'https://bg5businessinstitute.com/get-your-chart',
     bg5Request
   )
-  // } catch (e) {
-  //   console.log('Failure fetching career design', e)
-  // }
 
-  // console.log('BG5 status: ', bg5Response.status)
+  console.log('BG5 status: ', bg5Response.status)
 
-  // if (bg5Response.status !== 200) {
-  //   console.log('BG5 statusText: ', bg5Response.statusText)
-  //   const text = await bg5Response.text()
-  //   console.log('BG5 text', text)
-  //   return new Response(text, {
-  //     status: bg5Response.status,
-  //     statusText: bg5Response.statusText,
-  //   })
-  // }
+  if (bg5Response.status !== 200) {
+    console.log('BG5 statusText: ', bg5Response.statusText)
+    const text = await bg5Response.text()
+    console.log('BG5 text', text)
+    throw Error('Failed to get BG5 chart: ' + bg5Response.statusText)
+  }
 
   const bg5Data = await bg5Response.json()
 
@@ -114,26 +112,24 @@ export default async (request) => {
   // the function to timeout. Nothing to do about this; even the PRO Netlify
   // version has a max 28 second timeout. However the PRO space time is much
   // faster, so can upgrade to that when needed.
-  try {
-    const ocrResponse = await fetch(
-      'https://api.ocr.space/parse/image',
-      ocrRequest
-    )
-    const ocrData = await ocrResponse.json()
-    console.log('ocrData', ocrData)
-    const parsedText = ocrData.ParsedResults[0].ParsedText
+  const ocrResponse = await fetch(
+    'https://api.ocr.space/parse/image',
+    ocrRequest
+  )
+  const ocrData = await ocrResponse.json()
+  console.log('ocrData', ocrData)
+  const parsedText = ocrData.ParsedResults[0].ParsedText
 
-    // Match each trait.quality
-    const regex = /(\d+\.\d+)/gm
+  // Match each trait.quality
+  const regex = /(\d+\.\d+)/gm
 
-    finalResult.traits = parsedText.match(regex)
-  } catch (e) {
-    console.log('Failure performing OCR', e)
-  }
+  finalResult.traits = parsedText.match(regex)
 
   console.log('Returning', finalResult)
 
   // Netlify Functions need to return an object with a statusCode
   // Other properties such as headers or body can also be included.
   return Response.json(finalResult)
-}
+})
+
+export { handler }
