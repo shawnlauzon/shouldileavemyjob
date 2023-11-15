@@ -65,26 +65,26 @@ export default async (request) => {
 
   let bg5Response
 
-  try {
-    bg5Response = await fetch(
-      'https://bg5businessinstitute.com/get-your-chart',
-      bg5Request
-    )
-  } catch (e) {
-    console.log('Failure fetching career design', e)
-  }
+  // try {
+  bg5Response = await fetch(
+    'https://bg5businessinstitute.com/get-your-chart',
+    bg5Request
+  )
+  // } catch (e) {
+  //   console.log('Failure fetching career design', e)
+  // }
 
-  console.log('BG5 status: ', bg5Response.status)
+  // console.log('BG5 status: ', bg5Response.status)
 
-  if (bg5Response.status !== 200) {
-    console.log('BG5 statusText: ', bg5Response.statusText)
-    const text = await bg5Response.text()
-    console.log('BG5 text', text)
-    return new Response(text, {
-      status: bg5Response.status,
-      statusText: bg5Response.statusText,
-    })
-  }
+  // if (bg5Response.status !== 200) {
+  //   console.log('BG5 statusText: ', bg5Response.statusText)
+  //   const text = await bg5Response.text()
+  //   console.log('BG5 text', text)
+  //   return new Response(text, {
+  //     status: bg5Response.status,
+  //     statusText: bg5Response.statusText,
+  //   })
+  // }
 
   const bg5Data = await bg5Response.json()
 
