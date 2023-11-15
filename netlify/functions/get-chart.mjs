@@ -9,10 +9,10 @@ export default withPlanetscale(async (request, context) => {
   let id
   const url = new URL(request.url)
   if (url.searchParams.has('id')) {
-    query = `SELECT image from interviews where id=?`
+    query = `SELECT image from charts where id=?`
     id = url.searchParams.get('id')
   } else if (url.searchParams.has('user_id')) {
-    query = `SELECT image from interviews where user_id=?`
+    query = `SELECT image from charts where user_id=?`
     id = url.searchParams.get('user_id')
   } else {
     throw Error('Require id or user_id query parameter')

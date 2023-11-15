@@ -5,6 +5,9 @@ import { withSentry } from '@netlify/sentry'
 const withIntegrations = wrap(withSentry)
 
 const handler = withIntegrations(async (event: HandlerEvent) => {
+  if (!event.body) {
+    throw Error('Expected body')
+  }
   const requestParams = JSON.parse(event.body)
   console.log('requestParams', requestParams)
 
@@ -28,7 +31,7 @@ const handler = withIntegrations(async (event: HandlerEvent) => {
   bg5Body.append('Minute', birthDate.getMinutes().toString())
   bg5Body.append(
     '__RequestVerificationToken',
-    process.env.BG5_VERIFICATION_TOKEN
+    process.env.BG5_VERIFICATION_TOKEN || ''
   )
 
   console.log('Passing to BG5:', bg5Body)
@@ -45,7 +48,7 @@ const handler = withIntegrations(async (event: HandlerEvent) => {
   )
   bg5Headers.append(
     'RequestVerificationToken',
-    process.env.BG5_VERIFICATION_TOKEN
+    process.env.BG5_VERIFICATION_TOKEN || ''
   )
   bg5Headers.append('sec-ch-ua-mobile', '?0')
   bg5Headers.append(
@@ -63,7 +66,7 @@ const handler = withIntegrations(async (event: HandlerEvent) => {
   bg5Headers.append('Sec-Fetch-Mode', 'cors')
   bg5Headers.append('Sec-Fetch-Dest', 'empty')
   bg5Headers.append('host', 'bg5businessinstitute.com')
-  bg5Headers.append('Cookie', process.env.BG5_COOKIE)
+  bg5Headers.append('Cookie', process.env.BG5_COOKIE || '')
 
   const bg5Request: RequestInit = {
     method: 'POST',
@@ -94,7 +97,7 @@ const handler = withIntegrations(async (event: HandlerEvent) => {
   console.log('Length of image is', imageData.length)
 
   const ocrHeaders = new Headers()
-  ocrHeaders.append('apikey', process.env.OCR_SPACE_API_KEY)
+  ocrHeaders.append('apikey', process.env.OCR_SPACE_API_KEY || '')
   ocrHeaders.append('Accept', 'application/json; q=0.01')
 
   const ocrBody = new FormData()

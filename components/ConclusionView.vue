@@ -130,6 +130,7 @@ export default {
     this.user = this.interview.user
     this.answers = this.interview.answers
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const obj = this
 
     const { score, messages } = evaluate(this.chart, this.answers, obj.$i18n)
