@@ -13,18 +13,20 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   data() {
     return {
-      image: null,
+      image: undefined as string | undefined,
     }
   },
   fetch: async function () {
     if (this.$route.query.id) {
-      this.image = await this.$http.$get(
-        '/api/get-chart?id=' + this.$route.query.id
-      )
+      this.image =
+        'data:image/png;base64, ' +
+        (await this.$http.$get('/api/get-chart?id=' + this.$route.query.id))
     } else if (this.$route.query.user_id) {
-      this.image = await this.$http.$get(
-        '/api/get-chart?user_id=' + this.$route.query.user_id
-      )
+      this.image =
+        'data:image/png;base64, ' +
+        (await this.$http.$get(
+          '/api/get-chart?user_id=' + this.$route.query.user_id
+        ))
     }
   },
 })
