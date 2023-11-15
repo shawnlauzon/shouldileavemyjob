@@ -1,25 +1,5 @@
 import { withPlanetscale } from '@netlify/planetscale'
 
-const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-  const byteCharacters = atob(b64Data)
-  const byteArrays = []
-
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize)
-
-    const byteNumbers = new Array(slice.length)
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i)
-    }
-
-    const byteArray = new Uint8Array(byteNumbers)
-    byteArrays.push(byteArray)
-  }
-
-  const blob = new Blob(byteArrays, { type: contentType })
-  return blob
-}
-
 export default withPlanetscale(async (request, context) => {
   const {
     planetscale: { connection },
@@ -48,7 +28,7 @@ export default withPlanetscale(async (request, context) => {
       assimilation,
       decisionMakingStrategy,
       JSON.stringify(traits),
-      b64toBlob(image),
+      Buffer.from(image, 'base64'),
     ]
   )
   console.log('INSERT result', result)
