@@ -18,7 +18,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     value: { type: Number, default: 5 },
   },
@@ -27,5 +29,5 @@ export default {
       labels: ['Never', '', '', '', '', '', '', '', '', '', 'Always'],
     }
   },
-}
+})
 </script>

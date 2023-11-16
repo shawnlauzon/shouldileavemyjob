@@ -8,11 +8,13 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   computed: {
     theme() {
       return this.$vuetify.theme.dark ? 'dark' : 'light'
     },
   },
-}
+})
 </script>

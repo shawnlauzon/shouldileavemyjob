@@ -15,7 +15,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   data: function () {
     return {
       isStarted: false,
@@ -68,5 +70,5 @@ export default {
       this.isComplete = true
     },
   },
-}
+})
 </script>

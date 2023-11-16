@@ -16,10 +16,12 @@
 </template>
 
 <script type="ts">
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     value: { type: Boolean, default: null },
     choices: { type: Array, default: () => ['Yes', 'No'] },
   },
-}
+})
 </script>

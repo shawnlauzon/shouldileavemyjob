@@ -8,7 +8,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   data() {
     return {
       image: undefined as string | undefined,
@@ -27,5 +29,5 @@ export default {
         ))
     }
   },
-}
+})
 </script>

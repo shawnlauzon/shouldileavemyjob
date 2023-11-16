@@ -106,8 +106,9 @@
 
 <script type="ts">
 import evaluate from './evaluate'
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   props: {
     interviewId: { type: Number, required: true },
   },
@@ -143,7 +144,7 @@ export default {
       return this.chart?.publicRole?.includes('Influencer')
     },
   },
-}
+})
 </script>
 
 <i18n lang="yaml" locale="en">

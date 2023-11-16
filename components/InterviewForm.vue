@@ -127,6 +127,8 @@
 </template>
 
 <script type="ts">
+import { defineComponent } from 'vue'
+
 const keyIndicatorFeelings = {
   Frustration: 'frustrated',
   Satisfaction: 'satisfied',
@@ -155,7 +157,7 @@ const oc16Strengths = [
   ['25', '51'],
   ['21', '45'],
 ]
-export default {
+export default defineComponent({
   props: {
     careerType: { type: String, default: 'Classic Builder' },
     interactionStyle: { type: String, default: 'Respond before Engaging' },
@@ -400,5 +402,5 @@ export default {
       this.isStoring = false
     },
   },
-}
+})
 </script>

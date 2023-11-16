@@ -51,7 +51,9 @@
 </template>
 
 <script type="ts">
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   data() {
     return {
       user: {
@@ -93,5 +95,5 @@ export default {
         .then((json) => (this.errors = json === null ? [] : ['Email in use.']))
     },
   },
-}
+})
 </script>

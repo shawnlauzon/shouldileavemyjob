@@ -104,6 +104,7 @@
 <script setup></script>
 
 <script type="ts">
+import { defineComponent } from 'vue'
 import { ref } from 'vue'
 const countries = [
   { name: 'Afghanistan', abbr: 'AF' },
@@ -590,7 +591,7 @@ const states = [
   },
 ]
 
-export default {
+export default defineComponent({
   props: { value: { type: Object, default: null } },
   data: () => ({
     date: undefined,
@@ -733,5 +734,5 @@ export default {
       this.isTimePickerVisible = false
     },
   },
-}
+})
 </script>

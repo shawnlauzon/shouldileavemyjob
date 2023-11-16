@@ -17,7 +17,9 @@
 </template>
 
 <script type="ts">
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     value: { type: Number, default: null },
     choices: { type: Array, required: true },
@@ -25,5 +27,5 @@ export default {
   data: function () {
     return {}
   },
-}
+})
 </script>
