@@ -20,12 +20,14 @@ export default defineComponent({
     if (this.$route.query.id) {
       this.image =
         'data:image/png;base64, ' +
-        (await this.$http.$get('/api/get-chart?id=' + this.$route.query.id))
+        (await this.$http.$get(
+          '/api/get-chart-image?id=' + this.$route.query.id
+        ))
     } else if (this.$route.query.user_id) {
       this.image =
         'data:image/png;base64, ' +
         (await this.$http.$get(
-          '/api/get-chart?user_id=' + this.$route.query.user_id
+          '/api/get-chart-image?user_id=' + this.$route.query.user_id
         ))
     }
   },
