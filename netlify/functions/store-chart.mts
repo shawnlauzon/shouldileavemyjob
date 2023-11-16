@@ -19,19 +19,21 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
     publicRole,
     assimilation,
     decisionMakingStrategy,
+    lifeWork,
     traits,
     image,
   } = params
 
   const result = await connection.execute(
     `INSERT INTO charts (user_id, career_type, public_role, assimilation, decision_making_strategy,\
-       traits, image) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       life_work, traits, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       userId,
       careerType,
       publicRole.join('/'),
       assimilation,
       decisionMakingStrategy,
+      lifeWork,
       JSON.stringify(traits),
       image,
     ]

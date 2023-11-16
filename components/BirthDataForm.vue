@@ -669,6 +669,7 @@ export default defineComponent({
           decisionMakingStrategy: respData.innerAuthority,
           publicRole: respData.profile.split(' / '),
           assimilation: respData.definition,
+          lifeWork: respData.cross,
           traits: respData.traits,
           image: respData.image,
         }
