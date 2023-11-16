@@ -90,10 +90,16 @@ export default defineComponent({
   emit: ['agreed', 'user'],
   methods: {
     async validateUniqueEmail() {
-      const res = await this.$http.get(encodeURI('/api/is-user-created?email=' + this.user.email))
-      if (res.ok) {
-        // OK in this case means the email was found, which is an error
-        this.errors = ['Email in use.']
+      try {
+        const res = await this.$http.get(encodeURI('/api/is-user-created?email=' + this.user.email))
+        if (res.ok) {
+          // OK in this case means the email was found, which is an error
+          this.errors = ['Email in use.']
+        }
+      } catch (err) {
+        if (err.statusCode !== 404) {
+          throw err;
+        }
       }
     },
   },
