@@ -8,6 +8,7 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
 
   // TODO support more than email
   const email = event.queryStringParameters?.email
+  console.log('checking for email ', email)
 
   const result = await connection.execute(
     `SELECT id from users where email = ?`,
@@ -15,15 +16,7 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
   )
   console.log('SELECT result', result)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const row: Record<string, any> = result.rows[0]
-
   return {
-    statusCode: 200,
-    body:
-      result.size > 0
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          JSON.stringify({ id: row['id'] })
-        : '',
+    statusCode: result.size > 0 ? 200 : 404,
   }
 })

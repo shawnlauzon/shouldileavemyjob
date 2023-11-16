@@ -89,10 +89,12 @@ export default defineComponent({
   },
   emit: ['agreed', 'user'],
   methods: {
-    validateUniqueEmail() {
-      fetch(encodeURI('/api/find-user?email=' + this.user.email))
-        .then((resp) => resp.json())
-        .then((json) => (this.errors = json === null ? [] : ['Email in use.']))
+    async validateUniqueEmail() {
+      const res = await this.$http.get(encodeURI('/api/is-user-created?email=' + this.user.email))
+      if (res.ok) {
+        // OK in this case means the email was found, which is an error
+        this.errors = ['Email in use.']
+      }
     },
   },
 })
