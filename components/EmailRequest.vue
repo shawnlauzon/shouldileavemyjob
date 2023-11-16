@@ -92,13 +92,14 @@ export default defineComponent({
     async validateUniqueEmail() {
       try {
         const res = await this.$http.get(encodeURI('/api/is-user-created?email=' + this.user.email))
-        if (res.ok) {
           // OK in this case means the email was found, which is an error
-          this.errors = ['Email in use.']
-        }
+          this.errors = res.ok ? ['Email in use.'] : []
       } catch (err) {
+        console.log('got error', err)
         if (err.statusCode !== 404) {
           throw err;
+        } else {
+          this.errors = []
         }
       }
     },
