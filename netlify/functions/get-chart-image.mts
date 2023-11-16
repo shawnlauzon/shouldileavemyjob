@@ -30,6 +30,6 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
 
   return {
     statusCode: 200,
-    body,
+    body: JSON.stringify(body),
   }
 })
