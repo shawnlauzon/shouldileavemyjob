@@ -6,6 +6,11 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
     planetscale: { connection },
   } = context
 
+  console.log('url: ', event.headers.url)
+  console.log('clientContext', context.clientContext)
+  console.log('headers', event.headers)
+  console.log('rawUrl', event.rawUrl)
+
   let query
   let id
   if (event.queryStringParameters?.id) {
