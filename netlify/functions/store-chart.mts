@@ -1,11 +1,16 @@
+import type { Handler } from '@netlify/functions'
 import { withPlanetscale } from '@netlify/planetscale'
 
-export default withPlanetscale(async (request, context) => {
+export const handler: Handler = withPlanetscale(async (event, context) => {
+  if (!event.body) {
+    throw Error('Expected body')
+  }
+
   const {
     planetscale: { connection },
   } = context
 
-  const params = await request.json()
+  const params = JSON.parse(event.body)
   console.log('Params', params)
 
   const {
@@ -35,7 +40,8 @@ export default withPlanetscale(async (request, context) => {
 
   const chart = Object.assign({ id: result.insertId }, params)
 
-  return Response.json(chart, {
-    status: 201,
-  })
+  return {
+    statusCode: 201,
+    body: chart,
+  }
 })

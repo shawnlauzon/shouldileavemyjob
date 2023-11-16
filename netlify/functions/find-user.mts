@@ -1,13 +1,13 @@
+import type { Handler } from '@netlify/functions'
 import { withPlanetscale } from '@netlify/planetscale'
 
-export default withPlanetscale(async (request, context) => {
+export const handler: Handler = withPlanetscale(async (event, context) => {
   const {
     planetscale: { connection },
   } = context
 
   // TODO support more than email
-  const url = new URL(request.url)
-  const email = url.searchParams.get('email')
+  const email = event.queryStringParameters?.email
 
   const result = await connection.execute(
     `SELECT id from users where email = ?`,
@@ -15,7 +15,8 @@ export default withPlanetscale(async (request, context) => {
   )
   console.log('SELECT result', result)
 
-  return Response.json(result.size > 0 ? { id: result.rows[0].id } : null, {
-    status: 200,
-  })
+  return {
+    statusCode: 200,
+    body: result.size > 0 ? JSON.stringify({ id: result.rows[0].at(0) }) : '',
+  }
 })

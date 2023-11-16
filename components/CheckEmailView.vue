@@ -8,7 +8,7 @@
   </v-container>
 </template>
 
-<script>
+<script type="ts">
 export default {
   mounted() {
     this.$plausible.trackPageview({

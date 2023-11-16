@@ -15,7 +15,7 @@
   </v-card>
 </template>
 
-<script>
+<script type="ts">
 export default {
   props: {
     value: { type: Boolean, default: null },

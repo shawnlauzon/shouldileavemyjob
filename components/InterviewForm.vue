@@ -126,7 +126,7 @@
   </v-container>
 </template>
 
-<script>
+<script type="ts">
 const keyIndicatorFeelings = {
   Frustration: 'frustrated',
   Satisfaction: 'satisfied',

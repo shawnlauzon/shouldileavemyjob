@@ -103,7 +103,7 @@
 
 <script setup></script>
 
-<script>
+<script type="ts">
 import { ref } from 'vue'
 const countries = [
   { name: 'Afghanistan', abbr: 'AF' },

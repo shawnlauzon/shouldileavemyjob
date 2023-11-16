@@ -104,7 +104,7 @@
   </v-container>
 </template>
 
-<script>
+<script type="ts">
 import evaluate from './evaluate'
 
 export default {

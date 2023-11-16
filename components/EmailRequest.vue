@@ -50,7 +50,7 @@
   </v-card>
 </template>
 
-<script>
+<script type="ts">
 export default {
   data() {
     return {

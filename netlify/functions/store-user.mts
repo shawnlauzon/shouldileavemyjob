@@ -1,11 +1,15 @@
+import type { Handler } from '@netlify/functions'
 import { withPlanetscale } from '@netlify/planetscale'
 
-export default withPlanetscale(async (request, context) => {
+export const handler: Handler = withPlanetscale(async (event, context) => {
+  if (!event.body) {
+    throw Error('Expected body')
+  }
   const {
     planetscale: { connection },
   } = context
 
-  const params = await request.json()
+  const params = JSON.parse(event.body)
   console.log('params', params)
 
   let user
@@ -32,8 +36,8 @@ export default withPlanetscale(async (request, context) => {
     console.log('INSERT result', result)
   }
 
-  return Response.json(user, {
-    // 200 = UPDATE, 201 = INSERT
-    status: params.id ? 200 : 201,
-  })
+  return {
+    statusCode: params.id ? 200 : 201,
+    body: user,
+  }
 })
