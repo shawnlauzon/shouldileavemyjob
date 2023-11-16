@@ -95,7 +95,6 @@ export default defineComponent({
           // OK in this case means the email was found, which is an error
           this.errors = res.ok ? ['Email in use.'] : []
       } catch (err) {
-        console.log('got error', err)
         if (err.statusCode !== 404) {
           throw err;
         } else {
