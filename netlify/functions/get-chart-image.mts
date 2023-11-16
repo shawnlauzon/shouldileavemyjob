@@ -26,10 +26,12 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
     }
   }
 
-  const body = result.rows[0].at(0)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const row: Record<string, any> = result.rows[0]
+  const image = row['image']
 
   return {
     statusCode: 200,
-    body: JSON.stringify(body),
+    body: JSON.stringify(image),
   }
 })

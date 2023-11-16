@@ -21,19 +21,20 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
     }
   }
 
-  const row = result.rows[0]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const row: Record<string, any> = result.rows[0]
   const body = {
     user: {
-      firstName: row.at(0),
+      firstName: row['first_name'],
     },
     chart: {
-      careerType: row.at(1),
-      publicRole: row.at(2),
-      assimilation: row.at(3),
-      decisionMakingStrategy: row.at(4),
-      traits: row.at(5),
+      careerType: row['career_type'],
+      publicRole: row['public_role'],
+      assimilation: row['assimilation'],
+      decisionMakingStrategy: row['decision_making_strategy'],
+      traits: row['traits'],
     },
-    answers: row.at(6),
+    answers: row['answers'],
   }
   // console.log('returning', body)
 

@@ -15,8 +15,15 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
   )
   console.log('SELECT result', result)
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const row: Record<string, any> = result.rows[0]
+
   return {
     statusCode: 200,
-    body: result.size > 0 ? JSON.stringify({ id: result.rows[0].at(0) }) : '',
+    body:
+      result.size > 0
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          JSON.stringify({ id: row['id'] })
+        : '',
   }
 })
