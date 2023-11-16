@@ -16,13 +16,12 @@ export default defineComponent({
       image: undefined as string | undefined,
     }
   },
-  fetch: async function () {
+  async fetch() {
     if (this.$route.query.id) {
-      this.image =
-        'data:image/png;base64, ' +
-        (await this.$http.$get(
-          '/api/get-chart-image?id=' + this.$route.query.id
-        ))
+      const base64Img = await this.$http.$get(
+        '/api/get-chart-image?id=' + this.$route.query.id
+      )
+      this.image = 'data:image/png;base64, ' + base64Img
     } else if (this.$route.query.user_id) {
       this.image =
         'data:image/png;base64, ' +

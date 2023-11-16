@@ -24,7 +24,9 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
   // Send an email:
   const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY || '')
 
-  const actionUrl = event.headers.url + '/result?id=' + interview.id
+  const thisUrl = 'https://' + event.headers.host
+
+  const actionUrl = thisUrl + '/result?id=' + interview.id
 
   const emailResponse = await client.sendEmailWithTemplate({
     From: 'shawn@practicalhumandesign.co',
@@ -32,7 +34,7 @@ export const handler: Handler = withPlanetscale(async (event, context) => {
     TemplateAlias: 'welcome',
     TemplateModel: {
       product_url: 'https://practicalhumandesign.co',
-      host_url: event.headers.url,
+      host_url: thisUrl,
       product_name: 'Practical Human Design',
       name: params.firstName,
       action_url: actionUrl,
