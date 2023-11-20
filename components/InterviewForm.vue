@@ -397,7 +397,7 @@ export default defineComponent({
 
         this.$emit('complete', responses[1])
       } catch (e) {
-        console.warn('Failed to update user', e)
+        console.log('Failed to update user', e)
       }
       this.isStoring = false
     },

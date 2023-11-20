@@ -720,7 +720,7 @@ export default defineComponent({
           console.log('newChart', responses[1])
           this.$emit('chart', responses[1])
         } catch (e) {
-          console.warn('Could not save', e)
+          console.log('Could not save', e)
           this.$emit('chart', this.chart)
         }
         this.isLoading = false
