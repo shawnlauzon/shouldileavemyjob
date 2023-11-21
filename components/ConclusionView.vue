@@ -243,7 +243,7 @@ smallGroupLowerPenta:
   You work in a small group and also have a genetic blueprints that work well in a small group,
   and so you are an asset to the group. However being managed may
   eventually be challenging for you.
-smallGroupNotPenta: You work in a small group but well never feel comfortable in such a configuration.
+smallGroupNotPenta: You work in a small group but will never feel comfortable in such a configuration.
 smallGroupCollaborative:
   You are designed to work and collaborate with others, so working with others in
   a group is a good thing.
