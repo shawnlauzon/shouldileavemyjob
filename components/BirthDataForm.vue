@@ -632,7 +632,7 @@ export default defineComponent({
         time: this.time,
         country: this.country?.name,
         city: this.city,
-        state: this.state?.name,
+        state: this.isUsa ? this.state?.name : null,
       }
       console.log('clicked for ', params)
       console.log('sending', JSON.stringify(params))
@@ -700,7 +700,7 @@ export default defineComponent({
               datetime: this.date + ' ' + this.time,
               country: this.country.abbr,
               city: this.city,
-              state: this.state.abbr,
+              state: this.isUsa ? this.state.abbr : null,
             }),
           })
 
