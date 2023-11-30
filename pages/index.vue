@@ -33,7 +33,7 @@ export default defineComponent({
         {
           hid: 'og-title',
           property: 'og:title',
-          content: "Wondering if you're a good fit for your job?",
+          content: 'Finding Fulfillment: Is Leaving Your Job the Key?',
         },
         {
           hid: 'og-desc',
